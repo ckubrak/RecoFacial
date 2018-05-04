@@ -33,7 +33,7 @@ double Imagen::restarYnorma (const Imagen& otra)
     {
         res += resta._elementos[j];
     }
-    return sqrt(res);
+    return sqrt(double(res));
 }
 
 
@@ -111,7 +111,7 @@ Imagen::Imagen(char* archivo, int id)
 	// int size = (*width) * (*height) * channels * pixel_depth;
 	// *data = new uchar[size];
 	// fread(*data, 1, size, fid);
-	// fclose(fid);
+	fclose(fid);
     _id = id;
 }
 
