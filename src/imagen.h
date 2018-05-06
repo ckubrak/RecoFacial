@@ -9,15 +9,6 @@
 
 typedef unsigned char uchar;
 
-typedef 
-enum _PPM_LOADER_PIXEL_TYPE {
-	PPM_LOADER_PIXEL_TYPE_INVALID = -1,
-	PPM_LOADER_PIXEL_TYPE_RGB_8B = 0,
-	PPM_LOADER_PIXEL_TYPE_GRAY_8B = 1,
-	PPM_LOADER_PIXEL_TYPE_GRAY_16B = 2,
-	PPM_LOADER_PIXEL_TYPE_GRAY_32B = 3,
-	PPM_LOADER_PIXEL_TYPE_GRAY_64B = 4
-} PPM_LOADER_PIXEL_TYPE;
 
 class Imagen 
 {
@@ -33,7 +24,6 @@ class Imagen
          int _alto;
          int _maxVal;
          int _id;
-         PPM_LOADER_PIXEL_TYPE _pixelType;
 };
 
 std::vector<Imagen> cargarBD(char* archivo);
