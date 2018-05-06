@@ -22,104 +22,41 @@ std::vector<Imagen> cargarBD(char* csv)
 double Imagen::restarYnorma (const Imagen& otra)
 {
     Imagen resta;
-    for (int i=0; i < _elementos.size(); i++)
+    for (int i=0; i < _width * _height; i++)
     { 
-        resta._elementos.push_back( _elementos[i] - otra._elementos[i]);
+        resta._data[i] =  _data[i] - otra._data[i];
     }
 
     double res = 0;
 
-    for (int j = 0; j < _elementos.size(); j++)
+    for (int j = 0; j < _width * _height; j++)
     {
-        res += resta._elementos[j];
+        res += resta._data[j];
     }
     return sqrt(double(res));
 }
 
 
-Imagen::Imagen(char* archivo, int id)
+Imagen::Imagen(std::string archivo, int id)
 {
-	FILE* fid = fopen(archivo, "rb");
-	if (!fid) {
-		printf("PGM load error: file access denied %s\n", archivo);
-		return;
-	}
-	// Read PPM/PGM header P5/P6
-	int channels = 0;
-	char line[256];
-    char *ptr;
-	fgets(line, 256, fid);
+    uchar* data = NULL;
+    int width = 0, height = 0;
+    PPM_LOADER_PIXEL_TYPE pt = PPM_LOADER_PIXEL_TYPE_INVALID;
 
-    //B&W only
-	if ( line[0]!='P' || line[1]!='5' ) {
-		printf("Wrong image type\n");
-		return;
+    bool ret = LoadPPMFile(&_data, &_width, &_height, &pt, archivo.c_str());
+    if (!ret || _width == 0|| _height == 0|| pt!=PPM_LOADER_PIXEL_TYPE_GRAY_8B )
+    {
+        throw std::runtime_error("test_load failed");
+    }
 
-    if (line[2] == '\n') {
-        fgets(line, 256, fid);
-
-        // Parse comments
-        fgets(line, 256, fid);
-        while(line[0]=='#')
-          fgets(line, 256, fid);
-
-        ptr = line;
-    } else
-        ptr = line + 3;
-
-        // Read dimensions
-        _ancho = strtol(ptr, &ptr, 10);
-        _alto = strtol(ptr, &ptr, 10);
-        if(ptr == NULL || *ptr == '\n'){
-            fgets(line, 256, fid);
-            ptr = line;
-        }
-
-// 	// Read pixel depth
-//     int levels = strtol(ptr, &ptr, 10);
-//   int pixel_depth = 0;
-// 	if (channels==3 && (levels == 255)) {
-// 		*pt = PPM_LOADER_PIXEL_TYPE_RGB_8B;
-// 		pixel_depth = 1;
-// 	}else if (channels==3 && levels == 65535) {
-// 		*pt = PPM_LOADER_PIXEL_TYPE_RGB_16B;
-// 		pixel_depth = 2;
-// 	} else if (channels==3 && levels == 4294967295) {
-// 		*pt = PPM_LOADER_PIXEL_TYPE_RGB_32B;
-// 		pixel_depth = 4;
-// 	} else if (channels==3 && levels == 18446744073709551615U) {
-// 		*pt = PPM_LOADER_PIXEL_TYPE_RGB_64B;
-// 		pixel_depth = 8;		
-// 	}else if (levels == 255) {
-// 		*pt = PPM_LOADER_PIXEL_TYPE_GRAY_8B;
-// 		pixel_depth = 1;
-// 	}else if (levels == 65535) {
-// 		*pt = PPM_LOADER_PIXEL_TYPE_GRAY_16B;
-// 		pixel_depth = 2;
-// 	} else if (levels == 4294967295) {
-// 		*pt = PPM_LOADER_PIXEL_TYPE_GRAY_32B;
-// 		pixel_depth = 4;
-// 	} else if (levels == 18446744073709551615U) {
-// 		*pt = PPM_LOADER_PIXEL_TYPE_GRAY_64B;
-// 		pixel_depth = 8;
-// 	} else {
-// 		printf("ERROR: Wrong number of levels\n");
-// 		return false;
-	}
-
-	// Read raw data from file
-	// int size = (*width) * (*height) * channels * pixel_depth;
-	// *data = new uchar[size];
-	// fread(*data, 1, size, fid);
-	fclose(fid);
     _id = id;
 }
 
 Imagen::Imagen()
 {
-    _elementos = {};
-    _ancho = 0;
-    _alto = 0;
+    _data = {};
+    _width = 0;
+    _height = 0;
     _maxVal = 0;
     _id = -1;
 }
