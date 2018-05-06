@@ -19,6 +19,7 @@ class Imagen
     public:
         Imagen(std::string archivo, int id);
         Imagen();
+        ~Imagen();
 
         double restarYnorma (const Imagen& otra);
     private:

@@ -60,3 +60,8 @@ Imagen::Imagen()
     _maxVal = 0;
     _id = -1;
 }
+
+Imagen::~Imagen()
+{
+    delete _data;
+}
