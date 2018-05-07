@@ -1,3 +1,6 @@
+#ifndef _PCA_H_
+#define _PCA_H_
+
 typedef std::vector<Imagen> baseDeDatos; //matriz de Imagenes: id, ancho, alto y bytes de cada imagen
 typedef std::vector<double> doubleVector;
 typedef std::vector<doubleVector> doubleMatrix; //matriz para deflacion
@@ -28,3 +31,5 @@ void ArmarMatrizX(baseDeDatos muestra, doubleVector media, int filas, int column
 doubleMatrix MatrizX(baseDeDatos muestra, doubleVector media, int filas, int columnas );
 
 void PCA (baseDeDatos muestra, doubleMatrix &mtrcar, int modo);
+
+#endif

@@ -1,4 +1,5 @@
 #include "imagen.h"
+#include "pca.h"
 
 std::vector<Imagen> cargarBD(char* csv)
 {
@@ -11,11 +12,7 @@ std::vector<Imagen> cargarBD(char* csv)
     std::vector<Imagen> baseDeDatos = {};
     while (infile >> imagen >> id)
     {
-        if (baseDeDatos.size() <= id)
-        {
-            baseDeDatos.resize(id - baseDeDatos.size());
-        }
-        baseDeDatos[id] = Imagen(imagen,id);
+        baseDeDatos.push_back(Imagen(imagen,id));
     }
 }
 

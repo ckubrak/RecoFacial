@@ -9,6 +9,8 @@ set(SOURCE_FILES
         ppmloader/ppmloader.h
         src/imagen.cpp
         src/imagen.h
+        src/pca.h
+        src/pca.cpp
         src/main.cpp
         )
 

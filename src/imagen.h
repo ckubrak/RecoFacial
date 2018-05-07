@@ -1,5 +1,5 @@
-#ifndef _VECINOS_
-#define _VECINOS_
+#ifndef _IMAGEN_H_
+#define _IMAGEN_H_
 
 #include <vector>
 #include <math.h>       /* sqrt */
