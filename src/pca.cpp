@@ -2,7 +2,7 @@
 #include "pca.h"
 
 
-double norma2Vectorial(dvector v)
+double norma2Vectorial(doubleVector v)
 {
   double acumulador=0.0;
 
@@ -15,7 +15,7 @@ double norma2Vectorial(dvector v)
   return (sqrt(acumulador));
 }
 
-double normaInfinitoVectorial(dvector v, int &indice)
+double normaInfinitoVectorial(doubleVector v, int &indice)
 {
   double acumulador=0.0;
   indice = 0;
@@ -33,9 +33,9 @@ double normaInfinitoVectorial(dvector v, int &indice)
 
 
 // matriz y vectores no vacios
-dvector matrizXVector(dmatriz A, dvector v)
+doubleVector matrizXVector(doubleMatrix A, doubleVector v)
 {
-  dvector y;
+  doubleVector y;
   double acumulador = 0.0;
   int n=A.size();
   int m;
@@ -63,7 +63,7 @@ dvector matrizXVector(dmatriz A, dvector v)
 
 
 
-dmatriz matrizXEscalar(dmatriz A, double esc)
+doubleMatrix matrizXEscalar(doubleMatrix A, double esc)
 {
   int m;
 
@@ -80,10 +80,10 @@ dmatriz matrizXEscalar(dmatriz A, double esc)
 }
 
 
-dvector vectorXEscalar(dvector v, double esc)
+doubleVector vectorXEscalar(doubleVector v, double esc)
 {
 
-      for (dvector::iterator j = v.begin() ; j != v.end(); ++j)
+      for (doubleVector::iterator j = v.begin() ; j != v.end(); ++j)
       {
         *j *= esc;
       }
@@ -92,7 +92,7 @@ dvector vectorXEscalar(dvector v, double esc)
 }
 
 
-dvector sumaVectorial(dvector a, dvector b)
+doubleVector sumaVectorial(doubleVector a, doubleVector b)
 {
   int s=a.size();
   for (int i=0; i<s; ++i)
@@ -102,7 +102,7 @@ dvector sumaVectorial(dvector a, dvector b)
   return a;
 }
 
-dvector restaVectorial(dvector a, dvector b)
+doubleVector restaVectorial(doubleVector a, doubleVector b)
 {
   return sumaVectorial(a,vectorXEscalar(b, -1.0));
 }
@@ -112,10 +112,10 @@ dvector restaVectorial(dvector a, dvector b)
 // iterar hasta   que en dos iteraciones sucesivas la siferencia entre las normas sea menor que la tolerancia
 // si se normaliza el vector al mismo tiempo se calcula el autovalor dominante
 //
-int MetodoPotencias(dmatriz A, dvector x,int nroIter,float tol, double &autoval, dvector &autovec)
+int MetodoPotencias(doubleMatrix A, doubleVector x,int nroIter,float tol, double &autoval, doubleVector &autovec)
 {
   //
-  dvector y; // guarda el valor de la ultima iteracion
+  doubleVector y; // guarda el valor de la ultima iteracion
   double norma, lambda;
 //  double nant=0.0;
   int indice=0; //indice del elemento que define la norma infinito
@@ -178,7 +178,7 @@ std::cout << "y[indice] despues de normalizar: " << y[indice] << "\n";
 }
 
 // se calcula X*Xt. Por ahora no lo uso: se obtiene una matriz de n x n (n=cantidad de imagenes)
-void CalcularCovarianza(dmatriz X, int filas, int columnas, dmatriz &mcov){
+void CalcularCovarianza(doubleMatrix X, int filas, int columnas, doubleMatrix &mcov){
     //Xt*X
     double acumulador=0;
 
@@ -200,7 +200,7 @@ void CalcularCovarianza(dmatriz X, int filas, int columnas, dmatriz &mcov){
 
 
 //Arma en el parametro de Salida X una matriz con las imagenes normalizadas
-void ArmarMatrizX(baseDeDatos muestra, dvector media, int filas, int columnas, dmatriz &X ){
+void ArmarMatrizX(baseDeDatos muestra, doubleVector media, int filas, int columnas, doubleMatrix &X ){
   float den;
   X.reserve(filas);
   den=sqrt(filas-1);
@@ -214,9 +214,9 @@ void ArmarMatrizX(baseDeDatos muestra, dvector media, int filas, int columnas, d
 }
 
 
-dmatriz MatrizX(baseDeDatos muestra, dvector media, int filas, int columnas ){
+doubleMatrix MatrizX(baseDeDatos muestra, doubleVector media, int filas, int columnas ){
   float den;
-  dmatriz X;
+  doubleMatrix X;
   X.reserve(filas);
   den=sqrt(filas-1);
   for (int i=0;i<filas;i++){
@@ -235,7 +235,7 @@ dmatriz MatrizX(baseDeDatos muestra, dvector media, int filas, int columnas ){
 //parametro de salida una matriz con la transformacion caracteristica de cada imagen
 // columnas = cantidad de bytes por imagenes. Se puede calcular a partir de una de las imagenes cualquiera
 // multiplicando ancho por alto.
-void PCA (baseDeDatos muestra, dmatriz &mtrcar, int modo){
+void PCA (baseDeDatos muestra, doubleMatrix &mtrcar, int modo){
 
   int filas, columnas;
 
@@ -275,7 +275,7 @@ void PCA (baseDeDatos muestra, dmatriz &mtrcar, int modo){
   }
   std::cout << "\n";
 
-  dmatriz X;
+  doubleMatrix X;
   std::cout << "antes de armar matriz\n";
   ArmarMatrizX(muestra, media, filas, columnas, X);
 
@@ -288,7 +288,7 @@ void PCA (baseDeDatos muestra, dmatriz &mtrcar, int modo){
   }
 
 //Calcular Xt*X = Matriz de covarianza
-  dmatriz mcov;
+  doubleMatrix mcov;
   CalcularCovarianza(X, filas, columnas, mcov);
 
 }
