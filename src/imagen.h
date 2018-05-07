@@ -21,6 +21,11 @@ class Imagen
         Imagen();
         ~Imagen();
 
+        uchar* getData();
+        int size();
+        int getId();
+        int getHeight();
+        int getWidth();
         double restarYnorma (const Imagen& otra);
     private:
         uchar* _data;

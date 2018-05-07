@@ -65,3 +65,24 @@ Imagen::~Imagen()
 {
     delete _data;
 }
+
+uchar* Imagen::getData()
+{
+    return _data;
+}
+
+int Imagen::getHeight()
+{
+    return _height;
+}
+
+
+int Imagen::getWidth()
+{
+    return _width;
+}
+
+int Imagen::getId()
+{
+    return _id;
+}
