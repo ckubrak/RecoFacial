@@ -1,6 +1,6 @@
 #ifndef __PPMPLOADER_H__
 #define __PPMLOADER_H__
-#include <iostream>
+
 typedef unsigned char uchar;
 
 typedef 
