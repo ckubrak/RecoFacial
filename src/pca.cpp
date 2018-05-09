@@ -74,10 +74,6 @@ doubleVector matrizXVector(doubleMatrix A, doubleVector v)
   {
       for (int j=0 ; j != m; ++j)
       {
-      //   for (int k=0; k<m; ++k)
-      //   {
-      //     acumulador += A[it][jt]*v[k];
-      // }
         acumulador += A[i][j]*v[j];
       }
       y.push_back(acumulador);
@@ -87,7 +83,58 @@ doubleVector matrizXVector(doubleMatrix A, doubleVector v)
   return y;
 }
 
+////// matriz  por matriz: asumimos que las dimensiones son validas  //////////
+doubleMatrix matrizXMatriz(doubleMatrix A, doubleMatrix B)
+{
+  doubleMatrix R={};
+  double acumulador = 0.0;
+  int n=A.size(); //filas de A
+  int m=B.size(); //filas de B, columnas de A
+  int r; //columnas de B
 
+  if (A.size()>0)
+  {
+    m = B.size();
+  }
+
+  if (m>0)
+  {
+    r=B[0].size();
+  }
+  //calcular R[i][j]
+  for (int i = 0 ; i != n; ++i)
+  {
+    for (int j=0 ; j != r; ++j)
+    {
+      for (int k=0; k<m; ++k)
+      {
+            acumulador += A[i][k]*B[k][j];
+      }
+      R[i].push_back(acumulador);
+      acumulador=0.0;
+    }
+  }
+  return R;
+}
+
+doubleMatrix vvt(doubleVector autovec)
+{
+  doubleMatrix R={};
+  double acumulador = 0.0;
+  int n=v.size(); //filas de A
+
+  //calcular R[i][j]
+  for (int i = 0 ; i != n; ++i)
+  {
+    for (int j=0 ; j != n; ++j)
+    {
+      acumulador += v[i]*v[j];
+      R[i].push_back(acumulador);
+      acumulador=0.0;
+    }
+  }
+  return R;
+}
 
 doubleMatrix matrizXEscalar(doubleMatrix A, double esc)
 {
@@ -104,7 +151,6 @@ doubleMatrix matrizXEscalar(doubleMatrix A, double esc)
       }
   }  return A;
 }
-
 
 doubleVector vectorXEscalar(doubleVector v, double esc)
 {
@@ -135,7 +181,7 @@ doubleVector restaVectorial(doubleVector a, doubleVector b)
 
 
 // ver si hay que normalizar Ax
-// iterar hasta   que en dos iteraciones sucesivas la siferencia entre las normas sea menor que la tolerancia
+// iterar hasta   que en dos iteraciones sucesivas la diferencia entre las normas sea menor que la tolerancia
 // si se normaliza el vector al mismo tiempo se calcula el autovalor dominante
 //
 int MetodoPotencias(doubleMatrix A, doubleVector x,int nroIter,float tol, double &autoval, doubleVector &autovec)
@@ -200,6 +246,48 @@ std::cout << "y[indice] despues de normalizar: " << y[indice] << "\n";
     autovec = x;
     autoval = lambda;
     return 1; // hubo convergencia
+  }
+}
+
+//Entrada: matriz, cantidad de autovalores significativos.
+//Salida: vector con autovalores, matriz de autovectores (uno por fila)
+// los autovectores se almacenan por fila (ojo!!! No por columna!!!)
+//PENDIENTE: definir la dimension de los parametros de salida en funcion del alfa?????????
+int Deflacion(doubleMatrix A, int alfa, doubleVector &autovalores, doubleMatrix &autovectores)
+{
+  doubleVector x;
+  double tol=0.00000001;
+  int nroIter=100;
+  double lambda;
+  doubleVector autovec;
+  long dimension=A[0].size();
+  autovec.reserve(dimension);
+
+  //averiguo autoval ppal y vector asociado
+  //ir almacenando los autovalores y autovectores que se van hallando
+  //repetir para A-lambda*v1*v1t
+
+  // armar vector x inicial en funcion de la dimension de la matriz A
+  //analizar opciones de como armarlo PENDIENTE
+  for (int i=0; i<dimension; ++i)
+    x.push_back(1);
+
+  for (int d=0; d<dimension && d<alfa; ++d)
+  {
+
+    if (MetodoPotencias(A, x, nroIter, tol, lambda, autovec) == 1) //hubo convergencia
+    {
+      //Almacenar valores obtenidos para el autovalor y autovector ppal
+      autovalores[d]=lambda;
+      autovectores[d]=autovec;
+      if (d<dimension-1)
+        A = restarMatrices(A, matrizXEscalar(vvt(autovec), lambda));
+    }
+    else
+    {
+      //fallo el metodo de la potencias
+      exit 1;
+    }
   }
 }
 
