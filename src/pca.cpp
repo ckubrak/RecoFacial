@@ -117,7 +117,7 @@ doubleMatrix matrizXMatriz(doubleMatrix A, doubleMatrix B)
   return R;
 }
 
-doubleMatrix vvt(doubleVector autovec)
+doubleMatrix vvt(doubleVector v)
 {
   doubleMatrix R={};
   double acumulador = 0.0;
@@ -177,6 +177,24 @@ doubleVector sumaVectorial(doubleVector a, doubleVector b)
 doubleVector restaVectorial(doubleVector a, doubleVector b)
 {
   return sumaVectorial(a,vectorXEscalar(b, -1.0));
+}
+
+
+doubleMatrix sumaMatricial(doubleMatrix a, doubleMatrix b)
+{
+  int s=a.size();
+  int t=a[0].size();
+  for (int i=0; i<s; ++i)
+  {
+    for (int j=0; j<t; ++j)
+      a[i][j] += b[i][j];
+  }
+  return a;
+}
+
+doubleMatrix restaMatricial(doubleMatrix a, doubleMatrix b)
+{
+  return sumaMatricial(a,matrizXEscalar(b, -1.0));
 }
 
 
@@ -281,12 +299,12 @@ int Deflacion(doubleMatrix A, int alfa, doubleVector &autovalores, doubleMatrix 
       autovalores[d]=lambda;
       autovectores[d]=autovec;
       if (d<dimension-1)
-        A = restarMatrices(A, matrizXEscalar(vvt(autovec), lambda));
+        A = restaMatricial(A, matrizXEscalar(vvt(autovec), lambda));
     }
     else
     {
       //fallo el metodo de la potencias
-      exit 1;
+      std::cout << "fallo metodo de las potencias\n";
     }
   }
 }
