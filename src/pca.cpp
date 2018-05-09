@@ -2,12 +2,38 @@
 #include "pca.h"
 
 
+void printVector(doubleVector v)
+{
+  int filas = v.size();
+  //imprimir vector
+    for (int i=0;i<filas;i++){
+
+        std::cout << v[i] << " ";
+
+      std::cout << "\n";
+    }
+
+}
+
+void printMatrix(doubleMatrix M)
+{
+  int filas, columnas;
+  filas = M.size();
+  columnas = M[0].size();
+  for (int i=0;i<filas;i++){
+    for (int j=0;j<columnas;j++){
+      std::cout << M[i][j] << " ";
+    }
+    std::cout << "\n";
+  }
+}
+
 double norma2Vectorial(doubleVector v)
 {
   double acumulador=0.0;
 
   int n = v.size();
-  //for (dvector::iterator it = v.begin() ; it != v.end(); ++it)
+  //for (doubleVector::iterator it = v.begin() ; it != v.end(); ++it)
   for (int i=0; i<n; ++i)
   {
       acumulador+=pow(v[i],2);

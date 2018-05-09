@@ -8,6 +8,10 @@ typedef std::vector<doubleVector> doubleMatrix; //matriz para deflacion
 double norma2Vectorial(doubleVector v);
 double normaInfinitoVectorial(doubleVector v, int &indice);
 
+doubleVector sumaVectorial(doubleVector a, doubleVector b);
+doubleVector restaVectorial(doubleVector a, doubleVector b);
+
+
 // matriz y vectores no vacios
 doubleVector matrizXVector(doubleMatrix A, doubleVector v);
 
@@ -31,5 +35,7 @@ void ArmarMatrizX(baseDeDatos muestra, doubleVector media, int filas, int column
 doubleMatrix MatrizX(baseDeDatos muestra, doubleVector media, int filas, int columnas );
 
 void PCA (baseDeDatos muestra, doubleMatrix &mtrcar, int modo);
+void printVector(doubleVector v);
+void printMatrix(doubleMatrix M);
 
 #endif
