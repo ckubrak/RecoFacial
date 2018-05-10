@@ -51,44 +51,38 @@
 
 
 
-std::vector<Imagen> cargarBD(std::string csv)
+baseDeDatos cargarBD(std::string csv)
 {
-
-
-    std::vector<Imagen> baseDeDatos = {};
+    baseDeDatos base = {};
     std::ifstream input(csv);
 
     std::string imagen;
     std::string line;
     int id;
 
+
     while (std::getline(input, line))
     {
       std::cout <<  "line " << line << "\n";
 
       std::size_t found = line.find_first_of(", ");      //primer delimitador
-      if (found!=std::string::npos)
-      {
+      // if (found!=std::string::npos)
+      // {
         imagen = line.substr(0, found);
-        line = line.substr(found, line.size());
+        line = line.substr(found, line.size()-1);
 
         std::size_t inicio = line.find_first_not_of(", "); //inicio de datos significativos
-        if (inicio!=std::string::npos)
-        {
-          line = line.substr(inicio, line.size());
+        // if (inicio!=std::string::npos)
+        // {
+          line = line.substr(inicio, line.size()-1);
           id = std::stoi (line);
 std::cout <<  "imagen: " << imagen << "\n";
 std::cout <<  "id: " << id << "\n";
           Imagen nuevaImagen(imagen,id);
-          baseDeDatos.push_back(nuevaImagen);
-        }
-        else
-          std::cout << "archivo de entrada con formato erroneo: " << line << std::endl;
-      }
-      else
-        std::cout << "archivo de entrada con formato erroneo: " << line << std::endl;
+
+          base.push_back(nuevaImagen);
     }
-    return baseDeDatos;
+    return base;
 }
 
 
