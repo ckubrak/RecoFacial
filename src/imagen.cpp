@@ -6,42 +6,115 @@
 #include <iostream>
 #include <sstream>
 
+// std::vector<Imagen> cargarBD(std::string csv)
+// {
+//
+//
+//     std::vector<Imagen> baseDeDatos = {};
+//     std::ifstream input(csv);
+//     char delimiter(',');
+//
+//     std::string imagen;
+//     std::string line;
+//     int id;
+//     int i = 0;
+//
+//     while (std::getline(input, line,delimiter)){
+//
+//     // for( std::string line; std::getline( input, line, delimiter);){
+//         imagen = line;
+//         if (i != 0)
+//             imagen = line.substr(1, line.size());
+//
+//        std::getline( input, line, delimiter);
+//
+//         std::stringstream(line) >> id;
+//         Imagen nuevaImagen(imagen,id);
+//         baseDeDatos.push_back(nuevaImagen);
+//
+//         i++;
+//     }
+//     return baseDeDatos;
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 std::vector<Imagen> cargarBD(std::string csv)
 {
 
 
     std::vector<Imagen> baseDeDatos = {};
     std::ifstream input(csv);
-    char delimiter(','); 
 
     std::string imagen;
     std::string line;
     int id;
-    int i = 0;
 
-    while (std::getline(input, line,delimiter)){
+    while (std::getline(input, line))
+    {
+      std::cout <<  "line " << line << "\n";
 
-    // for( std::string line; std::getline( input, line, delimiter);){
-        imagen = line;
-        if (i != 0) 
-            imagen = line.substr(1, line.size());
+      std::size_t found = line.find_first_of(", ");      //primer delimitador
+      if (found!=std::string::npos)
+      {
+        imagen = line.substr(0, found);
+        line = line.substr(found, line.size());
 
-       std::getline( input, line, delimiter);
-
-        std::stringstream(line) >> id; 
-        Imagen nuevaImagen(imagen,id);
-        baseDeDatos.push_back(nuevaImagen);
-
-        i++;
+        std::size_t inicio = line.find_first_not_of(", "); //inicio de datos significativos
+        if (inicio!=std::string::npos)
+        {
+          line = line.substr(inicio, line.size());
+          id = std::stoi (line);
+std::cout <<  "imagen: " << imagen << "\n";
+std::cout <<  "id: " << id << "\n";
+          Imagen nuevaImagen(imagen,id);
+          baseDeDatos.push_back(nuevaImagen);
+        }
+        else
+          std::cout << "archivo de entrada con formato erroneo: " << line << std::endl;
+      }
+      else
+        std::cout << "archivo de entrada con formato erroneo: " << line << std::endl;
     }
     return baseDeDatos;
 }
+
+
+// std::size_t inicio = line.find_first_not_of(", "); //inicio de datos significativos
+// if (inicio!=std::string::npos)
+// {
+//   line = line.substr(inicio, line.size());
+  // std::size_t found = line.find_first_of(", ");      //primer delimitador
+  // if (found!=std::string::npos)
+  //   cid = line.substr(0, found-1);
+  //   id = std::stoi (line,&sz);
+  // else
+  //   cid = line.substr(0, line.size());
+
+
+
+
+
+
+
 
 double Imagen::restarYnorma (const Imagen& otra)
 {
     Imagen resta;
     for (int i=0; i < _width * _height; i++)
-    { 
+    {
         resta._data[i] =  _data[i] - otra._data[i];
     }
 
@@ -60,14 +133,16 @@ Imagen::Imagen(std::string archivo, int id)
     uchar* data = NULL;
     int width = 0, height = 0;
     PPM_LOADER_PIXEL_TYPE pt = PPM_LOADER_PIXEL_TYPE_INVALID;
-
+    std::cout << "entrando a Imagen: " << archivo << " \n";
     bool ret = LoadPPMFile(&_data, &_width, &_height, &pt, archivo.c_str());
+    std::cout << "ancho, alto, pt: " << _width << " " << _height << " " << pt << "\n";
     if (!ret || _width == 0|| _height == 0|| pt!=PPM_LOADER_PIXEL_TYPE_GRAY_8B )
     {
         throw std::runtime_error("test_load failed");
     }
-
+    //std::cout << "data: " <<
     _id = id;
+    std::cout << "saliendo de Imagen: \n";
 }
 
 Imagen::Imagen()
