@@ -1,19 +1,40 @@
 #include "imagen.h"
 #include "pca.h"
+#include <fstream>
+#include <vector>
+#include <string>
+#include <iostream>
+#include <sstream>
 
-std::vector<Imagen> cargarBD(char* csv)
+std::vector<Imagen> cargarBD(std::string csv)
 {
 
-    std::ifstream infile(csv);
-    Imagen temp;
 
-    char* imagen;
-    int id;
     std::vector<Imagen> baseDeDatos = {};
-    while (infile >> imagen >> id)
-    {
-        baseDeDatos.push_back(Imagen(imagen,id));
+    std::ifstream input(csv);
+    char delimiter(','); 
+
+    std::string imagen;
+    std::string line;
+    int id;
+    int i = 0;
+
+    while (std::getline(input, line,delimiter)){
+
+    // for( std::string line; std::getline( input, line, delimiter);){
+        imagen = line;
+        if (i != 0) 
+            imagen = line.substr(1, line.size());
+
+       std::getline( input, line, delimiter);
+
+        std::stringstream(line) >> id; 
+        Imagen nuevaImagen(imagen,id);
+        baseDeDatos.push_back(nuevaImagen);
+
+        i++;
     }
+    return baseDeDatos;
 }
 
 double Imagen::restarYnorma (const Imagen& otra)

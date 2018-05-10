@@ -35,7 +35,7 @@ class Imagen
         int _id;
 };
 
-std::vector<Imagen> cargarBD(char* archivo);
+std::vector<Imagen> cargarBD(std::string archivo);
 
 
 #endif
