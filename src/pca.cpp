@@ -78,7 +78,6 @@ doubleVector matrizXVector(doubleMatrix A, doubleVector v)
       }
       y.push_back(acumulador);
       acumulador=0.0;
-//      }
   }
   return y;
 }
@@ -303,7 +302,7 @@ int Deflacion(doubleMatrix A, int alfa, doubleVector &autovalores, doubleMatrix 
     }
     else
     {
-      //fallo el metodo de la potencias
+      //fallo el metodo de la potencia
       std::cout << "fallo metodo de las potencias\n";
     }
   }
@@ -327,6 +326,7 @@ void CalcularCovarianza(doubleMatrix X, int filas, int columnas, doubleMatrix &m
         mcov[i].push_back(acumulador);
       }
     }
+std::cout << "antes de salir de CalcularCovarianza \n";
 }
 
 
@@ -334,37 +334,45 @@ void CalcularCovarianza(doubleMatrix X, int filas, int columnas, doubleMatrix &m
 //Arma en el parametro de Salida X una matriz con las imagenes normalizadas
 void ArmarMatrizX(baseDeDatos muestra, doubleVector media, int filas, int columnas, doubleMatrix &X ){
   float den;
-  X.reserve(filas);
+
   den=sqrt(filas-1);
+  std::cout << "dentro armar X. filas, columnas, X.size, X.capacity: " << filas << " " << columnas << " " << X.size() << " " << X.capacity() << std::endl;
   for (int i=0;i<filas;i++){
-    X[i].reserve(columnas);
     for (int j=0;j<columnas;j++){
-//      X[i*columnas+j]=(muestra[i*columnas+j]-media[j])/den;
-      X[i].push_back( (muestra[i].getData()[j]-media[j])/den );
+      //X[i].push_back( ((muestra[i].getData())[j]-media[j])/den );
+      X[i][j]=( ((muestra[i].getData())[j]-media[j])/den );
+//copiar a mano los elementos en la fila X[i][j]=muestra...
+      std::cout << "dentro armar X. despues del push. i, X.size, X[i].size, X[i].capacity: " << i << " " << X.size() << " " << (X[i]).size() << " " << X[i].capacity() << std::endl;
     }
+//copiar a mano los elementos en la fila X[i][j]=muestra...
+    //X.push_back(X[i]);
+    std::cout << "fila i de X, size X, X[i].size(): " << i << " " << X.size() << " " << X[i].size() << std::endl;
   }
+  std::cout << "saliendo de armar X \n";
 }
 
 
-doubleMatrix MatrizX(baseDeDatos muestra, doubleVector media, int filas, int columnas ){
-  float den;
-  doubleMatrix X;
-  X.reserve(filas);
-  den=sqrt(filas-1);
-  for (int i=0;i<filas;i++){
-    X[i].reserve(columnas);
-    for (int j=0;j<columnas;j++){
-//      X[i*columnas+j]=(muestra[i*columnas+j]-media[j])/den;
-      X[i].push_back( (muestra[i].getData()[j]-media[j])/den );
-    }
-  }
-  return X;
-}
+
+
+// doubleMatrix MatrizX(baseDeDatos muestra, doubleVector media, int filas, int columnas ){
+//   float den;
+//   doubleMatrix X;
+//   X.reserve(filas);
+//   den=sqrt(filas-1);
+//   for (int i=0;i<filas;i++){
+//     X[i].reserve(columnas);
+//     for (int j=0;j<columnas;j++){
+// //      X[i*columnas+j]=(muestra[i*columnas+j]-media[j])/den;
+//       X[i].push_back( (muestra[i].getData()[j]-media[j])/den );
+//     }
+//   }
+//   return X;
+// }
 
 
 
 // Recibe como parametro la base de datos con todas las imagenes
-//parametro de salida una matriz con la transformacion caracteristica de cada imagen
+// parametro de salida una matriz con la transformacion caracteristica de cada imagen
 // columnas = cantidad de bytes por imagenes. Se puede calcular a partir de una de las imagenes cualquiera
 // multiplicando ancho por alto.
 void PCA (baseDeDatos muestra, doubleMatrix &mtrcar, int modo){
@@ -380,7 +388,7 @@ void PCA (baseDeDatos muestra, doubleMatrix &mtrcar, int modo){
   columnas=muestra[0].getWidth()*muestra[0].getHeight();
   std::cout << "columnas: " << columnas << "\n";
 
-  std::vector<double> media;
+  doubleVector media;
   media.reserve(columnas);
 
   for (int j=0; j<columnas;j++)
@@ -408,19 +416,30 @@ void PCA (baseDeDatos muestra, doubleMatrix &mtrcar, int modo){
   std::cout << "\n";
 
   doubleMatrix X;
+
+  X.reserve(filas);
+  for (int i=0;i<filas;i++)
+    X[i].reserve(columnas);
+
   std::cout << "antes de armar matriz\n";
   ArmarMatrizX(muestra, media, filas, columnas, X);
-
+std::cout << "despues de armar X, filas: " << filas << std::endl;
+std::cout << "despues de armar X, columnas: " << columnas << std::endl;
+std::cout << "despues de armar X, X.size, capacity: " << X.size() << " " << X.capacity() << std::endl;
+std::cout << "despues de armar X, size[0]: " << (X[0]).size() << " " << (X[0]).capacity() << std::endl;
 //imprimir X
   for (int i=0;i<filas;i++){
+    std::cout << "va a imprimir fila X[i]: " << i << std::endl;
     for (int j=0;j<columnas;j++){
       std::cout << X[i][j] << " ";
     }
-    std::cout << "\n";
+    std::cout <<  "\n";
   }
 
+std::cout << "despues de imprimir X \n";
 //Calcular Xt*X = Matriz de covarianza
   doubleMatrix mcov;
+  std::cout << "antes de invocar CalcularCovarianza \n";
   CalcularCovarianza(X, filas, columnas, mcov);
 
 }
