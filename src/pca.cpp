@@ -337,16 +337,23 @@ void ArmarMatrizX(baseDeDatos muestra, doubleVector media, int filas, int column
 
   den=sqrt(filas-1);
   std::cout << "dentro armar X. filas, columnas, X.size, X.capacity: " << filas << " " << columnas << " " << X.size() << " " << X.capacity() << std::endl;
+std::cout << "Filas " << filas << " colmunas " << columnas;
   for (int i=0;i<filas;i++){
     for (int j=0;j<columnas;j++){
       //X[i].push_back( ((muestra[i].getData())[j]-media[j])/den );
-      X[i][j]=( ((muestra[i].getData())[j]-media[j])/den );
+
+
+        std::cout << "I " << i << " J " << j<<std::endl;
+        std::cout << filas << " cols " << columnas<<std::endl;
+        X[i][j]= (muestra[i].getData()[j] - media[j])/den ;
+
+
 //copiar a mano los elementos en la fila X[i][j]=muestra...
-      std::cout << "dentro armar X. despues del push. i, X.size, X[i].size, X[i].capacity: " << i << " " << X.size() << " " << (X[i]).size() << " " << X[i].capacity() << std::endl;
+      //std::cout << "dentro armar X. despues del push. i, X.size, X[i].size, X[i].capacity: " << i << " " << X.size() << " " << (X[i]).size() << " " << X[i].capacity() << std::endl;
     }
 //copiar a mano los elementos en la fila X[i][j]=muestra...
     //X.push_back(X[i]);
-    std::cout << "fila i de X, size X, X[i].size(): " << i << " " << X.size() << " " << X[i].size() << std::endl;
+    //std::cout << "fila i de X, size X, X[i].size(): " << i << " " << X.size() << " " << X[i].size() << std::endl;
   }
   std::cout << "saliendo de armar X \n";
 }
@@ -415,12 +422,12 @@ void PCA (baseDeDatos muestra, doubleMatrix &mtrcar, int modo){
   }
   std::cout << "\n";
 
-  doubleMatrix X;
 
-  X.reserve(filas);
+  doubleMatrix X(filas, doubleVector(columnas));
+/*  X.reserve(filas);
   for (int i=0;i<filas;i++)
     X[i].reserve(columnas);
-
+*/
   std::cout << "antes de armar matriz\n";
   ArmarMatrizX(muestra, media, filas, columnas, X);
 std::cout << "despues de armar X, filas: " << filas << std::endl;

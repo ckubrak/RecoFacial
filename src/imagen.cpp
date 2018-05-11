@@ -63,7 +63,7 @@ baseDeDatos cargarBD(std::string csv)
 
     while (std::getline(input, line))
     {
-      std::cout <<  "line " << line << "\n";
+//      std::cout <<  "line " << line << "\n";
 
       std::size_t found = line.find_first_of(", ");      //primer delimitador
       // if (found!=std::string::npos)
@@ -76,11 +76,11 @@ baseDeDatos cargarBD(std::string csv)
         // {
           line = line.substr(inicio, line.size()-1);
           id = std::stoi (line);
-std::cout <<  "imagen: " << imagen << "\n";
-std::cout <<  "id: " << id << "\n";
+//std::cout <<  "imagen: " << imagen << "\n";
+//std::cout <<  "id: " << id << "\n";
           Imagen nuevaImagen(imagen,id);
 
-          base.push_back(nuevaImagen);
+          base.push_back(Imagen(imagen,id));
     }
     return base;
 }
@@ -127,16 +127,22 @@ Imagen::Imagen(std::string archivo, int id)
     uchar* data = NULL;
     int width = 0, height = 0;
     PPM_LOADER_PIXEL_TYPE pt = PPM_LOADER_PIXEL_TYPE_INVALID;
-    std::cout << "entrando a Imagen: " << archivo << " \n";
+//    std::cout << "entrando a Imagen: " << archivo << " \n";
     bool ret = LoadPPMFile(&_data, &_width, &_height, &pt, archivo.c_str());
-    std::cout << "ancho, alto, pt: " << _width << " " << _height << " " << pt << "\n";
+//    std::cout << "ancho, alto, pt: " << _width << " " << _height << " " << pt << "\n";
     if (!ret || _width == 0|| _height == 0|| pt!=PPM_LOADER_PIXEL_TYPE_GRAY_8B )
     {
         throw std::runtime_error("test_load failed");
     }
     //std::cout << "data: " <<
+    std::vector<uchar> resultado;
+ //   for (int i = 0; i < _height * _width; i++)
+  //  {
+   //     resultado.push_back(_data[i]);
+    //    std::cout << resultado[i];
+    //}
     _id = id;
-    std::cout << "saliendo de Imagen: \n";
+//    std::cout << "saliendo de Imagen: \n";
 }
 
 Imagen::Imagen()
