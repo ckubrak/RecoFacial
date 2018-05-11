@@ -13,12 +13,14 @@
 typedef unsigned char uchar;
 
 
-class Imagen 
+class Imagen
 {
 
     public:
         Imagen(std::string archivo, int id);
         Imagen();
+        Imagen& operator=(const Imagen& viejo);
+        Imagen (const Imagen &viejo);
         ~Imagen();
 
         uchar* getData();

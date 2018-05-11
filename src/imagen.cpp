@@ -173,3 +173,37 @@ int Imagen::getId()
 {
     return _id;
 }
+
+Imagen::Imagen (const Imagen &viejo)
+{
+    int tam = viejo._width * viejo._height;
+    _data = new uchar[tam];
+    for (int i=0; i<tam; ++i)
+    {
+      _data[i] = viejo._data[i];
+    }
+    _width = viejo._width;
+    _height = viejo._height;
+    _maxVal = viejo._maxVal;
+    _id = viejo._id;
+}
+
+Imagen& Imagen::operator=(const Imagen& viejo)
+{
+
+  int tam =_width * _height;
+
+    uchar* localdata = new uchar(tam);
+    for (int i=0; i<tam; ++i)
+    {
+      localdata[i] = viejo._data[i];
+    }
+    delete[] _data;
+    _data = localdata;
+
+    _width = viejo._width;
+    _height = viejo._height;
+    _maxVal = viejo._maxVal;
+    _id = viejo._id;
+    return *this;
+}
