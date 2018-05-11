@@ -1,6 +1,10 @@
 #include "knn.h"
 #include "pca.h"
 #include <assert.h>
+#include <algorithm>
+#include <vector>
+#include <cmath>
+
 
 using namespace std;
 
@@ -11,7 +15,7 @@ using namespace std;
 
 
 //Podriamos cambiar int a double para darle mas presicion
-double knn::distanciaEuclidea(const doubleVector &v1, const doubleVector &v2) {
+double distanciaEuclidea(const doubleVector &v1, const doubleVector &v2) const {
 	//v1 y v2 de la misma dimension
 	assert (v1.size() == v2.size());
 	double distancia = 0;
@@ -69,4 +73,19 @@ vector<int> k_cercanos(int k, doubleMatrix &matEntrenamiento, doubleVector &imag
 
 
 
-int knn::moda(const vector<int> &){}
+int knn::moda(int k, doubleMatrix &matEntrenamiento, doubleVector &imagen){
+	std::vector<int> k_vecinos_cercanos(k, 0);
+	k_vecinos_cercanos = k_cercanos(k, matEntrenamiento, imagen);
+	std::vector<int> vectorModa(41, 0);
+	int i = 0;
+	int aux;
+	int result = 0;
+	//En vector moda tengo cuantas veces el sujeto_i queda entre los k mas cercanos
+	while(i < k){
+		aux = k_vecinos_cercanos[i];
+		vectorModa[i] ++;
+		i++;
+	}
+    result = std::max_element(vectorModa.begin(), vectorModa.end());
+    return result;
+}
