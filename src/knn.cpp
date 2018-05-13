@@ -5,8 +5,9 @@
 #include <vector>
 #include <cmath>
 
-
 using namespace std;
+
+#define cantSujetos 41; 
 
 // 1) Guardar el valor del primer pixel
 // 2) Recorrer la matriz de entrenamiento
@@ -15,7 +16,7 @@ using namespace std;
 
 
 //Podriamos cambiar int a double para darle mas presicion
-double distanciaEuclidea(const doubleVector &v1, const doubleVector &v2) const {
+double distanciaEuclidea(const doubleVector &v1, const doubleVector &v2) {
 	//v1 y v2 de la misma dimension
 	assert (v1.size() == v2.size());
 	double distancia = 0;
@@ -33,36 +34,36 @@ double distanciaEuclidea(const doubleVector &v1, const doubleVector &v2) const {
 
 
 
-vector<int> k_cercanos(int k, doubleMatrix &matEntrenamiento, doubleVector &imagen){
+vector<int> k_cercanos(int k, baseDeDatos &matEntrenamiento, Imagen &imagenAEvaluar){
 
 	int i = 0;
+	int j = 0;
 	double distancia = 0;
 	pair<double, int> indiceDistancia;
 	priority_queue<double, int> colaKcercanos;
-	while(i< matEntrenamiento.size()){
-		distancia = distanciaEuclidea(matEntrenamiento[i], imagen);
+	int tamMatEntrenamiento = matEntrenamiento.getHeight()*matEntrenamiento.getWidth();
+	while(i< alto){
+		distancia = distanciaEuclidea(matEntrenamiento[i], imagenAEvaluar);
 		indiceDistancia.first = distancia;
-		indiceDistancia.second = i;//O i+1? Acá va la clase de la imagen
-
+		indiceDistancia.second = matEntrenamiento.getId();
 		colaKcercanos.push(indiceDistancia);//Agrego el pair a la cola. Deberían quedar ordenados por distancia
-
 		i++;
 	}
 
 	//La cola de prioridad ordena de mayor a menor. Le saco los n-k de adelante y me quedan los k elementos más chicos.
-	int aux = matEntrenamiento.size() - k;
+	int aux = tamMatEntrenamiento - k;
 	while(aux > 0){
 		colaKcercanos.pop();
 		aux-- ;
 	}
 
 	//Armo el vector que voy a devolver
-	vector<int> k_vecinos_cercanos;
+	std::vector<int> k_vecinos_cercanos(k, 0);//De longitud k, inicializado en ceros. 
 	aux = 0;
 	pair<double, int> pairAux;
 	//Recorro lo que me quedó en la lista de prioridad y lo pongo en el vector. Agarro solo los indices. 
 	while(aux < k){
-		pairAux = colaKcercanos.top();
+		pairAux = colaKcercanos.top();//Accedo al tope de la cola
 		k_vecinos_cercanos[k-aux] = pairAux.second;
 		colaKcercanos.pop();
 		aux++;
@@ -73,7 +74,7 @@ vector<int> k_cercanos(int k, doubleMatrix &matEntrenamiento, doubleVector &imag
 
 
 
-int knn::moda(int k, doubleMatrix &matEntrenamiento, doubleVector &imagen){
+int knn::moda(int k, baseDeDatos &matEntrenamiento, Imagen &imagen){
 	std::vector<int> k_vecinos_cercanos(k, 0);
 	k_vecinos_cercanos = k_cercanos(k, matEntrenamiento, imagen);
 	std::vector<int> vectorModa(41, 0);

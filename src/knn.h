@@ -7,13 +7,16 @@
 #include <algorithm>
 #include <math.h>
 #include <queue>
+#include <cmath>
 
 
 using namespace std;
 
 typedef priority_queue<double, int> colaKcercanos;
 
-int distanciaEuclidea(const imagen &im1, const imagen &im2) const;
-vector<int> k_cercanos(int k, doubleMatrix &matEntrenamiento, doubleVector &imagen);
+double distanciaEuclidea(const doubleVector &v1, const doubleVector &v2);
+vector<int> k_cercanos(int k, baseDeDatos &matEntrenamiento, Imagen &imagenAEvaluar);
+int moda(int k, baseDeDatos &matEntrenamiento, Imagen &imagen);
+
 
 #endif
