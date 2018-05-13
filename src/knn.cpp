@@ -7,7 +7,7 @@
 
 using namespace std;
 
-#define cantSujetos 41; 
+#define cantClases 41; 
 
 // 1) Guardar el valor del primer pixel
 // 2) Recorrer la matriz de entrenamiento
@@ -77,7 +77,7 @@ vector<int> k_cercanos(int k, baseDeDatos &matEntrenamiento, Imagen &imagenAEval
 int knn::moda(int k, baseDeDatos &matEntrenamiento, Imagen &imagen){
 	std::vector<int> k_vecinos_cercanos(k, 0);
 	k_vecinos_cercanos = k_cercanos(k, matEntrenamiento, imagen);
-	std::vector<int> vectorModa(41, 0);
+	std::vector<int> vectorModa(cantClases, 0);
 	int i = 0;
 	int aux;
 	int result = 0;
