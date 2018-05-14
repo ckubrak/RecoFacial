@@ -6,6 +6,8 @@
 #include <iostream>
 #include <sstream>
 
+
+
 // std::vector<Imagen> cargarBD(std::string csv)
 // {
 //
@@ -126,6 +128,13 @@ Imagen::Imagen(std::string archivo, int id)
 {
     uchar* data = NULL;
     int width = 0, height = 0;
+    std::string nombre;
+    std::size_t s = archivo.find_first_of(".");
+    nombre = archivo.substr(0,s-1);
+    
+    //_name = str::stoi(nombre);
+    std::stringstream(nombre) >> _name; 
+
     PPM_LOADER_PIXEL_TYPE pt = PPM_LOADER_PIXEL_TYPE_INVALID;
 //    std::cout << "entrando a Imagen: " << archivo << " \n";
     bool ret = LoadPPMFile(&_data, &_width, &_height, &pt, archivo.c_str());
@@ -152,6 +161,7 @@ Imagen::Imagen()
     _height = 0;
     _maxVal = 0;
     _id = -1;
+    _name = 0;
 }
 
 Imagen::~Imagen()
@@ -180,6 +190,11 @@ int Imagen::getId()
     return _id;
 }
 
+
+int Imagen::getName(){
+  return _name;
+}
+
 Imagen::Imagen (const Imagen &viejo)
 {
     int tam = viejo._width * viejo._height;
@@ -192,6 +207,7 @@ Imagen::Imagen (const Imagen &viejo)
     _height = viejo._height;
     _maxVal = viejo._maxVal;
     _id = viejo._id;
+    _name = viejo._name;
 }
 
 Imagen& Imagen::operator=(const Imagen& viejo)
@@ -211,5 +227,6 @@ Imagen& Imagen::operator=(const Imagen& viejo)
     _height = viejo._height;
     _maxVal = viejo._maxVal;
     _id = viejo._id;
+    _name = viejo._name;
     return *this;
 }
