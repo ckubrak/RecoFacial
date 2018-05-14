@@ -57,16 +57,43 @@ double normaInfinitoVectorial(doubleVector v, int &indice)
   return acumulador;
 }
 
+//por ahora para matrices cuadradas
+double normaInfinitoMatricial(doubleMatrix x, int &indice)
+{
+  double temp=0.0;
+  double norma=0.0;
+  indice = 0;
+  int n = x.size();
+  int m;
+  if (n>0) m=x[0].size();
+
+  for (int i=0; i<n; ++i)
+  {
+    for (int j=0; j<m; ++j){
+      temp += fabs(x[i][j]);
+    }
+      if (temp>norma){
+        norma=temp;
+        indice=i;
+      }
+      temp = 0.0;
+  }
+  return norma;
+}
+
+
+
 
 // matriz y vectores no vacios
 doubleVector matrizXVector(doubleMatrix A, doubleVector v)
 {
-  doubleVector y;
-  double acumulador = 0.0;
   int n=A.size();
+  doubleVector y(n);
+  double acumulador = 0.0;
+  //int n=A.size();
   int m;
 
-  if (A.size()>0)
+  if (n>0)
   {
     m = A[0].size();
   }
@@ -76,7 +103,8 @@ doubleVector matrizXVector(doubleMatrix A, doubleVector v)
       {
         acumulador += A[i][j]*v[j];
       }
-      y.push_back(acumulador);
+      y[i]=acumulador;
+      //y.push_back(acumulador);
       acumulador=0.0;
   }
   return y;
@@ -85,32 +113,29 @@ doubleVector matrizXVector(doubleMatrix A, doubleVector v)
 ////// matriz  por matriz: asumimos que las dimensiones son validas  //////////
 doubleMatrix matrizXMatriz(doubleMatrix A, doubleMatrix B)
 {
-  doubleMatrix R={};
-  double acumulador = 0.0;
   int n=A.size(); //filas de A
   int m=B.size(); //filas de B, columnas de A
   int r; //columnas de B
 
   if (A.size()>0)
-  {
     m = B.size();
-  }
 
   if (m>0)
-  {
     r=B[0].size();
-  }
+
+  doubleMatrix R(n, doubleVector(r));
+  double acumulador = 0.0;
   //calcular R[i][j]
   for (int i = 0 ; i != n; ++i)
   {
     for (int j=0 ; j != r; ++j)
     {
+      acumulador=0.0;
       for (int k=0; k<m; ++k)
       {
             acumulador += A[i][k]*B[k][j];
       }
-      R[i].push_back(acumulador);
-      acumulador=0.0;
+      R[i][j]=acumulador;
     }
   }
   return R;
@@ -118,19 +143,23 @@ doubleMatrix matrizXMatriz(doubleMatrix A, doubleMatrix B)
 
 doubleMatrix vvt(doubleVector v)
 {
-  doubleMatrix R={};
+  int n=v.size(); //fstd::vlas de A
+  doubleMatrix R (n, doubleVector(n));
   double acumulador = 0.0;
-  int n=v.size(); //filas de A
+//  int n=v.size(); //filas de A
 
   //calcular R[i][j]
   for (int i = 0 ; i != n; ++i)
   {
     for (int j=0 ; j != n; ++j)
     {
+      acumulador = 0.0;
       acumulador += v[i]*v[j];
-      R[i].push_back(acumulador);
-      acumulador=0.0;
+//      R[i].push_back(acumulador);
+      R[i][j]=acumulador;
     }
+    // R[i].push_back(acumulador);
+    // acumulador=0.0;
   }
   return R;
 }
@@ -203,11 +232,11 @@ doubleMatrix restaMatricial(doubleMatrix a, doubleMatrix b)
 //
 int MetodoPotencias(doubleMatrix A, doubleVector x,int nroIter,float tol, double &autoval, doubleVector &autovec)
 {
-  //
-  doubleVector y; // guarda el valor de la ultima iteracion
+
   double norma, lambda;
 //  double nant=0.0;
   int indice=0; //indice del elemento que define la norma infinito
+  int sz=x.size();
   double r=1.0;
 
   std::cout << "entrando a potencias: \n";
@@ -227,6 +256,7 @@ int MetodoPotencias(doubleMatrix A, doubleVector x,int nroIter,float tol, double
     std::cout << x[i]  << " ";
   }
   std::cout << std::endl;
+  doubleVector y(sz); // guarda el valor de la ultima iteracion
   int k=0;
   while (k<nroIter && r > tol)
   {
@@ -266,19 +296,176 @@ std::cout << "y[indice] despues de normalizar: " << y[indice] << "\n";
   }
 }
 
+
+
+int MetodoPotencias2(doubleMatrix A, doubleVector x,int nroIter,float tol, double &autoval, doubleVector &autovec)
+{
+
+  double normax, normay, lambda, auxlambda;
+//  double nant=0.0;
+int indice;
+  int sz=x.size();
+  double r=1.0;
+
+  std::cout << "entrando a potencias: \n";
+
+  for (int i= 0; i<x.size(); ++i) {
+    std::cout << x[i]  << " ";
+  }
+  std::cout << std::endl;
+
+  //normalizo el vector x
+  //nx = norma2Vectorial(x);
+  normax = normaInfinitoVectorial(x, indice);
+  lambda = normax;
+  autovec = x;
+  auxlambda = normax;
+
+  x = vectorXEscalar(x, 1.0/normax);//normalizamos x
+
+  for (int i= 0; i<x.size(); ++i) {
+    std::cout << x[i]  << " ";
+  }
+  std::cout << std::endl;
+  doubleVector y(sz); // guarda el valor de la ultima iteracion
+  int k=0;
+
+  while (k<nroIter && r > tol)
+  {
+
+    y = matrizXVector(A, x);
+    std::cout << "despues de llamar matrizXvector: \n";
+    for (int i= 0; i<y.size(); ++i) {
+      std::cout << y[i]  << " ";
+    }
+    std::cout << std::endl;
+
+    normay = normaInfinitoVectorial(y, indice);
+    std::cout << "normay: " << normay << "\n";
+    if (normax < 0.0000001)  // considero que la norma es cero, no puedo dividir por ella
+    { //PENDIENTE VER QUE RETORNAR CUANDO LA NORMA TIENDE A CERO
+        lambda = 0;
+        break;  //no hubo convergencia
+    }
+    auxlambda=lambda;
+    //lambda=normay/normax;
+    //lambda=normay;
+    y = vectorXEscalar(y, 1/normay);
+
+    r = fabs(normax-normay); // variacion del autovalor en dos iteraciones sucesivas
+
+    x = y;
+    normax = normay;
+
+    k++;
+  }
+
+  // analizar si hubo convergencia. Si no la hubo habria que intentar con otro x inicial
+  if (r > tol)
+    return 0; //no hubo convergencia
+  else
+  {
+    autovec = x;
+    autoval = normax;
+    return 1; // hubo convergencia
+  }
+}
+
+
+int MetodoPotencias3(doubleMatrix A, doubleVector x,int nroIter,float tol, double &autoval, doubleVector &autovec)
+{
+
+  double normax, normay, lambda, auxlambda;
+//  double nant=0.0;
+int indice;
+  int sz=x.size();
+  double r=1.0;
+
+  std::cout << "entrando a potencias: \n";
+
+  for (int i= 0; i<x.size(); ++i) {
+    std::cout << x[i]  << " ";
+  }
+  std::cout << std::endl;
+
+  //normalizo el vector x
+  //nx = norma2Vectorial(x);
+  normax = norma2Vectorial(x);
+  lambda = normax;
+  autovec = x;
+  auxlambda = normax;
+
+  x = vectorXEscalar(x, 1.0/normax);//normalizamos x
+
+  // for (int i= 0; i<x.size(); ++i) {
+  //   std::cout << x[i]  << " ";
+  // }nroIter
+  //std::cout << std::endl;
+  doubleVector y(sz); // guarda el valor de la ultima iteracion
+  int k=0;
+
+  while (k<nroIter && r > tol)
+  {
+
+    y = matrizXVector(A, x);
+  //  std::cout << "despues de llamar matrizXvector: \n";
+    // for (int i= 0; i<y.size(); ++i) {
+    //   std::cout << y[i]  << " ";
+    // }
+    // std::cout << std::endl;
+
+    normay = norma2Vectorial(y);
+    //std::cout << "normay: " << normay << "\n";
+    if (normax < 0.0000001)  // considero que la norma es cero, no puedo dividir por ella
+    { //PENDIENTE VER QUE RETORNAR CUANDO LA NORMA TIENDE A CERO
+        lambda = 0;
+        break;  //no hubo convergencia
+    }
+    auxlambda=lambda;
+    //lambda=normay/normax;
+    //lambda=normay;
+    y = vectorXEscalar(y, 1/normay);
+
+    r = fabs(normax-normay); // variacion del autovalor en dos iteraciones sucesivas
+
+    x = y;
+    normax = normay;
+
+    k++;
+  }
+
+  // analizar si hubo convergencia. Si no la hubo habria que intentar con otro x inicial
+  if (r > tol)
+    return 0; //no hubo convergencia
+  else
+  {
+    autovec = x;
+    autoval = normax;
+    return 1; // hubo convergencia
+  }
+}
+
+
+
+
+
 //Entrada: matriz, cantidad de autovalores significativos.
 //Salida: vector con autovalores, matriz de autovectores (uno por fila)
 // los autovectores se almacenan por fila (ojo!!! No por columna!!!)
 //PENDIENTE: definir la dimension de los parametros de salida en funcion del alfa?????????
 int Deflacion(doubleMatrix A, int alfa, doubleVector &autovalores, doubleMatrix &autovectores)
 {
-  doubleVector x;
-  double tol=0.00000001;
-  int nroIter=100;
-  double lambda;
-  doubleVector autovec;
+  //PENDIENTE
   long dimension=A[0].size();
-  autovec.reserve(dimension);
+  doubleVector x(dimension);
+  double tol=0.00001;
+  int nroIter=1000;
+  double lambda;
+
+  doubleVector autovec(dimension);
+  doubleMatrix auxA(dimension, doubleVector(dimension));
+
+  //autovec.reserve(dimension);
 
   //averiguo autoval ppal y vector asociado
   //ir almacenando los autovalores y autovectores que se van hallando
@@ -286,26 +473,36 @@ int Deflacion(doubleMatrix A, int alfa, doubleVector &autovalores, doubleMatrix 
 
   // armar vector x inicial en funcion de la dimension de la matriz A
   //analizar opciones de como armarlo PENDIENTE
+  /* initialize random seed: */
+  srand (time(NULL));
+  /* generate secret number between 1 and 10: */
   for (int i=0; i<dimension; ++i)
-    x.push_back(1);
+    x[i]=rand() % dimension + 1;
 
   for (int d=0; d<dimension && d<alfa; ++d)
   {
 
-    if (MetodoPotencias(A, x, nroIter, tol, lambda, autovec) == 1) //hubo convergencia
+    if (MetodoPotencias3(A, x, nroIter, tol, lambda, autovec) == 1) //hubo convergencia
     {
       //Almacenar valores obtenidos para el autovalor y autovector ppal
       autovalores[d]=lambda;
       autovectores[d]=autovec;
-      if (d<dimension-1)
-        A = restaMatricial(A, matrizXEscalar(vvt(autovec), lambda));
+      if (d<dimension-1){
+        auxA = vvt(autovec);
+        auxA = matrizXEscalar(auxA, lambda);
+        A=restaMatricial(A, auxA);
+        //restaMatricial
+      }
+        //A = restaMatricial(A, matrizXEscalar(vvt(autovec), lambda));
     }
     else
     {
       //fallo el metodo de la potencia
       std::cout << "fallo metodo de las potencias\n";
+      std::cout << "d: " << d << " " << autovalores[d];
     }
   }
+  std::cout << "saliendo deflacion\n";
 }
 
 // se calcula X*Xt. Por ahora no lo uso: se obtiene una matriz de n x n (n=cantidad de imagenes)
@@ -314,16 +511,17 @@ void CalcularCovarianza(doubleMatrix X, int filas, int columnas, doubleMatrix &m
     double acumulador=0;
 
     //reservo espacio para la matriz de dimension filas por filas
-    mcov.reserve(filas);
-    for (int i=0; i<filas; i++)
-      mcov[i].reserve(filas);
+    // mcov.reserve(filas);
+    // for (int i=0; i<filas; i++)
+    //   mcov[i].reserve(filas);
 
     for (int i=0; i<filas; i++){
       for (int j=0; j<filas; j++){
         acumulador=0.0;
         for (int k=0; k<columnas; k++)
-          acumulador+=X[i][k]*X[k][j];
-        mcov[i].push_back(acumulador);
+          acumulador+=X[i][k]*X[j][k];
+        //mcov[i].push_back(acumulador);
+        mcov[i][j] = acumulador;
       }
     }
 std::cout << "antes de salir de CalcularCovarianza \n";
@@ -332,7 +530,8 @@ std::cout << "antes de salir de CalcularCovarianza \n";
 
 
 //Arma en el parametro de Salida X una matriz con las imagenes normalizadas
-void ArmarMatrizX(baseDeDatos muestra, doubleVector media, int filas, int columnas, doubleMatrix &X ){
+void ArmarMatrizX(baseDeDatos muestra, doubleVector media, int filas, int columnas, doubleMatrix &X )
+{
   float den;
 
   den=sqrt(filas-1);
@@ -340,41 +539,14 @@ void ArmarMatrizX(baseDeDatos muestra, doubleVector media, int filas, int column
 std::cout << "Filas " << filas << " colmunas " << columnas;
   for (int i=0;i<filas;i++){
     for (int j=0;j<columnas;j++){
-      //X[i].push_back( ((muestra[i].getData())[j]-media[j])/den );
-
-
         std::cout << "I " << i << " J " << j<<std::endl;
         std::cout << filas << " cols " << columnas<<std::endl;
         X[i][j]= (muestra[i].getData()[j] - media[j])/den ;
-
-
-//copiar a mano los elementos en la fila X[i][j]=muestra...
-      //std::cout << "dentro armar X. despues del push. i, X.size, X[i].size, X[i].capacity: " << i << " " << X.size() << " " << (X[i]).size() << " " << X[i].capacity() << std::endl;
+        //std::cout << "fila i de X, size X, X[i].size(): " << i << " " << X.size() << " " << X[i].size() << std::endl;
     }
-//copiar a mano los elementos en la fila X[i][j]=muestra...
-    //X.push_back(X[i]);
-    //std::cout << "fila i de X, size X, X[i].size(): " << i << " " << X.size() << " " << X[i].size() << std::endl;
   }
   std::cout << "saliendo de armar X \n";
 }
-
-
-
-
-// doubleMatrix MatrizX(baseDeDatos muestra, doubleVector media, int filas, int columnas ){
-//   float den;
-//   doubleMatrix X;
-//   X.reserve(filas);
-//   den=sqrt(filas-1);
-//   for (int i=0;i<filas;i++){
-//     X[i].reserve(columnas);
-//     for (int j=0;j<columnas;j++){
-// //      X[i*columnas+j]=(muestra[i*columnas+j]-media[j])/den;
-//       X[i].push_back( (muestra[i].getData()[j]-media[j])/den );
-//     }
-//   }
-//   return X;
-// }
 
 
 
@@ -444,9 +616,51 @@ std::cout << "despues de armar X, size[0]: " << (X[0]).size() << " " << (X[0]).c
   }
 
 std::cout << "despues de imprimir X \n";
-//Calcular Xt*X = Matriz de covarianza
-  doubleMatrix mcov;
+//Calcular Xt*X = Matriz de covarianza // Se va a hacer X * Xt y despues se van a calcular los valores singulares de la otra
+// para trabajar con matrices mas chicas
+  doubleMatrix mcov(filas, doubleVector(filas));
   std::cout << "antes de invocar CalcularCovarianza \n";
   CalcularCovarianza(X, filas, columnas, mcov);
+std::cout << "Despues Covarianza\n";
+  for (int i=0;i<filas;i++){
+    std::cout << "va a imprimir fila mcov[i]: " << i << std::endl;
+    for (int j=0;j<filas;j++){
+      std::cout << mcov[i][j] << " ";
+    }
+    std::cout <<  "\n";
+  }
+
+  // LLamar al metodo de deflacion para calcular los autovalores y autovectores
+  // usar el parametro alfa para ver cuantos hay que averiguar
+  int alfa = 200;
+  doubleVector autovalores(alfa);
+  doubleMatrix autovectores(alfa, doubleVector(mcov.size()) );
+  std::cout << "antes de llamar Deflacion" << std::endl;
+  int r= Deflacion(mcov, alfa, autovalores, autovectores);
+  std::cout << "despues de deflacion: " << std::endl;
+
+  // for (int i=0;i<mcov.size();i++){
+  //   std::cout << "va a imprimir fila autovectores[i]: " << i << std::endl;
+  //   for (int j=0;j<filas;j++){
+  //     std::cout << mcov[i][j] << " ";
+  //   }
+  //   std::cout <<  "\n";
+  // }
+  for (int i=0;i<alfa;i++){
+    std::cout << "va a imprimir fila autovectores[i]: " << i << std::endl;
+    for (int j=0;j<mcov.size();j++){
+      std::cout << autovectores[i][j] << " ";
+    }
+    std::cout <<  "\n";
+  }
+
+  for (int i=0;i<alfa;i++){
+    std::cout << "va a imprimir autovalores[i]: " << i << std::endl;
+
+      std::cout << autovalores[i] << " ";
+
+    std::cout <<  "\n";
+  }
+  // Convertir los autovalores y autovectores calculados en los correspondientes de la matriz Xt * X
 
 }
