@@ -7,7 +7,6 @@
 #include <iostream>
 #include <fstream>
 
-
 #include "../ppmloader/ppmloader.h"
 
 typedef unsigned char uchar;
@@ -24,6 +23,7 @@ class Imagen
         ~Imagen();
 
         uchar* getData();
+        int getName();
         int size();
         int getId();
         int getHeight();
@@ -31,10 +31,11 @@ class Imagen
         double restarYnorma (const Imagen& otra);
     private:
         uchar* _data;
+        int _name;
         int _width;
         int _height;
         int _maxVal;
-        int _id;
+        int _id;//sujeto
 };
 
 std::vector<Imagen> cargarBD(std::string archivo);

@@ -12,6 +12,8 @@ set(SOURCE_FILES
         src/pca.h
         src/pca.cpp
         src/main.cpp
+	src/knn.h
+	src/knn.cpp
         )
 
 add_executable(tp2 ${SOURCE_FILES})
