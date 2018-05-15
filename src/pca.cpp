@@ -375,7 +375,7 @@ int indice;
 int MetodoPotencias3(doubleMatrix A, doubleVector x,int nroIter,float tol, double &autoval, doubleVector &autovec)
 {
 
-  double normax, normay, lambda, auxlambda;
+  double normax, normay, lambda;//, auxlambda;
 //  double nant=0.0;
 int indice;
   int sz=x.size();
@@ -393,7 +393,7 @@ int indice;
   normax = norma2Vectorial(x);
   lambda = normax;
   autovec = x;
-  auxlambda = normax;
+  //auxlambda = normax;
 
   x = vectorXEscalar(x, 1.0/normax);//normalizamos x
 
@@ -404,7 +404,7 @@ int indice;
   doubleVector y(sz); // guarda el valor de la ultima iteracion
   int k=0;
 
-  while (k<nroIter && r > tol)
+  while (k<nroIter && r > tol || (k>=nroIter && k<nroIter*10 && r>0.001))
   {
 
     y = matrizXVector(A, x);
@@ -416,12 +416,12 @@ int indice;
 
     normay = norma2Vectorial(y);
     //std::cout << "normay: " << normay << "\n";
-    if (normax < 0.0000001)  // considero que la norma es cero, no puedo dividir por ella
+    if (normay < 0.0000001)  // considero que la norma es cero, no puedo dividir por ella
     { //PENDIENTE VER QUE RETORNAR CUANDO LA NORMA TIENDE A CERO
         lambda = 0;
         break;  //no hubo convergencia
     }
-    auxlambda=lambda;
+    //auxlambda=lambda;
     //lambda=normay/normax;
     //lambda=normay;
     y = vectorXEscalar(y, 1/normay);
@@ -459,7 +459,7 @@ int Deflacion(doubleMatrix A, int alfa, doubleVector &autovalores, doubleMatrix 
   long dimension=A[0].size();
   doubleVector x(dimension);
   double tol=0.00001;
-  int nroIter=1000;
+  int nroIter=10000;
   double lambda;
 
   doubleVector autovec(dimension);
@@ -498,11 +498,11 @@ int Deflacion(doubleMatrix A, int alfa, doubleVector &autovalores, doubleMatrix 
     else
     {
       //fallo el metodo de la potencia
-      std::cout << "fallo metodo de las potencias\n";
-      std::cout << "d: " << d << " " << autovalores[d];
+       std::cout << "no hubo convergencia metodo de las potencias\n";
+       std::cout << "d: " << d << " " << autovalores[d];
     }
   }
-  std::cout << "saliendo deflacion\n";
+  //std::cout << "saliendo deflacion\n";
 }
 
 // se calcula X*Xt. Por ahora no lo uso: se obtiene una matriz de n x n (n=cantidad de imagenes)
@@ -524,7 +524,7 @@ void CalcularCovarianza(doubleMatrix X, int filas, int columnas, doubleMatrix &m
         mcov[i][j] = acumulador;
       }
     }
-std::cout << "antes de salir de CalcularCovarianza \n";
+//std::cout << "antes de salir de CalcularCovarianza \n";
 }
 
 
@@ -535,17 +535,17 @@ void ArmarMatrizX(baseDeDatos muestra, doubleVector media, int filas, int column
   float den;
 
   den=sqrt(filas-1);
-  std::cout << "dentro armar X. filas, columnas, X.size, X.capacity: " << filas << " " << columnas << " " << X.size() << " " << X.capacity() << std::endl;
-std::cout << "Filas " << filas << " colmunas " << columnas;
+//   std::cout << "dentro armar X. filas, columnas, X.size, X.capacity: " << filas << " " << columnas << " " << X.size() << " " << X.capacity() << std::endl;
+// std::cout << "Filas " << filas << " colmunas " << columnas;
   for (int i=0;i<filas;i++){
     for (int j=0;j<columnas;j++){
-        std::cout << "I " << i << " J " << j<<std::endl;
-        std::cout << filas << " cols " << columnas<<std::endl;
+        // std::cout << "I " << i << " J " << j<<std::endl;
+        // std::cout << filas << " cols " << columnas<<std::endl;
         X[i][j]= (muestra[i].getData()[j] - media[j])/den ;
         //std::cout << "fila i de X, size X, X[i].size(): " << i << " " << X.size() << " " << X[i].size() << std::endl;
     }
   }
-  std::cout << "saliendo de armar X \n";
+//  std::cout << "saliendo de armar X \n";
 }
 
 
@@ -558,7 +558,7 @@ void PCA (baseDeDatos muestra, doubleMatrix &mtrcar, int modo){
 
   int filas, columnas;
 
-  std::cout << "dentro de PCA\n";
+  //std::cout << "dentro de PCA\n";
   filas = muestra.size();
   std::cout << "filas: " << filas << "\n";
 
@@ -577,22 +577,22 @@ void PCA (baseDeDatos muestra, doubleMatrix &mtrcar, int modo){
   //calcular la media de cada columnas
   for (int j=0;j<columnas;j++){
     for (int i=0;i<filas;i++){
-      std::cout << (double)muestra[i].getData()[j] << " ";
+  //    std::cout << (double)muestra[i].getData()[j] << " ";
       media[j]+= (double)muestra[i].getData()[j];
     }
-    std::cout << "\n";
+    //std::cout << "\n";
   }
 
-  std::cout << "media:\n";
+  //std::cout << "media:\n";
   for (int j=0;j<columnas;j++){
     media[j]=media[j]/filas;
   }
 
-  //imprimir media
-  for (int j=0;j<columnas;j++){
-      std::cout << media[j] << " ";
-  }
-  std::cout << "\n";
+  // //imprimir media
+  // for (int j=0;j<columnas;j++){
+  //     std::cout << media[j] << " ";
+  // }
+  // std::cout << "\n";
 
 
   doubleMatrix X(filas, doubleVector(columnas));
@@ -600,35 +600,35 @@ void PCA (baseDeDatos muestra, doubleMatrix &mtrcar, int modo){
   for (int i=0;i<filas;i++)
     X[i].reserve(columnas);
 */
-  std::cout << "antes de armar matriz\n";
+//  std::cout << "antes de armar matriz\n";
   ArmarMatrizX(muestra, media, filas, columnas, X);
-std::cout << "despues de armar X, filas: " << filas << std::endl;
-std::cout << "despues de armar X, columnas: " << columnas << std::endl;
-std::cout << "despues de armar X, X.size, capacity: " << X.size() << " " << X.capacity() << std::endl;
-std::cout << "despues de armar X, size[0]: " << (X[0]).size() << " " << (X[0]).capacity() << std::endl;
-//imprimir X
-  for (int i=0;i<filas;i++){
-    std::cout << "va a imprimir fila X[i]: " << i << std::endl;
-    for (int j=0;j<columnas;j++){
-      std::cout << X[i][j] << " ";
-    }
-    std::cout <<  "\n";
-  }
+// std::cout << "despues de armar X, filas: " << filas << std::endl;
+// std::cout << "despues de armar X, columnas: " << columnas << std::endl;
+// std::cout << "despues de armar X, X.size, capacity: " << X.size() << " " << X.capacity() << std::endl;
+// std::cout << "despues de armar X, size[0]: " << (X[0]).size() << " " << (X[0]).capacity() << std::endl;
+// //imprimir X
+//   for (int i=0;i<filas;i++){
+//     std::cout << "va a imprimir fila X[i]: " << i << std::endl;
+//     for (int j=0;j<columnas;j++){
+//       std::cout << X[i][j] << " ";
+//     }
+//     std::cout <<  "\n";
+//   }
 
-std::cout << "despues de imprimir X \n";
+//std::cout << "despues de imprimir X \n";
 //Calcular Xt*X = Matriz de covarianza // Se va a hacer X * Xt y despues se van a calcular los valores singulares de la otra
 // para trabajar con matrices mas chicas
   doubleMatrix mcov(filas, doubleVector(filas));
-  std::cout << "antes de invocar CalcularCovarianza \n";
+//  std::cout << "antes de invocar CalcularCovarianza \n";
   CalcularCovarianza(X, filas, columnas, mcov);
-std::cout << "Despues Covarianza\n";
-  for (int i=0;i<filas;i++){
-    std::cout << "va a imprimir fila mcov[i]: " << i << std::endl;
-    for (int j=0;j<filas;j++){
-      std::cout << mcov[i][j] << " ";
-    }
-    std::cout <<  "\n";
-  }
+//std::cout << "Despues Covarianza\n";
+  // for (int i=0;i<filas;i++){
+  //   std::cout << "va a imprimir fila mcov[i]: " << i << std::endl;
+  //   for (int j=0;j<filas;j++){
+  //     std::cout << mcov[i][j] << " ";
+  //   }
+  //   std::cout <<  "\n";
+  // }
 
   // LLamar al metodo de deflacion para calcular los autovalores y autovectores
   // usar el parametro alfa para ver cuantos hay que averiguar
