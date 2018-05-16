@@ -19,11 +19,8 @@ doubleMatrix matrizXEscalar(doubleMatrix A, double esc);
 
 doubleVector vectorXEscalar(doubleVector v, double esc);
 
-// ver si hay que normalizar Ax
-// iterar hasta   que en dos iteraciones sucesivas la siferencia entre las normas sea menor que la tolerancia
-// si se normaliza el vector al mismo tiempo se calcula el autovalor dominante
+doubleMatrix matrizTraspuesta (doubleMatrix A);
 
-//normalizado
 int MetodoPotencias(doubleMatrix A, doubleVector x,int nroIter,float tol, double &autoval, doubleVector &autovec);
 
 // se calcula X*Xt. Por ahora no lo uso: se obtiene una matriz de n x n (n=cantidad de imagenes)
