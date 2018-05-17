@@ -21,6 +21,8 @@ doubleVector vectorXEscalar(doubleVector v, double esc);
 
 doubleMatrix matrizTraspuesta (doubleMatrix A);
 
+doubleVector ucharToDoubleVector (uchar* data, int longitud);
+
 int MetodoPotencias(doubleMatrix A, doubleVector x,int nroIter,float tol, double &autoval, doubleVector &autovec);
 
 // se calcula X*Xt. Por ahora no lo uso: se obtiene una matriz de n x n (n=cantidad de imagenes)
@@ -33,6 +35,7 @@ doubleMatrix MatrizX(baseDeDatos muestra, doubleVector media, int filas, int col
 
 //void PCA (baseDeDatos muestra, doubleMatrix &mtrcar, int modo);
 void PCA (baseDeDatos muestra, doubleMatrix &cambioDeBase, doubleVector &media, doubleMatrix &matrizCaracteristicaMuestra, int alfa);
+doubleVector normalizarImagen (doubleVector img, doubleVector media, doubleMatrix cambioDeBaseTras, doubleMatrix matrizCaracteristicaMuestra);
 void printVector(doubleVector v);
 void printMatrix(doubleMatrix M);
 
