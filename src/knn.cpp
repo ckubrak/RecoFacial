@@ -44,7 +44,7 @@ vector<int> k_cercanos(int k, baseDeDatos &matEntrenamiento, Imagen &imagenAEval
 	int tamMatEntrenamiento = 0;
 	tamMatEntrenamiento =  matEntrenamiento.size();
 
-	while(i< tamMatEntrenamiento){
+	while(i < tamMatEntrenamiento){
 		distancia = distanciaEuclidea(matEntrenamiento[i], imagenAEvaluar);
 		indiceDistancia.first = distancia;
 		indiceDistancia.second = matEntrenamiento[i].getId();

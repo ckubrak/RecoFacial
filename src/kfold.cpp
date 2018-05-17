@@ -8,17 +8,19 @@
 const int cantClases(41);
 const int imgPorClase(10);
 
+//TODO:
+//	1) Definir el k (radio) que vamos a usar. Lo pasamos por input?
+//	2) Definir como pasar el k de k_fold
 
-
-vector<vector<int, int>> k_fold(baseDeDatos bd, int k, int pca){
+vector<vector<int, int>> k_fold(baseDeDatos bd, int k, int pca, int alfa){
 	std::vector<vector<pair(int,int)>> result ();
 	int imgATestearPorClase = imgPorClase/k;//La cantidad de folds. Ej. 2 fold nos da 5.
 	int cantImagATestear = (imgPorClase/k)*cantClases;
 	vector<vector<pair<int, int>> > resultado (imgATestearPorClase, vector<pair<int, int>>(cantImagATestear));
 
-	int i(1);
-	int j1(1);
-	int j2(1);
+	int i(0);
+	int j1(0);
+	int j2(0);
 	while(i < imgATestearPorClase){ // imgATestearPorClase también es la cantidad de folds que hacemos
 		std::vector<int> vectorAux (k,0);
 		while(j1 < k){
@@ -32,17 +34,15 @@ vector<vector<int, int>> k_fold(baseDeDatos bd, int k, int pca){
 }
 
 //Los indices que recibe iFold son qué imagenes de las 10 vamos a tomar para testear.
-vector<pair<int, int>> iFold(baseDeDatos bd, vector<int> indices, int pca){
+vector<pair<int, int>> iFold(baseDeDatos bd, vector<int> indices, int pca, int alfa	){
 
 	int cantidad_imagenes_test = indices.size()*cantClases;
 	baseDeDatos trainingBase = {};//Para construir base de datos para testear.
 	//Aca van a estar las imagenes que vamos a usar para testear. 
  	baseDeDatos imagenesTest{};
 
-	int indiceImagen = 1;
-	int indiceClase = 1;
-	int k = 1;
-	int i = 1;
+	//int k = 1;
+	int i = 0;
 	int cantImagenesTotales = cantClases*imgPorClase;//en este caso 41*10
 	while(i < cantImagenesTotales){
 		if(!apareceEn(bd[i], indices)){
@@ -53,28 +53,39 @@ vector<pair<int, int>> iFold(baseDeDatos bd, vector<int> indices, int pca){
 	i++;
 	}//Listo, ahora tendríamos la matriz de entrenamiento que queremos.
 	//Acá ya estaríamos listos para llamar a knn y pca.
-	i = 1;
-	std::vector<pair(int,int)> resultado ();
+	
+	i = 0;
+	//Armo vector resultado vacío. En cada índice va el resultado de evaluar cada una de las imagenes a testear
+	std::vector<pair(int,int)> resultado(imagenesTest.size());
+	int k = 20;//Para que funcione. Definir cual usamos y COMO
 	if(pca == 1){
-		while(i < baseDeDatos.size()){
+		while(i < imagenesTest.size()){
 			resultado[i].first = baseDeDatos[i].getId();
-			resultado[i].second = PCA+KNN;
+			doubleMatrix cambioDeBaseTras();
+			doubleVector media();
+			doubleMatrix matrizCaracteristicaMuestra();
+			PCA(trainingBase, cambioDeBaseTras, media, matrizCaracteristicaMuestra, alfa);
+			//Ahora tenemos en cambioDeBaseTras
+			resultado[i].second = PCA+KNN;//PCA+KNN
+			i++;
 		}
 	}
 	if(pca == 0){
-		while(i<baseDeDatos.size()){
+		while(i <= imagenesTest.size()){
 			resultado[i].first = baseDeDatos[i].getId();
-			resultado.second = KNN;
+			resultado.second = moda(k, trainingBase, imagenesTest[i]);//Solo KNN
+			i++;
 		}
 	}
 	//Y con esto ya estaría
 }
 
 bool apareceEn(Imagen img, vector<int> indices){
-	int i = 1;
+	int i = 0;
 	while(i < indices.size()){
 		if(img.getName() == indices[i]){
 			return true;
+			i++;
 		}
 	}
 	return false;
