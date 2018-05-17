@@ -21,7 +21,7 @@ const int imgPorClase(10);
 // 	return false;
 // }
 
-vector<vector<int, int>> k_fold3(baseDeDatos bd, int k){
+vector<vector<int, int>> k_fold(baseDeDatos bd, int k, int pca){
 	std::vector<vector<pair(int,int)>> result ();
 	int imgATestearPorClase = imgPorClase/k;//La cantidad de folds. Ej. 2 fold nos da 5.
 	int cantImagATestear = (imgPorClase/k)*cantClases;
@@ -63,8 +63,21 @@ vector<pair<int, int>> iFold(baseDeDatos bd, vector<int> indices){
 	i++;
 	}//Listo, ahora tendríamos la matriz de entrenamiento que queremos.
 	//Acá ya estaríamos listos para llamar a knn y pca.
-
-
+	i = 1;
+	std::vector<pair(int,int)> resultado ();
+	if(pca == 1){
+		while(i < baseDeDatos.size()){
+			resultado[i].first = baseDeDatos[i].getId();
+			resultado[i].second = PCA+KNN;
+		}
+	}
+	else{
+		while(i<baseDeDatos.size()){
+			resultado[i].first = baseDeDatos[i].getId();
+			resultado.second = KNN;
+		}
+	}
+	//Y con esto ya estaría
 }
 
 bool apareceEn(Imagen img, vector<int> indices){
