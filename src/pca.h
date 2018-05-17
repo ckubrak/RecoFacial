@@ -31,7 +31,8 @@ void ArmarMatrizX(baseDeDatos muestra, doubleVector media, int filas, int column
 
 doubleMatrix MatrizX(baseDeDatos muestra, doubleVector media, int filas, int columnas );
 
-void PCA (baseDeDatos muestra, doubleMatrix &mtrcar, int modo);
+//void PCA (baseDeDatos muestra, doubleMatrix &mtrcar, int modo);
+void PCA (baseDeDatos muestra, doubleMatrix &cambioDeBase, doubleVector &media, doubleMatrix &matrizCaracteristicaMuestra, int alfa);
 void printVector(doubleVector v);
 void printMatrix(doubleMatrix M);
 

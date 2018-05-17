@@ -383,11 +383,6 @@ int indice;
 
   std::cout << "entrando a potencias: \n";
 
-  for (int i= 0; i<x.size(); ++i) {
-    std::cout << x[i]  << " ";
-  }
-  std::cout << std::endl;
-
   //normalizo el vector x
   //nx = norma2Vectorial(x);
   normax = norma2Vectorial(x);
@@ -524,7 +519,7 @@ void CalcularCovarianza(doubleMatrix X, int filas, int columnas, doubleMatrix &m
         mcov[i][j] = acumulador;
       }
     }
-//std::cout << "antes de salir de CalcularCovarianza \n";
+std::cout << "antes de salir de CalcularCovarianza \n";
 }
 
 
@@ -574,7 +569,8 @@ doubleMatrix matrizTraspuesta (doubleMatrix A)
 // parametro de salida una matriz con la transformacion caracteristica de cada imagen
 // columnas = cantidad de bytes por imagenes. Se puede calcular a partir de una de las imagenes cualquiera
 // multiplicando ancho por alto.
-void PCA (baseDeDatos muestra, doubleMatrix &matrizCaracteristicaMuestra, int alfa){
+// cambioDeBase: salida, tc muestra: salida, media: salida,
+void PCA (baseDeDatos muestra, doubleMatrix &cambioDeBase, doubleVector &media, doubleMatrix &matrizCaracteristicaMuestra, int alfa){
 
   int filas, columnas;
 
@@ -587,11 +583,11 @@ void PCA (baseDeDatos muestra, doubleMatrix &matrizCaracteristicaMuestra, int al
   columnas=muestra[0].getWidth()*muestra[0].getHeight();
   std::cout << "columnas: " << columnas << "\n";
 
-  doubleVector media;
-  media.reserve(columnas);
+  //doubleVector media;
+  //media.reserve(columnas);
 
   for (int j=0; j<columnas;j++)
-    media.push_back(0.0);
+    media[j] = 0.0;
   std::cout << "fin inicializacion media\n";
 
   //calcular la media de cada columnas
@@ -671,26 +667,40 @@ void PCA (baseDeDatos muestra, doubleMatrix &matrizCaracteristicaMuestra, int al
   std::cout <<  "\n";
 
 
-  //Usando los autovalores calculados recalcular los autovectores
+  //Usando los autovalores calculados recalcular los autovectores de Xt * X (que es la verdadera matriz covarianza)
   //for (int i=0;i<alfa;i++){
     //Hay que multiplicar Xt * autovectores[i] / autovalores[i]
-    // matrizXVector (Tras(X),Tras(autovectores))
-    //dimensiones: autovectores(alfa * filas), X(filas * columnas)
+    // matrizXVector (Tras(X),Tras(autovectores)) //nuestra implementacion tiene un autovector por fila, por eso hay que trasponer
+    // dimensiones: autovectores(alfa * filas), X(filas * columnas)
     // filas=cantidad de imagenes, columnas= cantidad de variables originales
-    // resultado: alfa * columnas
+    // resultado: alfa * columnas. Traspuesto: columnas * alfa
     for (int i=0; i<alfa; ++i)
       autovectores[i] = vectorXEscalar (autovectores[i],(1/autovalores[i])); // dividir el autovector i por el autovalor correspondiente
 
-    matrizCaracteristicaMuestra = matrizTraspuesta (matrizXMatriz (autovectores, X));
+//    doubleMatrix cambioDeBase();
+    // cambioDeBase.reserve(columnas);
+    // for (int i=0; i<columnas; ++i)
+    //   cambioDeBase[i].reserve(alfa);
+    //inicializacion
 
-  //}
+    // for (int i=0; i<columnas; ++i)
+    // {
+    //   for (int j=0; j<alfa; ++j)
+    //       cambioDeBase[j].push_back(0.0);
+    //   cambioDeBase.push_back(cambioDeBase[i]);
+    // }
+//TODO: inicializar cambio de base, media y trans caracteristica en main
+    //cambioDeBase = matrizTraspuesta (matrizXMatriz (autovectores, X));
+    cambioDeBase = matrizXMatriz (autovectores, X); // un autovector x fila
 
-  for (int i=0;i<alfa;i++){
-    std::cout << "va a imprimir fila autovectores[i]: " << i << std::endl;
-    for (int j=0;j<columnas;j++){
-      std::cout << matrizCaracteristicaMuestra[i][j] << " ";
-    }
-    std::cout <<  "\n";
-  }
+  // for (int i=0;i<columnas;i++){
+  //   std::cout << "va a imprimir fila autovectores[i]: " << i << std::endl;
+  //   for (int j=0;j<alfa;j++){
+  //     std::cout << matrizCaracteristicaMuestra[i][j] << " ";
+  //   }
+  //   std::cout <<  "\n";
+  // }
+
+  matrizCaracteristicaMuestra = matrizXMatriz(cambioDeBase, matrizTraspuesta (X));
 
 }
