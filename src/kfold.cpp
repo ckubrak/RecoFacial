@@ -9,19 +9,8 @@ const int cantClases(41);
 const int imgPorClase(10);
 
 
-// bool estaRepetido(vector<int> &fila, int elemento){
-// 	int n(fila.size());
-// 	int i(0);
-// 	while(i < n){
-// 		if(fila[i] == elemento){
-// 			return true;
-// 		}
-// 	i++;
-// 	}
-// 	return false;
-// }
 
-vector<vector<int, int>> k_fold3(baseDeDatos bd, int k){
+vector<vector<int, int>> k_fold(baseDeDatos bd, int k, int pca){
 	std::vector<vector<pair(int,int)>> result ();
 	int imgATestearPorClase = imgPorClase/k;//La cantidad de folds. Ej. 2 fold nos da 5.
 	int cantImagATestear = (imgPorClase/k)*cantClases;
@@ -37,12 +26,13 @@ vector<vector<int, int>> k_fold3(baseDeDatos bd, int k){
 			j2++; //j2 debería llegar hasta 10 en este caso. imgPorClase
 			j1++;
 		}
-		resultado[i] = iFold(baseDeDatos, vectorAux);
+		resultado[i] = iFold(baseDeDatos, vectorAux, pca);
 		i++;
 	}
 }
+
 //Los indices que recibe iFold son qué imagenes de las 10 vamos a tomar para testear.
-vector<pair<int, int>> iFold(baseDeDatos bd, vector<int> indices){
+vector<pair<int, int>> iFold(baseDeDatos bd, vector<int> indices, int pca){
 
 	int cantidad_imagenes_test = indices.size()*cantClases;
 	baseDeDatos trainingBase = {};//Para construir base de datos para testear.
@@ -63,8 +53,21 @@ vector<pair<int, int>> iFold(baseDeDatos bd, vector<int> indices){
 	i++;
 	}//Listo, ahora tendríamos la matriz de entrenamiento que queremos.
 	//Acá ya estaríamos listos para llamar a knn y pca.
-
-
+	i = 1;
+	std::vector<pair(int,int)> resultado ();
+	if(pca == 1){
+		while(i < baseDeDatos.size()){
+			resultado[i].first = baseDeDatos[i].getId();
+			resultado[i].second = PCA+KNN;
+		}
+	}
+	if(pca == 0){
+		while(i<baseDeDatos.size()){
+			resultado[i].first = baseDeDatos[i].getId();
+			resultado.second = KNN;
+		}
+	}
+	//Y con esto ya estaría
 }
 
 bool apareceEn(Imagen img, vector<int> indices){
@@ -77,6 +80,22 @@ bool apareceEn(Imagen img, vector<int> indices){
 	return false;
 }
 
+
+
+
+
+
+// bool estaRepetido(vector<int> &fila, int elemento){
+// 	int n(fila.size());
+// 	int i(0);
+// 	while(i < n){
+// 		if(fila[i] == elemento){
+// 			return true;
+// 		}
+// 	i++;
+// 	}
+// 	return false;
+// }
 // void k_fold2(baseDeDatos bd, int k, float tfold){
 // 	std::vector<int> folds(cantClases, 0);
 // 	int random;
