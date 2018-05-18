@@ -2,6 +2,10 @@ build/
 *.aux
 *.log
 informe/*.pdf
+informe/*.fls
+informe/*.toc
+informe/*.out
+informe/*.aux
 informe/auto/
 *.gz
 *.fmt
