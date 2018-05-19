@@ -18,7 +18,7 @@ int main()
 
     // asignar el espacio para la matriz de transformacion caracteristica dobles que se va a usar para llamar a kNN
     // PENDIENTE
-    PCA (base, transfCaracteristica, 1);
+    //PCA (base, transfCaracteristica, 1);
 
     return 0;
 }
