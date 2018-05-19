@@ -14,6 +14,8 @@ set(SOURCE_FILES
         src/main.cpp
 	src/knn.h
 	src/knn.cpp
+	src/kfold.h
+	src/kfold.cpp
         )
 
 add_executable(tp2 ${SOURCE_FILES})

@@ -1,19 +1,19 @@
 #include "kfold.h"
-#include "image.h"
-#include <cstdlib>
+#include "imagen.h"
+//#include <cstdlib>
 #include "pca.h"
 #include "knn.h"
-#include "imagen.h"
 
-const int cantClases(41);
-const int imgPorClase(10);
+int cantClases = 41;
+int imgPorClase = 10;
+
+using namespace std;
 
 //TODO:
 //	1) Definir el k (radio) que vamos a usar. Lo pasamos por input?
 //	2) Definir como pasar el k de k_fold
 
-vector<vector<int, int>> k_fold(baseDeDatos bd, int k, int pca, int alfa){
-	std::vector<vector<pair(int,int)>> result ();
+vector<vector<pair<int, int>>> k_fold(baseDeDatos bd, int k, int pca, int alfa){
 	int imgATestearPorClase = imgPorClase/k;//La cantidad de folds. Ej. 2 fold nos da 5.
 	int cantImagATestear = (imgPorClase/k)*cantClases;
 	vector<vector<pair<int, int>> > resultado (imgATestearPorClase, vector<pair<int, int>>(cantImagATestear));
@@ -28,7 +28,7 @@ vector<vector<int, int>> k_fold(baseDeDatos bd, int k, int pca, int alfa){
 			j2++; //j2 debería llegar hasta 10 en este caso. imgPorClase
 			j1++;
 		}
-		resultado[i] = iFold(baseDeDatos, vectorAux, pca);
+		resultado[i] = iFold(bd, vectorAux, pca, alfa);
 		i++;
 	}
 }
@@ -56,28 +56,42 @@ vector<pair<int, int>> iFold(baseDeDatos bd, vector<int> indices, int pca, int a
 	
 	i = 0;
 	//Armo vector resultado vacío. En cada índice va el resultado de evaluar cada una de las imagenes a testear
-	std::vector<pair(int,int)> resultado(imagenesTest.size());
+	std::vector<pair<int,int>> resultado(imagenesTest.size());
 	int k = 20;//Para que funcione. Definir cual usamos y COMO
 	if(pca == 1){
 		while(i < imagenesTest.size()){
-			resultado[i].first = baseDeDatos[i].getId();
-			doubleMatrix cambioDeBaseTras();
-			doubleVector media();
-			doubleMatrix matrizCaracteristicaMuestra();
+			resultado[i].first = bd[i].getId();
+
+			int filas, columnas;
+			filas = bd.size();
+		    columnas=bd[0].getWidth()*bd[0].getHeight();
+
+		    doubleMatrix matrizCaracteristicaMuestra(filas, doubleVector(alfa));
+		    doubleMatrix cambioDeBaseTras (alfa, doubleVector(columnas));
+    		doubleVector media (columnas);
+
+			// doubleMatrix cambioDeBaseTras();
+			// doubleVector media();
+			// doubleMatrix matrizCaracteristicaMuestra();
 			PCA(trainingBase, cambioDeBaseTras, media, matrizCaracteristicaMuestra, alfa);
-			//Ahora tenemos en cambioDeBaseTras
-			resultado[i].second = PCA+KNN;//PCA+KNN
+
+		    doubleVector imagenNormalizada(columnas);
+		    imagenNormalizada = ucharToDoubleVector (imagenesTest[i].getData(), columnas);
+
+			imagenNormalizada = normalizarImagen(imagenNormalizada, media, cambioDeBaseTras, matrizCaracteristicaMuestra);
+			resultado[i].second = modaPCA(k, matrizCaracteristicaMuestra, imagenNormalizada, bd);//PCA+KNN
 			i++;
 		}
 	}
-	if(pca == 0){
+	if(pca == 0){//Solo KNN
 		while(i <= imagenesTest.size()){
-			resultado[i].first = baseDeDatos[i].getId();
-			resultado.second = moda(k, trainingBase, imagenesTest[i]);//Solo KNN
+			resultado[i].first = bd[i].getId();
+			resultado[i].second = moda(k, trainingBase, imagenesTest[i]);
 			i++;
 		}
 	}
 	//Y con esto ya estaría
+	return resultado;
 }
 
 bool apareceEn(Imagen img, vector<int> indices){

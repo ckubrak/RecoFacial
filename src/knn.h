@@ -18,5 +18,9 @@ double distanciaEuclidea(const doubleVector &v1, const doubleVector &v2);
 vector<int> k_cercanos(int k, baseDeDatos &matEntrenamiento, Imagen &imagenAEvaluar);
 int moda(int k, baseDeDatos &matEntrenamiento, Imagen &imagen);
 
+double distanciaEuclideaPCA(doubleVector &imag1, doubleVector &imag2);
+vector<int> k_cercanosPCA(int k, doubleMatrix &matEntrenamiento, doubleVector &imagenAEvaluar, baseDeDatos &baseSinTransformar);
+int modaPCA(int k, doubleMatrix &matEntrenamiento, doubleVector &imagen, baseDeDatos &baseSinTransformar);
+
 
 #endif
