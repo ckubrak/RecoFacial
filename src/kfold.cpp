@@ -5,7 +5,7 @@
 #include "knn.h"
 
 int cantClases = 41;
-int imgPorClase = 10;
+int imgPorClase = 5;
 
 using namespace std;
 
@@ -43,7 +43,7 @@ vector<pair<int, int>> iFold(baseDeDatos bd, vector<int> indices, int pca, int a
 
 	//int k = 1;
 	int i = 0;
-	int cantImagenesTotales = cantClases*imgPorClase;//en este caso 41*10
+	int cantImagenesTotales = cantClases * imgPorClase;//en este caso 41*10
 	while(i < cantImagenesTotales){
 		if(!apareceEn(bd[i], indices)){
 			trainingBase.push_back(bd[i]);
@@ -99,8 +99,8 @@ bool apareceEn(Imagen img, vector<int> indices){
 	while(i < indices.size()){
 		if(img.getName() == indices[i]){
 			return true;
-			i++;
 		}
+		i++;
 	}
 	return false;
 }
