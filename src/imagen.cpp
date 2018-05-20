@@ -8,6 +8,11 @@
 
 
 
+
+#include<libgen.h> 
+#include<stdlib.h> 
+
+
 // std::vector<Imagen> cargarBD(std::string csv)
 // {
 //
@@ -128,13 +133,38 @@ Imagen::Imagen(std::string archivo, int id)
 {
     uchar* data = NULL;
     int width = 0, height = 0;
-    std::string nombre;
-    std::size_t s = archivo.find_first_of(".");
-    nombre = archivo.substr(0,s-1);
-    
-    //_name = str::stoi(nombre);
-    std::stringstream(nombre) >> _name; 
 
+    std::string nombre;
+    //test
+    // std::string archivoTest = "../ImagenesCaras/s1/1.pgm";
+    // std::cout << "Contenido de archivoTest: " <<'archivoTest' << std::endl;
+    // std::size_t s1 = archivoTest.find_last_of(".");
+    // std::size_t d1 = archivoTest.find_last_of("/");
+    // std::string nombreTest;
+    // nombreTest= archivoTest.substr(d1+1, s1-1);
+    // //std::cout << "Contenido de archivoTest: " <<'archivoTest' << std::endl;
+    // std::cout << "Contenido de archivoTest Cortado: " <<'nombreTest' << std::endl;
+    // std::string nombreCortado = archivo.substr(0, 10);
+    // std::cout << "Contenido de archivo: " <<'nombreCortado' << std::endl;
+
+
+    std::size_t s = archivo.find_last_of(".");
+    std::size_t d = archivo.find_last_of("/");
+    nombre = archivo.substr(d+1, s);
+    //std::cout << "archivo: " << archivo << std::endl;
+    //std::cout << "Lugar del ultimo / : " << d << std::endl;
+    //std::cout << "Lugar del ultimo . : " << s << std::endl;
+    //std::cout << "Nombre: " << nombre << std::endl;
+    std::size_t s2 = nombre.find_first_of(".");
+    //std::cout << "Lugar del ultimo . s2: " << s2 << std::endl;
+    std::string nombre1 = nombre.substr(0, s2);
+    //std::cout << "Nombre1: " << nombre1 << std::endl;
+
+
+    //std::cout << "Basename: " << basename(archivo) << std::endl;
+    //_name = str::stoi(nombre);
+    std::stringstream(nombre1) >> _name; 
+    //std::stringstream(nombre) >> _name; 
     PPM_LOADER_PIXEL_TYPE pt = PPM_LOADER_PIXEL_TYPE_INVALID;
 //    std::cout << "entrando a Imagen: " << archivo << " \n";
     bool ret = LoadPPMFile(&_data, &_width, &_height, &pt, archivo.c_str());
