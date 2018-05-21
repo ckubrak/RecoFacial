@@ -1,7 +1,11 @@
 #ifndef _IMAGEN_H_
 #define _IMAGEN_H_
 
+#include <fstream>
 #include <vector>
+#include <string>
+#include <iostream>
+#include <sstream>
 #include <math.h>       /* sqrt */
 #include <string>
 #include <iostream>

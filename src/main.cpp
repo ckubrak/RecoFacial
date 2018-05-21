@@ -2,7 +2,7 @@
 #include "pca.h"
 #include "knn.h"
 #include "kfold.h"
-
+#include "misc.h"
 
 int main(int argc, char* argv[])
 {
@@ -38,31 +38,33 @@ int main(int argc, char* argv[])
 
     }
 
-    int pca;
+    int result;
     int k = 5; // TODO variar
     int alfa = 5; // TODO variar
     baseDeDatos baseEntrenamiento = cargarBD(trainSet);
-    if (method == 1)
-    {
-        pca = 0;
-    }
-    else
-    {
-        pca = 1;
-    }
-
-    vector<vector<pair<int, int> > > vectorDeVectores = k_fold(baseEntrenamiento, k, pca, alfa);
-
-    std::vector<pair <int, int> > receivedAndExpected;
-
-
-    for (int i = 0; i < vectorDeVectores.size(); ++i)
-    {
-        for (int j = 0; j < vectorDeVectores[i].size(); ++j)
+        std::ifstream input(testSet);
+        std::string imagen;
+        std::string line;
+        std::vector<std::vector<int> > vectordeKCercanos;
+        while (std::getline(input, line))
         {
-            receivedAndExpected.push_back(vectorDeVectores[i][j]);
-        }
+
+            std::size_t found = line.find_first_of(", ");      //primer delimitador
+            imagen = line.substr(0, found);
+
+            Imagen nuevaImagen(imagen,-1);
+
+            if (method == 0)
+            {
+                result = moda(k, baseEntrenamiento, nuevaImagen);
+            }
+
+            else
+            {
+                // result = moda(k, baseEntrenamiento, nuevaImagen);
+            }
     }
-    bool a = true;
+
+
     return 0;
 }
