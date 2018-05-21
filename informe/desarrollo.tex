@@ -6,6 +6,14 @@ Para la lectura de los archivos de imágenes utilizamos las librerías provistas
 Las imágenes a medida que se leen se almacenan en la estructura que denominamos baseDeDatos, la cual consiste de un vector de Imagen.
 Para la implementación de las funciones necesarias para PCA trabajamos con dos estructuras principales: doubleVector que como lo indica su nombre consiste de un vector de doubles donde almacenamos cada imagen vectorizada, y la otra estructura es dobleMatrix que usamos para almacenar todas las imágenes vectorizadas (una por fila), con el objetivo de poder operar matricialmente con ellas dentro de las funciones de una forma práctica.
 
+\textbf{KNN}
+
+Una de las dificultades con las que nos encontramos en la implementación de esta función debido a que en primer lugar fue pensada para trabajar sobre una base de datos de imágenes, entonces al usar el método PCA + KNN nos encontramos con que al hacer KNN recibíamos una doubleMatrix en lugar que una baseDeDatos.
+Para resolverlo decidímos simplemente crear nuevas funciones KNN que permitieran hacer el calculo sobre una doubleMatrix. Estas funciones son análogas a las anteriores, la mayor diferencia está en cómo hicimos para identificar el sujeto al que correspondía cada imágen.
+
+Mientras en el KNN (sin PCA) al estar trabajando con elementos de tipo "imagen" podíamos acceder directamente al "id" de cada una (es decir a qué sujeto pertenecía), al implementar KNN con PCA para resolver esto aprovechamos el dato de que tanto en la matriz resultante luego de aplicar PCA como la matriz de entrenamiento original tienen la misma cantidad de filas y, más aún, la fila "i" de ambas matrices corresponde a una misma imagen.
+Luego lo que hicimos fue, una vez obtenida cuál era la fila dentro de la doubleMatrix de alguna de las k imágenes más cercanas, ver a que id correspondía la imagen que se encontraba en ese mismo lugar en la base de entrenamiento original. 
+
 
 \textbf{PCA}
 
