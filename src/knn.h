@@ -16,6 +16,8 @@ using namespace std;
 
 double distanciaEuclidea(const doubleVector &v1, const doubleVector &v2);
 vector<int> k_cercanos(int k, baseDeDatos &matEntrenamiento, Imagen &imagenAEvaluar);
+vector<int> k_cercanosSort(int k, baseDeDatos &matEntrenamiento, Imagen &imagenAEvaluar);
+
 int moda(int k, baseDeDatos &matEntrenamiento, Imagen &imagen);
 
 double distanciaEuclideaPCA(doubleVector &imag1, doubleVector &imag2);
