@@ -76,7 +76,7 @@ int moda(int k, baseDeDatos &matEntrenamiento, Imagen &imagen){
 	int aux;
 	while(i < k){
 		aux = k_vecinos_cercanos[i];
-		vectorModa[i] ++;
+		vectorModa[aux] ++;
 		i++;
 	}
 	int result = *max_element(vectorModa.begin(), vectorModa.end());
@@ -147,7 +147,7 @@ int modaPCA(int k, doubleMatrix &matEntrenamiento, doubleVector &imagen, baseDeD
 	int aux;
 	while(i < k){
 		aux = k_vecinos_cercanos[i];
-		vectorModa[i] ++;
+		vectorModa[aux] ++;
 		i++;
 	}
 	int result = *max_element(vectorModa.begin(), vectorModa.end());
