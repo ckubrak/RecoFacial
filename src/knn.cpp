@@ -23,7 +23,7 @@ double distanciaEuclidea(Imagen &imag1, Imagen &imag2) {
 	double x;
 	int y;
 	for(i = 0; i < tam; i++){
-		x = imag2.getData()[i] - imag2.getData()[i];
+		x = imag2.getData()[i] - imag1.getData()[i];
 		distancia += x*x;
 	}
 	//Ganaríamos algo sacando la raiz?

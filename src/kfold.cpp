@@ -15,22 +15,42 @@ using namespace std;
 
 vector<vector<pair<int, int>>> k_fold(baseDeDatos bd, int k, int pca, int alfa){
 	int imgATestearPorClase = imgPorClase/k;//La cantidad de folds. Ej. 2 fold nos da 5.
+	//Tendríamos que usar 5 fold. O sea, imagenesPorClase = 2.
 	int cantImagATestear = (imgPorClase/k)*cantClases;
-	vector<vector<pair<int, int>> > resultado (imgATestearPorClase, vector<pair<int, int>>(cantImagATestear));
-
+	vector<vector<pair<int, int>> > resultado (k, vector<pair<int, int>>(cantImagATestear));
+	//O sea, un vector que en cada i contiene un vector con los subindices de qué elementos de cada clase vamos a usar
+	//para testear.
 	int i(0);
 	int j1(0);
-	int j2(0);
-	while(i < imgATestearPorClase){ // imgATestearPorClase también es la cantidad de folds que hacemos
-		std::vector<int> vectorAux (k,0);
-		while(j1 < k){
-			vectorAux[j1] = j2;
-			j2++; //j2 debería llegar hasta 10 en este caso. imgPorClase
-			j1++;
-		}
-		resultado[i] = iFold(bd, vectorAux, pca, alfa);
+	int j2(1);
+
+	while(i < k){ // imgATestearPorClase también es la cantidad de folds que hacemos
+		//std::vector<int> vectorAux (imgATestearPorClase,0);
+		// int x = 1;//Creo que esto crearia todos los folds iguales
+		// while (x*i < imgATestearPorClase*i)
+		// {
+		// 	vectorAux[x] = x;
+		// 	x++;
+		// }
+		// while(j1 < imgATestearPorClase){
+		// 	vectorAux[j1] = j2;
+		// 	j2++; //j2 debería llegar hasta 10 en este caso. imgPorClase
+		// 	j1++;
+		// }
+		//std::cout << "Vector aux " << vectorAux.size() << std::endl;
+		//std::vector<std::vector<int>> vectorAux;
+		std::vector<std::vector<int>>  vectorAux;
+		vectorAux.push_back({1, 2});
+		vectorAux.push_back({3, 4});
+		vectorAux.push_back({5, 6});
+		vectorAux.push_back({7, 8});
+		vectorAux.push_back({9, 10});
+
+
+		resultado[i] = iFold(bd, vectorAux[i], pca, alfa);
 		i++;
 	}
+	return resultado;
 }
 
 //Los indices que recibe iFold son qué imagenes de las 10 vamos a tomar para testear.
@@ -43,7 +63,7 @@ vector<pair<int, int>> iFold(baseDeDatos bd, vector<int> indices, int pca, int a
 
 	//int k = 1;
 	int i = 0;
-	int cantImagenesTotales = cantClases * imgPorClase;//en este caso 41*10
+	int cantImagenesTotales = cantClases * 10;//en este caso 41*10
 	while(i < cantImagenesTotales){
 		if(!apareceEn(bd[i], indices)){
 			trainingBase.push_back(bd[i]);
@@ -85,9 +105,11 @@ vector<pair<int, int>> iFold(baseDeDatos bd, vector<int> indices, int pca, int a
 		}
 	}
 	if(pca == 0){//Solo KNN
-		while(i <= imagenesTest.size()){
+		while(i < imagenesTest.size()){
 			resultado[i].first = bd[i].getId();//El resultado que debería dar
 			resultado[i].second = moda(k, trainingBase, imagenesTest[i]);//El resultado que dió nuestro algoritmo
+			// std::cout << "Valor de i: " << i << std::endl;
+			// std::cout << "Size: " << imagenesTest.size() << std::endl;
 			i++;
 		}
 	}

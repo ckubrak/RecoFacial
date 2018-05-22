@@ -7,16 +7,18 @@
 int main_kfold()
 {
     int method;
-    std::string trainSet = "../tests/testRed.in";
+    std::string trainSet = "/home/sly/Documents/Metnum/TP2-IMAGENES/tests/testFullRed.in";
 
     int pca = 0;
     int k = 5; // TODO variar
     int alfa = 5; // TODO variar
 
     baseDeDatos baseEntrenamiento = cargarBD(trainSet);
+    std::cout << "Size: " << baseEntrenamiento.size() << std::endl;
 
     vector<vector<pair<int, int> > > vectorDeVectores = k_fold(baseEntrenamiento, k, pca, alfa);
-
+    std::cout << "Size vectorDeVectores: " << vectorDeVectores.size() << std::endl;
+    
     std::vector<int> truePos; 
     std::vector<int> trueNeg;
     std::vector<int> falsePos;
@@ -25,8 +27,10 @@ int main_kfold()
     std::vector<pair <int, int> > receivedAndExpected;
     for (int i = 0; i<vectorDeVectores.size(); i++)
     {
-        for (int j=0; i<vectorDeVectores[i].size();i++)
+        std::cout << "Size vectorDeVectores en : "<< i<< " " << vectorDeVectores[i].size() << std::endl; 
+        for (int j=0; i<vectorDeVectores[i].size();j++)
         {
+            //std::cout << "j = " << j<<std::endl;
             receivedAndExpected.push_back(vectorDeVectores[i][j]);
         }
     }
@@ -60,7 +64,7 @@ int main_kfold()
                 tNeg++;
             }
         }
-
+        std::cout << tPos << tNeg << fPos << fNeg << std::endl;
         truePos.push_back(tPos);
         trueNeg.push_back(tNeg);
         falsePos.push_back(fPos);
