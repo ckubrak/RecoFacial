@@ -8,6 +8,10 @@ Para la implementación de las funciones necesarias para PCA trabajamos con dos 
 
 \textbf{KNN}
 
+El KNN vendría a ser de algúna forma el centro de nuestro algoritmo, ya que es ahí donde se decide cual es el sujeto de la base de entrenamiento que se corresponde con la imagen que elegimos para testear.
+
+Esto lo hicimos calculando la distancia euclídea entre el elemento a testear y todos los elementos de la base de entrenamiento, guardandonos la distancia resultante y el sujeto al que pertenecía cada imagen de la base. Luego necesitabamos tener estos datos ordenados de acuerdo a las distancias obtenidas, por eso decidimos guardar los datos en una cola de prioridad. Finalmente, al obtener las k distancias más chicas solamente nos restaba calcular la moda. Para eso creamos un vector inicializado en cero donde en cada subindice i sumamos la cantidad de apariciones del sujeto i entre los k más cercanos a la imagen testeada, y finalmente buscando el id de este vector que contenga el elemento más grande obtenemos el resultado que buscabamos, es decir, el id que "matchea" mejor con la imagen que testeamos. 
+
 Una de las dificultades con las que nos encontramos en la implementación de esta función debido a que en primer lugar fue pensada para trabajar sobre una base de datos de imágenes, entonces al usar el método PCA + KNN nos encontramos con que al hacer KNN recibíamos una doubleMatrix en lugar que una baseDeDatos.
 Para resolverlo decidímos simplemente crear nuevas funciones KNN que permitieran hacer el calculo sobre una doubleMatrix. Estas funciones son análogas a las anteriores, la mayor diferencia está en cómo hicimos para identificar el sujeto al que correspondía cada imágen.
 
