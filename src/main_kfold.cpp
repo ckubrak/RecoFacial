@@ -2,67 +2,71 @@
 #include "pca.h"
 #include "knn.h"
 #include "kfold.h"
-#include "misc.h"
+// #include "misc.h"
 
-int main(int argc, char* argv[])
+int main_kfold()
 {
-    if(argc != 9)
-    {
-        std::cerr << "Cantidad de parametros erronea";
-        return 1;
-    }
     int method;
-    std::string trainSet, testSet, results;
-    for (int i = 1; i < argc; ++i)
-    {
+    std::string trainSet = "../tests/testRed.in";
 
-        std::cout <<argv[i] <<std::endl;
-        std::string toParse = argv[i];
-        if (toParse == "-m")
-        {
-            std::cout << "m";
-            method = atoi(argv[i+1]);
-        }
-        else if (toParse == "-i") 
-        {
-            trainSet = argv[i+1];
-        }
-        else if (toParse == "-q")
-        {
-            testSet = argv[i+1];
-        }
-        else if (toParse == "-o")
-        {
-            results = argv[i+1];
-        }
-
-    }
-
-    int pca;
+    int pca = 0;
     int k = 5; // TODO variar
     int alfa = 5; // TODO variar
+
     baseDeDatos baseEntrenamiento = cargarBD(trainSet);
-    if (method == 1)
-    {
-        pca = 0;
-    }
-    else
-    {
-        pca = 1;
-    }
 
     vector<vector<pair<int, int> > > vectorDeVectores = k_fold(baseEntrenamiento, k, pca, alfa);
 
+    std::vector<int> truePos; 
+    std::vector<int> trueNeg;
+    std::vector<int> falsePos;
+    std::vector<int> falseNeg;
+
     std::vector<pair <int, int> > receivedAndExpected;
-
-
-    for (int i = 0; i < vectorDeVectores.size(); ++i)
+    for (int i = 0; i<vectorDeVectores.size(); i++)
     {
-        for (int j = 0; j < vectorDeVectores[i].size(); ++j)
+        for (int j=0; i<vectorDeVectores[i].size();i++)
         {
             receivedAndExpected.push_back(vectorDeVectores[i][j]);
         }
     }
+
+    for (int id = 1; id< vectorDeVectores.size()+1; id++) 
+    {
+    int tPos = 0; 
+    int tNeg = 0; 
+    int fPos = 0; 
+    int fNeg = 0; 
+        if(id == receivedAndExpected[id-1].first)
+        {
+            if (receivedAndExpected[id-1].first == receivedAndExpected[id-1].second)
+            {
+                tPos++;
+            }
+            else
+            {
+                fNeg++;
+            }
+
+        }
+        else
+        {
+            if (receivedAndExpected[id-1].first == receivedAndExpected[id-1].second)
+            {
+                fPos++;
+            }
+            else
+            {
+                tNeg++;
+            }
+        }
+
+        truePos.push_back(tPos);
+        trueNeg.push_back(tNeg);
+        falsePos.push_back(fPos);
+        falseNeg.push_back(fNeg);
+    }
+
 
     return 0;
 }

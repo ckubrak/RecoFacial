@@ -24,5 +24,5 @@ double mediaArmoncia(double presicion, double recall)
 {
     return 2 * (presicion*recall/presicion + recall);
 }
-
+int main_kfold();
 #endif
