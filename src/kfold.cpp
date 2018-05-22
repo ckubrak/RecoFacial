@@ -70,8 +70,8 @@ vector<pair<int, int>> iFold(baseDeDatos bd, vector<int> indices, int pca, int a
 		}else{
 			imagenesTest.push_back(bd[i]);
 		}
-		std::cout <<i << " ";
-	i++;
+		//std::cout <<i << " ";
+		i++;
 	}//Listo, ahora tendríamos la matriz de entrenamiento que queremos.
 	//Acá ya estaríamos listos para llamar a knn y pca.
 	

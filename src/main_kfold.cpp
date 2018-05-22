@@ -28,9 +28,9 @@ int main_kfold()
     for (int i = 0; i<vectorDeVectores.size(); i++)
     {
         std::cout << "Size vectorDeVectores en : "<< i<< " " << vectorDeVectores[i].size() << std::endl; 
-        for (int j=0; i<vectorDeVectores[i].size();j++)
+        for (int j=0; j<vectorDeVectores[j].size();j++)
         {
-            //std::cout << "j = " << j<<std::endl;
+            // std::cout << "j = " << j<<std::endl;
             receivedAndExpected.push_back(vectorDeVectores[i][j]);
         }
     }
