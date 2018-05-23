@@ -120,7 +120,7 @@ int moda(int k, baseDeDatos &matEntrenamiento, Imagen &imagen){
 //PCA + KNN
 double distanciaEuclideaPCA(doubleVector &imag1, doubleVector &imag2) {
 	double distancia = 0;						
-	int tam = imag1.size()*imag1.size();//Asumo que las dos imagenes son del mismo tamaño
+	int tam = imag1.size();//Asumo que las dos imagenes son del mismo tamaño
 	int i = 0;
 	double x;
 	int y;
