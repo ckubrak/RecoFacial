@@ -88,10 +88,11 @@ int main_kfold()
 
     for (int j = 0; j < truePositivesId.size(); j++)
     {
+        // std::cout << "Tpos "<<truePositivesId[j] << " TNeg" << 
         accuracyI[j] = accuracy(truePositivesId[j], trueNegativesId[j], falsePositivesId[j],falseNegativesId[j]);
-        recallI[j] = recall(truePositivesId[j], falseNegativesId[j]);
-        precisionI[j] = precision(truePositivesId[j], falseNegativesId[j]);
-        mediaArmonicaI[j] = mediaArmonica(precisionI[j], recallI[j]);
+        // recallI[j] = recall(truePositivesId[j], falseNegativesId[j]);
+        // precisionI[j] = precision(truePositivesId[j], falseNegativesId[j]);
+        // mediaArmonicaI[j] = mediaArmonica(precisionI[j], recallI[j]);
     }
 
     // std::vector<pair <int, int> > receivedAndExpected;
