@@ -125,7 +125,7 @@ double distanciaEuclideaPCA(doubleVector &imag1, doubleVector &imag2) {
 	double x;
 	int y;
 	for(i = 0; i < tam; i++){
-		x = imag2[i] - imag2[i];
+		x = imag2[i] - imag1[i];
 		distancia += x*x;
 	}
 	//Ganaríamos algo sacando la raiz?
@@ -196,6 +196,8 @@ vector<int> k_cercanosPCASort(int k, doubleMatrix &matEntrenamiento, doubleVecto
 	double distancia = 0;
 	std::pair<double,int> indiceDistancia;
     std::vector<std::pair<double,int>> vectorKCercanos;
+	
+	std::vector<int> k_vecinos_cercanos(k);//Resultado 
 
 	int tamMatEntrenamiento = 0;
 	tamMatEntrenamiento =  matEntrenamiento.size();
@@ -204,20 +206,15 @@ vector<int> k_cercanosPCASort(int k, doubleMatrix &matEntrenamiento, doubleVecto
 		distancia = distanciaEuclideaPCA(matEntrenamiento[i], imagenAEvaluar);
 		indiceDistancia.first = distancia;
 		indiceDistancia.second = baseSinTransformar[i].getId();
-		vectorKCercanos[i] = indiceDistancia;
+		vectorKCercanos.push_back(indiceDistancia);
 		i++;
 	}
 	std::sort (std::begin(vectorKCercanos), std::end(vectorKCercanos));
 
-	//Armo el vector que voy a devolver
-	std::vector<int> k_vecinos_cercanos(k, 0);//De longitud k, inicializado en ceros. 
-	i = 0;
-	pair<double, int> pairAux;
-	//Recorro lo que me quedó en la lista de prioridad y lo pongo en el vector. Agarro solo los indices. 
-	while(i < k){
-		k_vecinos_cercanos[i] = vectorKCercanos[i].second;
-		i++;
+	for(int x = 0; x < k; x++){
+		k_vecinos_cercanos[x] = vectorKCercanos[x].second;
 	}
+	
 	return k_vecinos_cercanos;
 }
 
@@ -225,7 +222,7 @@ vector<int> k_cercanosPCASort(int k, doubleMatrix &matEntrenamiento, doubleVecto
 
 int modaPCA(int k, doubleMatrix &matEntrenamiento, doubleVector &imagen, baseDeDatos &baseSinTransformar){
 	std::vector<int> k_vecinos_cercanos(k, 0);
-	k_vecinos_cercanos = k_cercanosPCA(k, matEntrenamiento, imagen, baseSinTransformar);
+	k_vecinos_cercanos = k_cercanosPCASort(k, matEntrenamiento, imagen, baseSinTransformar);
 	std::vector<int> vectorModa(cantClases, 0);
 	int i = 0;
 	int aux;
