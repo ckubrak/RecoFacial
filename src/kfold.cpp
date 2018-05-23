@@ -6,7 +6,7 @@
 
 int cantClases = 41;
 int imgPorClase = 5;
-
+	
 using namespace std;
 
 //TODO:
@@ -40,11 +40,11 @@ vector<vector<pair<int, int>>> k_fold(baseDeDatos bd, int k, int pca, int alfa){
 		//std::cout << "Vector aux " << vectorAux.size() << std::endl;
 		//std::vector<std::vector<int>> vectorAux;
 		std::vector<std::vector<int>>  vectorAux;
-		vectorAux.push_back({1, 2});
-		vectorAux.push_back({3, 4});
-		vectorAux.push_back({5, 6});
-		vectorAux.push_back({7, 8});
-		vectorAux.push_back({9, 10});
+		vectorAux.push_back({1});
+		vectorAux.push_back({2});
+		vectorAux.push_back({3});
+		vectorAux.push_back({4});
+		vectorAux.push_back({5});
 
 
 		resultado[i] = (iFold(bd, vectorAux[i], pca, alfa));
@@ -91,21 +91,19 @@ vector<pair<int, int>> iFold(baseDeDatos bd, vector<int> indices, int pca, int a
 	std::vector<pair<int,int>> resultado(imagenesTest.size());
 	int k = 20;//Para que funcione. Definir cual usamos y COMO
 	if(pca == 1){
+
+		int filas, columnas;
+		filas = bd.size();
+	    columnas=bd[0].getWidth()*bd[0].getHeight();
+
+	    doubleMatrix matrizCaracteristicaMuestra(filas, doubleVector(alfa));
+	    doubleMatrix cambioDeBaseTras (alfa, doubleVector(columnas));
+		doubleVector media (columnas);
+		
+		PCA(trainingBase, cambioDeBaseTras, media, matrizCaracteristicaMuestra, alfa);
+		
 		while(i < imagenesTest.size()){
 			resultado[i].first = bd[i].getId();
-
-			int filas, columnas;
-			filas = bd.size();
-		    columnas=bd[0].getWidth()*bd[0].getHeight();
-
-		    doubleMatrix matrizCaracteristicaMuestra(filas, doubleVector(alfa));
-		    doubleMatrix cambioDeBaseTras (alfa, doubleVector(columnas));
-    		doubleVector media (columnas);
-
-			// doubleMatrix cambioDeBaseTras();
-			// doubleVector media();
-			// doubleMatrix matrizCaracteristicaMuestra();
-			PCA(trainingBase, cambioDeBaseTras, media, matrizCaracteristicaMuestra, alfa);
 
 		    doubleVector imagenNormalizada(columnas);
 		    imagenNormalizada = ucharToDoubleVector (imagenesTest[i].getData(), columnas);
