@@ -23,9 +23,9 @@ double mediaArmonica(double presicion, double recall)
 int main_kfold()
 {
     int method;
-    std::string trainSet = "../tests/testFullRed.in";
+    std::string trainSet = "../tests/testRed.in";
 
-    int pca = 0;
+    int pca = 1;
     int k = 5; // TODO variar
     int alfa = 5; // TODO variar
 
@@ -88,12 +88,15 @@ int main_kfold()
 
     for (int j = 0; j < truePositivesId.size(); j++)
     {
-        // std::cout << "Tpos "<<truePositivesId[j] << " TNeg" << 
         accuracyI[j] = accuracy(truePositivesId[j], trueNegativesId[j], falsePositivesId[j],falseNegativesId[j]);
-        // recallI[j] = recall(truePositivesId[j], falseNegativesId[j]);
-        // precisionI[j] = precision(truePositivesId[j], falseNegativesId[j]);
-        // mediaArmonicaI[j] = mediaArmonica(precisionI[j], recallI[j]);
     }
+    double acc = 0;
+    for (int l = 0; l < accuracyI.size(); l++)
+    {
+        acc += accuracyI[l];
+    }
+    acc = acc/accuracyI.size();
+    std::cout << "Acc "<<acc << std::endl;
 
     // std::vector<pair <int, int> > receivedAndExpected;
     // for (int i = 0; i<vectorDeVectores.size(); i++)
