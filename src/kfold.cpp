@@ -5,7 +5,7 @@
 #include "knn.h"
 
 int cantClases = 41;
-int imgPorClase = 5;
+int imgPorClase = 10;
 
 using namespace std;
 
@@ -23,7 +23,6 @@ vector<vector<pair<int, int>>> k_fold(baseDeDatos bd, int k, int pca, int alfa){
 	int i(0);
 	int j1(0);
 	int j2(1);
-
 	while(i < k){ // imgATestearPorClase también es la cantidad de folds que hacemos
 		//std::vector<int> vectorAux (imgATestearPorClase,0);
 		// int x = 1;//Creo que esto crearia todos los folds iguales
@@ -53,7 +52,7 @@ vector<vector<pair<int, int>>> k_fold(baseDeDatos bd, int k, int pca, int alfa){
 		for (int j=0; j<resultado[i].size();j++)
 		{
 
-			std::cout << resultado[i][j].first <<" "<< resultado[i][j].first << std::endl;
+			std::cout << resultado[i][j].first <<" "<< resultado[i][j].second << std::endl;
 			if (resultado[i][j].first != resultado[i][j].first )
 				std::cout << "Aca dio maaaaaaaaaal"<<std::endl;
 		}
@@ -73,10 +72,8 @@ vector<pair<int, int>> iFold(baseDeDatos bd, vector<int> indices, int pca, int a
 	//int k = 1;
 	int i = 0;
 	int cantImagenesTotales = cantClases * imgPorClase;//en este caso 41*10
-	std::cout << bd.size() << "tamano bD"<<std::endl;
 	while(i < cantImagenesTotales){
 		if(!apareceEn(bd[i], indices)){
-			std::cout << i << " entro al if"<<std::endl;
 			trainingBase.push_back(bd[i]);
 		}else{
 			imagenesTest.push_back(bd[i]);
