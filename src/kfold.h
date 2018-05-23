@@ -18,5 +18,6 @@
 std::vector<std::vector<std::pair<int, int>>> k_fold(baseDeDatos bd, int k, int pca, int alfa);
 std::vector<std::pair<int, int>> iFold(baseDeDatos bd, std::vector<int> indices, int pca, int alfa);
 bool apareceEn(Imagen img, std::vector<int> indices);
-
+int cantidadImagenesPorClase(baseDeDatos& bd);
+int cantidadClases(baseDeDatos& bd);
 #endif
