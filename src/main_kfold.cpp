@@ -23,11 +23,11 @@ double mediaArmonica(double presicion, double recall)
 int main_kfold()
 {
     int method;
-    std::string trainSet = "../tests/testFullRed.in";
+    std::string trainSet = "../tests/testRed.in";
 
-    int pca = 0;
+    int pca = 1;
     int k = 5; // TODO variar
-    int alfa = 5; // TODO variar
+    int alfa = 1; // TODO variar
 
     baseDeDatos baseEntrenamiento = cargarBD(trainSet);
     std::cout << "Size: " << baseEntrenamiento.size() << std::endl;
