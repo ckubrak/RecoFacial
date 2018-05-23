@@ -18,6 +18,8 @@ double distanciaEuclidea(const doubleVector &v1, const doubleVector &v2);
 vector<int> k_cercanos(int k, baseDeDatos &matEntrenamiento, Imagen &imagenAEvaluar);
 vector<int> k_cercanosSort(int k, baseDeDatos &matEntrenamiento, Imagen &imagenAEvaluar);
 int moda(int k, baseDeDatos &matEntrenamiento, Imagen &imagen);
+int maximoIndice(vector<int> &vectorModa);
+
 
 double distanciaEuclideaPCA(doubleVector &imag1, doubleVector &imag2);
 vector<int> k_cercanosPCA(int k, doubleMatrix &matEntrenamiento, doubleVector &imagenAEvaluar, baseDeDatos &baseSinTransformar);

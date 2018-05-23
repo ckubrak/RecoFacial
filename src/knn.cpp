@@ -108,13 +108,23 @@ int moda(int k, baseDeDatos &matEntrenamiento, Imagen &imagen){
 	std::vector<int> vectorModa(cantClases, 0);
 	int i = 0;
 	int aux;
-	while(i < k){
-		aux = k_vecinos_cercanos[i];
+	while(i < k_vecinos_cercanos.size() ){
+		aux = k_vecinos_cercanos[i] - 1;
 		vectorModa[aux] ++;
 		i++;
 	}
-	int result = *max_element(vectorModa.begin(), vectorModa.end());
+	//int result = *max_element(vectorModa.begin(), vectorModa.end());
+	int result = maximoIndice(vectorModa);
     return result;
+}
+
+int maximoIndice(vector<int> &vectorModa){
+	int maximoElemento = *max_element(vectorModa.begin(), vectorModa.end());
+	for(int i = 0; i < vectorModa.size(); i++){
+		if(vectorModa[i] == maximoElemento){
+			return i+1;
+		}
+	}
 }
 
 //PCA + KNN

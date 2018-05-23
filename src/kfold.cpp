@@ -114,7 +114,7 @@ vector<pair<int, int>> iFold(baseDeDatos bd, vector<int> indices, int pca, int a
 	if(pca == 0){//Solo KNN
 		while(i < imagenesTest.size()){
 			std::pair <int,int> parResultado;
-			parResultado = std::make_pair (bd[i].getId(),moda(k,trainingBase,imagenesTest[i]));
+			parResultado = std::make_pair (imagenesTest[i].getId(),moda(k,trainingBase,imagenesTest[i]));
 			resultado[i] = parResultado;
 			// resultado[i].first = bd[i].getId();//El resultado que debería dar
 			// resultado[i].second = moda(k, trainingBase, imagenesTest[i]);//El resultado que dió nuestro algoritmo
