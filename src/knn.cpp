@@ -241,6 +241,6 @@ int modaPCA(int k, doubleMatrix &matEntrenamiento, doubleVector &imagen, baseDeD
 		vectorModa[aux] ++;
 		i++;
 	}
-	int result = *max_element(vectorModa.begin(), vectorModa.end());
+	int result = maximoIndice(vectorModa);
     return result;
 }
