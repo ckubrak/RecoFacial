@@ -36,7 +36,7 @@ vector<int> k_cercanosSort(int k, baseDeDatos &matEntrenamiento, Imagen &imagenA
 	int j = 0;
 	double distancia = 0;
 	std::pair<double,int> indiceDistancia;
-    std::vector<std::pair<double,int>> vectorKCercanos (k);
+    std::vector<std::pair<double,int>> vectorKCercanos;
     std::vector<int> k_vecinos_cercanos (k);//RESULTADO
 	
 	int tamMatEntrenamiento = 0;
@@ -46,26 +46,17 @@ vector<int> k_cercanosSort(int k, baseDeDatos &matEntrenamiento, Imagen &imagenA
 		distancia = distanciaEuclidea(matEntrenamiento[i], imagenAEvaluar);
 		indiceDistancia.first = distancia;
 		indiceDistancia.second = matEntrenamiento[i].getId();
-		vectorKCercanos[i] = indiceDistancia;
+		vectorKCercanos.push_back(indiceDistancia);
 		i++;
 	}
-
 	std::sort (std::begin(vectorKCercanos), std::end(vectorKCercanos));
 
 	//Armo el vector que voy a devolver
-	//std::vector<int> > k_vecinos_cercanos (k);//De longitud k, inicializado en ceros. 
 
-
-	pair<double, int> pairAux;
 	//Recorro lo que me quedó en la lista de prioridad y lo pongo en el vector. Agarro solo los indices. 
     for (int x = 0; x < k; x++){
-
-	//while(x < 20){
-		//int aux = vectorKCercanos[i].second;
 		k_vecinos_cercanos[x] = vectorKCercanos[x].second;
-		//k_vecinos_cercanos.push_back(aux);
 	}
-
 	return k_vecinos_cercanos;
 }
 
