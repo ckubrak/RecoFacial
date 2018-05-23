@@ -6,9 +6,6 @@
 
 int main(int argc, char* argv[])
 {
-    //     std::cerr << "Cantidad de parametros erronea";
-    //     return 1;
-    // }
     // int method;
     // std::string trainSet, testSet, results;
     // for (int i = 1; i < argc; ++i)
@@ -29,7 +26,7 @@ int main(int argc, char* argv[])
     //     {
     //         testSet = argv[i+1];
     //     }
-    //     else if (toParse == "-o")
+    //      else if (toParse == "-o")
     //     {
     //         results = argv[i+1];
     //     }
@@ -47,20 +44,28 @@ int main(int argc, char* argv[])
     // while (std::getline(input, line))
     // {
 
+
+
     //     std::size_t found = line.find_first_of(", ");      //primer delimitador
     //     imagen = line.substr(0, found);
+ 
+    //     line = line.substr(found, line.size()-1);
 
+    //     std::size_t inicio = line.find_first_not_of(", "); //inicio de datos significativos
+    //       line = line.substr(inicio, line.size()-1);
+    //      int id = std::stoi (line);
     //     Imagen nuevaImagen(imagen,-1);
-
+ 
     //     if (method == 0)
+    //     {
+    //         ofstream fileOUT("filename.txt", ios::app);
+    //         result = moda(k, baseEntrenamiento, nuevaImagen);
+    //     }
+    //    else 
     //     {
     //         result = moda(k, baseEntrenamiento, nuevaImagen);
     //     }
-    //     else
-    //     {
-    //         // result = moda(k, baseEntrenamiento, nuevaImagen);
-    //     }
     // }
-
+    // return 0;
     return main_kfold();
-}
+} 

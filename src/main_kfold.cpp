@@ -27,7 +27,7 @@ int main_kfold()
 
     int pca = 1;
     int k = 5; // TODO variar
-    int alfa = 1; // TODO variar
+    int alfa = 20; // TODO variar
 
     baseDeDatos baseEntrenamiento = cargarBD(trainSet);
     std::cout << "Size: " << baseEntrenamiento.size() << std::endl;
