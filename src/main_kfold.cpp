@@ -91,9 +91,6 @@ int main_kfold()
     for (int j = 0; j < truePositivesId.size(); j++)
     {
         accuracyI[j] = accuracy(truePositivesId[j], trueNegativesId[j], falsePositivesId[j],falseNegativesId[j]);
-        std::cout << "as ";
-        std::cout <<accuracyI[j] << std::endl;
-        // std::cout << "L" << j <<" " <<accuracyI[j]<<std::endl;
     }
     double acc = 0;
     for (int l = 0; l < accuracyI.size(); l++)
