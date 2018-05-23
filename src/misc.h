@@ -7,22 +7,9 @@
 #include "kfold.h"
 
 
-double presicion(int truePos, int falsePos)
-{
-    return double(truePos/(truePos + falsePos));
-}
-double recall(int truePos, int falseNeg)
-{
-    return double(truePos/(truePos + falseNeg));
-}
-
-double accuracy(int truePos, int trueNeg, int falsePos, int falseNeg)
-{
-    return double(truePos + trueNeg /(truePos + trueNeg + falsePos + falseNeg));
-}
-double mediaArmoncia(double presicion, double recall)
-{
-    return 2 * (presicion*recall/presicion + recall);
-}
+double presicion(int truePos, int falsePos);
+double recall(int truePos, int falseNeg);
+double accuracy(int truePos, int trueNeg, int falsePos, int falseNeg);
+double mediaArmonica(double presicion, double recall);
 int main_kfold();
 #endif

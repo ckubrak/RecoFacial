@@ -47,7 +47,16 @@ vector<vector<pair<int, int>>> k_fold(baseDeDatos bd, int k, int pca, int alfa){
 		vectorAux.push_back({9, 10});
 
 
-		resultado[i] = iFold(bd, vectorAux[i], pca, alfa);
+		resultado[i] = (iFold(bd, vectorAux[i], pca, alfa));
+
+		std::cout << "Resultado en i = " << i<< " :";
+		for (int j=0; j<resultado[i].size();j++)
+		{
+
+			std::cout << resultado[i][j].first <<" "<< resultado[i][j].first << std::endl;
+			if (resultado[i][j].first != resultado[i][j].first )
+				std::cout << "Aca dio maaaaaaaaaal"<<std::endl;
+		}
 		i++;
 	}
 	return resultado;
@@ -63,9 +72,11 @@ vector<pair<int, int>> iFold(baseDeDatos bd, vector<int> indices, int pca, int a
 
 	//int k = 1;
 	int i = 0;
-	int cantImagenesTotales = cantClases * 10;//en este caso 41*10
+	int cantImagenesTotales = cantClases * imgPorClase;//en este caso 41*10
+	std::cout << bd.size() << "tamano bD"<<std::endl;
 	while(i < cantImagenesTotales){
 		if(!apareceEn(bd[i], indices)){
+			std::cout << i << " entro al if"<<std::endl;
 			trainingBase.push_back(bd[i]);
 		}else{
 			imagenesTest.push_back(bd[i]);
@@ -106,8 +117,11 @@ vector<pair<int, int>> iFold(baseDeDatos bd, vector<int> indices, int pca, int a
 	}
 	if(pca == 0){//Solo KNN
 		while(i < imagenesTest.size()){
-			resultado[i].first = bd[i].getId();//El resultado que debería dar
-			resultado[i].second = moda(k, trainingBase, imagenesTest[i]);//El resultado que dió nuestro algoritmo
+			std::pair <int,int> parResultado;
+			parResultado = std::make_pair (bd[i].getId(),moda(k,trainingBase,imagenesTest[i])); 
+			resultado[i] = parResultado;
+			// resultado[i].first = bd[i].getId();//El resultado que debería dar
+			// resultado[i].second = moda(k, trainingBase, imagenesTest[i]);//El resultado que dió nuestro algoritmo
 			// std::cout << "Valor de i: " << i << std::endl;
 			// std::cout << "Size: " << imagenesTest.size() << std::endl;
 			i++;
