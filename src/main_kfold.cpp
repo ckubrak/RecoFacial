@@ -14,18 +14,20 @@ double recall(int truePos, int falseNeg)
 
 double accuracy(int truePos, int trueNeg, int falsePos, int falseNeg)
 {
-    return double(truePos + trueNeg /(truePos + trueNeg + falsePos + falseNeg));
+    std::cout << truePos << " " << trueNeg << " " << falsePos << " " <<  falseNeg<<std::endl;
+    double top = double(truePos) + double(trueNeg);
+    return top/(truePos + trueNeg + falsePos + falseNeg);
 }
 double mediaArmonica(double presicion, double recall)
 {
-    return 2 * (presicion*recall/presicion + recall);
+    return 2 * (presicion*recall/(presicion + recall));
 }
 int main_kfold()
 {
     int method;
-    std::string trainSet = "../tests/testRed.in";
+    std::string trainSet = "../tests/testFullBig.in";
 
-    int pca = 1;
+    int pca = 0;
     int k = 5; // TODO variar
     int alfa = 20; // TODO variar
 
@@ -89,6 +91,9 @@ int main_kfold()
     for (int j = 0; j < truePositivesId.size(); j++)
     {
         accuracyI[j] = accuracy(truePositivesId[j], trueNegativesId[j], falsePositivesId[j],falseNegativesId[j]);
+        std::cout << "as ";
+        std::cout <<accuracyI[j] << std::endl;
+        // std::cout << "L" << j <<" " <<accuracyI[j]<<std::endl;
     }
     double acc = 0;
     for (int l = 0; l < accuracyI.size(); l++)
