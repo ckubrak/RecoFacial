@@ -23,7 +23,7 @@ double mediaArmonica(double presicion, double recall)
 int main_kfold()
 {
     int method;
-    std::string trainSet = "../tests/testRed.in";
+    std::string trainSet = "../tests/testFullRed.in";
 
     int pca = 0;
     int k = 5; // TODO variar
@@ -36,7 +36,10 @@ int main_kfold()
 
     for (int fold = 0; fold < vectorDeFolds.size(); fold++ )
     {
+        for (int i = 0; i < vectorDeFolds[fold].size(); i++)
+        {
 
+        }
     }
     // std::cout << "Size vectorDeVectores: " << vectorDeVectores.size() << std::endl;
     
