@@ -3,7 +3,7 @@
 #include "knn.h"
 #include "kfold.h"
 
-double presicion(int truePos, int falsePos)
+double precision(int truePos, int falsePos)
 {
     return double(truePos/(truePos + falsePos));
 }
@@ -34,19 +34,65 @@ int main_kfold()
 
     vector<vector<pair<int, int> > > vectorDeFolds = k_fold(baseEntrenamiento, k, pca, alfa);
 
+            // CAMBIAR 41 por cantSujetos
+            int cantSujetos = 41; 
+    std::vector<double> accuracyI(cantSujetos-1,0.0);
+    std::vector<double> recallI(cantSujetos-1,0.0);
+    std::vector<double> precisionI(cantSujetos-1,0.0);
+    std::vector<double> mediaArmonicaI(cantSujetos-1,0.0);
+
+        std::vector<int> truePositivesId(cantSujetos-1,0);
+        std::vector<int> trueNegativesId(cantSujetos-1,0);
+        std::vector<int> falsePositivesId(cantSujetos-1,0);
+        std::vector<int> falseNegativesId(cantSujetos-1,0);
     for (int fold = 0; fold < vectorDeFolds.size(); fold++ )
     {
+
+        std::fill(truePositivesId.begin(), truePositivesId.end(), 0);
+        std::fill(falsePositivesId.begin(), falsePositivesId.end(), 0);
+        std::fill(trueNegativesId.begin(), trueNegativesId.end(), 0);
+        std::fill(falseNegativesId.begin(), falseNegativesId.end(), 0);
+
         for (int i = 0; i < vectorDeFolds[fold].size(); i++)
         {
 
+            for (int id = 1; id <= cantSujetos; id++)
+            {
+
+                if (id == vectorDeFolds[fold][i].first)
+                {
+                    if (vectorDeFolds[fold][i].first == vectorDeFolds[fold][i].second)
+                    {
+                        truePositivesId[id-1] += 1;
+                    }
+                    else
+                    {
+                        falseNegativesId[id-1] += 1;
+                    }
+                }
+                else
+                {
+
+                    if (vectorDeFolds[fold][i].first == vectorDeFolds[fold][i].second)
+                    {
+                        falsePositivesId[id-1] += 1;
+                    }
+                    else
+                    {
+                        trueNegativesId[id-1] += 1;
+                    }
+                }
+            }
         }
     }
-    // std::cout << "Size vectorDeVectores: " << vectorDeVectores.size() << std::endl;
-    
-    // std::vector<double> presicions; 
-    // std::vector<double> recalls;
-    // std::vector<double> accuracys;
-    // std::vector<double> mediaArmonicas;
+
+    for (int j = 0; j < truePositivesId.size(); j++)
+    {
+        accuracyI[j] = accuracy(truePositivesId[j], trueNegativesId[j], falsePositivesId[j],falseNegativesId[j]);
+        recallI[j] = recall(truePositivesId[j], falseNegativesId[j]);
+        precisionI[j] = precision(truePositivesId[j], falseNegativesId[j]);
+        mediaArmonicaI[j] = mediaArmonica(precisionI[j], recallI[j]);
+    }
 
     // std::vector<pair <int, int> > receivedAndExpected;
     // for (int i = 0; i<vectorDeVectores.size(); i++)
