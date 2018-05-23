@@ -25,7 +25,7 @@ int main_kfold()
     int method;
     std::string trainSet = "../tests/testFullRed.in";
 
-    int pca = 0;
+    int pca = 1;
     int k = 5; // TODO variar
     int alfa = 5; // TODO variar
 
