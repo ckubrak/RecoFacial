@@ -23,9 +23,9 @@ double mediaArmonica(double presicion, double recall)
 int main_kfold()
 {
     int method;
-    std::string trainSet = "../tests/testRed.in";
+    std::string trainSet = "../tests/testFullRed.in";
 
-    int pca = 1;
+    int pca = 0;
     int k = 5; // TODO variar
     int alfa = 5; // TODO variar
 
