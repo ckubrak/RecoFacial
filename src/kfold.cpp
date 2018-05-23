@@ -101,7 +101,7 @@ vector<pair<int, int>> iFold(baseDeDatos bd, vector<int> indices, int pca, int a
 		PCA(trainingBase, cambioDeBaseTras, media, matrizCaracteristicaMuestra, alfa);
 
 		while(i < imagenesTest.size()){
-			resultado[i].first = imagenesTest[i].getId();
+			resultado[i].first = imagenesTest[i].getId();//El id original, el que debería dar. 
 
 		    doubleVector imagenNormalizada(columnas);
 		    imagenNormalizada = ucharToDoubleVector (imagenesTest[i].getData(), columnas);

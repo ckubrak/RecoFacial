@@ -138,7 +138,6 @@ double distanciaEuclideaPCA(doubleVector &imag1, doubleVector &imag2) {
 		x = imag2[i] - imag1[i];
 		distancia += x*x;
 	}
-	//Ganaríamos algo sacando la raiz?
 	return sqrt(distancia);
 }
 
@@ -207,12 +206,12 @@ vector<int> k_cercanosPCASort(int k, doubleMatrix &matEntrenamiento, doubleVecto
 	std::pair<double,int> indiceDistancia;
     std::vector<std::pair<double,int>> vectorKCercanos;
 	
-	std::vector<int> k_vecinos_cercanos(k);//Resultado 
+	std::vector<int> k_vecinos_cercanos;//Resultado 
 
 	int tamMatEntrenamiento = 0;
 	tamMatEntrenamiento =  matEntrenamiento.size();
 
-	while(i < tamMatEntrenamiento){
+	while( i < matEntrenamiento.size() ){
 		distancia = distanciaEuclideaPCA(matEntrenamiento[i], imagenAEvaluar);
 		indiceDistancia.first = distancia;
 		indiceDistancia.second = baseSinTransformar[i].getId();
@@ -222,9 +221,9 @@ vector<int> k_cercanosPCASort(int k, doubleMatrix &matEntrenamiento, doubleVecto
 	std::sort (std::begin(vectorKCercanos), std::end(vectorKCercanos));
 
 	for(int x = 0; x < k; x++){
-		k_vecinos_cercanos[x] = vectorKCercanos[x].second;
+		k_vecinos_cercanos.push_back(vectorKCercanos[x].second);
 	}
-	
+
 	return k_vecinos_cercanos;
 }
 
@@ -235,9 +234,9 @@ int modaPCA(int k, doubleMatrix &matEntrenamiento, doubleVector &imagen, baseDeD
 	k_vecinos_cercanos = k_cercanosPCASort(k, matEntrenamiento, imagen, baseSinTransformar);
 	std::vector<int> vectorModa(cantClases, 0);
 	int i = 0;
-	int aux;
-	while(i < k){
-		aux = k_vecinos_cercanos[i];
+	int aux = 0;
+	while( i < k_vecinos_cercanos.size() ){
+		aux = k_vecinos_cercanos[i] - 1;
 		vectorModa[aux] ++;
 		i++;
 	}
