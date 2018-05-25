@@ -7,13 +7,13 @@ double precision(int truePos, int falsePos)
 {
     if(truePos+falsePos == 0)
         return -1;
-    return double(truePos/(truePos + falsePos));
+    return double(truePos)/(truePos + falsePos);
 }
 double recall(int truePos, int falseNeg)
 {
     if(truePos+falseNeg == 0)
         return -1;
-    return double(truePos/(truePos + falseNeg));
+    return double(truePos)/(truePos + falseNeg);
 }
 
 double accuracy(int truePos, int trueNeg, int falsePos, int falseNeg)
