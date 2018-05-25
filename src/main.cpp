@@ -11,11 +11,9 @@ int main(int argc, char* argv[])
     for (int i = 1; i < argc; ++i)
     {
 
-        std::cout <<argv[i] <<std::endl;
         std::string toParse = argv[i];
         if (toParse == "-m")
         {
-            std::cout << "m";
             method = atoi(argv[i+1]);
         }
         else if (toParse == "-i") 
@@ -34,9 +32,10 @@ int main(int argc, char* argv[])
     }
 
     int result;
-    int k = 5; // TODO variar
-    int alfa = 5; // TODO variar
     baseDeDatos baseEntrenamiento = cargarBD(testSet);
+
+    int k = 2; // TODO variar
+    int alfa = 20; // TODO variar
     std::ifstream input(testSet);
     std::string imagen;
     std::string line;
@@ -46,22 +45,21 @@ int main(int argc, char* argv[])
     std::vector<std::vector<int> > vectordeKCercanos;
 
 
-		    int filas, columnas;
-		    filas = baseEntrenamiento.size();
-	        columnas=baseEntrenamiento[0].getWidth()*baseEntrenamiento[0].getHeight();
+    int filas, columnas;
+    filas = baseEntrenamiento.size();
+    columnas=baseEntrenamiento[0].getWidth()*baseEntrenamiento[0].getHeight();
 
-		    doubleMatrix matrizCaracteristicaMuestra(baseEntrenamiento.size(), doubleVector(alfa));
-	        doubleMatrix cambioDeBaseTras (alfa, doubleVector(columnas));
-		    doubleVector media (columnas);
+    doubleMatrix matrizCaracteristicaMuestra(baseEntrenamiento.size(), doubleVector(alfa,0.0));
+	doubleMatrix cambioDeBaseTras (alfa, doubleVector(columnas,0.0));
+    doubleVector media (columnas,0.0);
+
     if (method == 1)
     {
+
             PCA (baseEntrenamiento, cambioDeBaseTras, media, matrizCaracteristicaMuestra, alfa);
     }
     while (std::getline(input, line))
     {
-
-
-
         std::size_t found = line.find_first_of(", ");      //primer delimitador
         imagen = line.substr(0, found);
  
@@ -81,17 +79,15 @@ int main(int argc, char* argv[])
         {
 
             doubleVector imagenVector = ucharToDoubleVector (nuevaImagen.getData(), columnas);
+
+            imagenVector =  normalizarImagen (imagenVector, media, cambioDeBaseTras, matrizCaracteristicaMuestra);
             result = modaPCA(k, matrizCaracteristicaMuestra, imagenVector, baseEntrenamiento);
-            // result = moda(k, baseEntrenamiento, nuevaImagen);
         }
 
         totalImgs++;
-        std::cout << id << " " << result<<std::endl;
         if (id == result)
         {
             lePegamos++;
-            std::cout << "Le pegamos " << lePegamos << std::endl;
-            std::cout << "Total " << totalImgs << std::endl;
         }
 
         ofstream fileOUT(results, ios::app);
@@ -100,7 +96,6 @@ int main(int argc, char* argv[])
 
     }
 
-    std::cout << "Paramtros";
     ofstream parametros("parametros.txt", ios::app);
     parametros << "Correctas: " << lePegamos << " sobre: " << totalImgs << " => " << (double(lePegamos))/totalImgs<< std::endl;
     parametros << "Parametros usados: "<< std::endl;
