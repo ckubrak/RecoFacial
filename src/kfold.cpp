@@ -13,7 +13,7 @@ using namespace std;
 //	1) Definir el k (radio) que vamos a usar. Lo pasamos por input?
 //	2) Definir como pasar el k de k_fold
 
-vector<vector<pair<int, int>>> k_fold(baseDeDatos bd, int k, int pca, int alfa){
+vector<vector<pair<int, int>>> k_fold(baseDeDatos bd, int k, int pca, int alfa, int kknn){
 	//Tendríamos que usar 5 fold. O sea, imagenesPorClase = 2.
 
 	cantClases = cantidadClases(bd);
@@ -44,15 +44,12 @@ vector<vector<pair<int, int>>> k_fold(baseDeDatos bd, int k, int pca, int alfa){
 		// vectorAux.push_back({3});
 		// vectorAux.push_back({4});
 		// vectorAux.push_back({5});
-		resultado[i] = (iFold(bd, vectorDeIndices[i], pca, alfa));
+		resultado[i] = (iFold(bd, vectorDeIndices[i], pca, alfa, kknn));
 
 		std::cout << "Resultado en i = " << i<< " :";
 		for (int j=0; j<resultado[i].size();j++)
 		{
-
 			std::cout << resultado[i][j].first <<" "<< resultado[i][j].second << std::endl;
-			if (resultado[i][j].first != resultado[i][j].first )
-				std::cout << "Aca dio maaaaaaaaaal"<<std::endl;
 		}
 		i++;
 	}
@@ -60,7 +57,7 @@ vector<vector<pair<int, int>>> k_fold(baseDeDatos bd, int k, int pca, int alfa){
 }
 
 //Los indices que recibe iFold son qué imagenes de las 10 vamos a tomar para testear.
-vector<pair<int, int>> iFold(baseDeDatos bd, vector<int> indices, int pca, int alfa	){
+vector<pair<int, int>> iFold(baseDeDatos bd, vector<int> indices, int pca, int alfa	,int k){
 
 	cantClases = cantidadClases(bd);
 	imgPorClase = cantidadImagenesPorClase(bd);
@@ -87,7 +84,6 @@ vector<pair<int, int>> iFold(baseDeDatos bd, vector<int> indices, int pca, int a
 	i = 0;
 	//Armo vector resultado vacío. En cada índice va el resultado de evaluar cada una de las imagenes a testear
 	std::vector<pair<int,int>> resultado(imagenesTest.size());
-	int k = 20;//Para que funcione. Definir cual usamos y COMO
 	if(pca == 1){
 
 		int filas, columnas;

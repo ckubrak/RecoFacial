@@ -67,5 +67,9 @@ int main(int argc, char* argv[])
     //     }
     // }
     // return 0;
-    return main_kfold();
+    int pca = atoi(argv[1]);
+    int k = atoi(argv[2]);
+    int alfa = atoi(argv[3]);
+    int kknn = atoi(argv[4]);
+    return main_kfold(pca, k, alfa, kknn);
 } 

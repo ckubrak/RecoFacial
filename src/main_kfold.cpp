@@ -22,19 +22,15 @@ double mediaArmonica(double presicion, double recall)
 {
     return 2 * (presicion*recall/(presicion + recall));
 }
-int main_kfold()
+int main_kfold(int pca, int k, int alfa, int kknn)
 {
     int method;
-    std::string trainSet = "../tests/testFullBig.in";
-
-    int pca = 0;
-    int k = 5; // TODO variar
-    int alfa = 20; // TODO variar
+    std::string trainSet = "../tests/testFullRed.in";
 
     baseDeDatos baseEntrenamiento = cargarBD(trainSet);
     std::cout << "Size: " << baseEntrenamiento.size() << std::endl;
 
-    vector<vector<pair<int, int> > > vectorDeFolds = k_fold(baseEntrenamiento, k, pca, alfa);
+    vector<vector<pair<int, int> > > vectorDeFolds = k_fold(baseEntrenamiento, k, pca, alfa, kknn);
 
             // CAMBIAR 41 por cantSujetos
             int cantSujetos = 41; 
