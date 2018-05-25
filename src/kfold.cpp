@@ -94,20 +94,20 @@ vector<pair<int, int>> iFold(baseDeDatos bd, vector<int> indices, int pca, int a
 		filas = bd.size();
 	    columnas=bd[0].getWidth()*bd[0].getHeight();
 
-	    doubleMatrix matrizCaracteristicaMuestra(filas, doubleVector(alfa));
-	    doubleMatrix cambioDeBaseTras (alfa, doubleVector(columnas));
+		doubleMatrix matrizCaracteristicaMuestra(trainingBase.size(), doubleVector(alfa));
+	  doubleMatrix cambioDeBaseTras (alfa, doubleVector(columnas));
 		doubleVector media (columnas);
 
 		PCA(trainingBase, cambioDeBaseTras, media, matrizCaracteristicaMuestra, alfa);
 
 		while(i < imagenesTest.size()){
-			resultado[i].first = imagenesTest[i].getId();//El id original, el que debería dar. 
+			resultado[i].first = imagenesTest[i].getId();//El id original, el que debería dar.
 
 		    doubleVector imagenNormalizada(columnas);
 		    imagenNormalizada = ucharToDoubleVector (imagenesTest[i].getData(), columnas);
 
 			imagenNormalizada = normalizarImagen(imagenNormalizada, media, cambioDeBaseTras, matrizCaracteristicaMuestra);
-			resultado[i].second = modaPCA(k, matrizCaracteristicaMuestra, imagenNormalizada, bd);//PCA+KNN
+			resultado[i].second = modaPCA(k, matrizCaracteristicaMuestra, imagenNormalizada, trainingBase);//PCA+KNN
 			i++;
 		}
 	}

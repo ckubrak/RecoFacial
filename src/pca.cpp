@@ -254,10 +254,6 @@ int MetodoPotencias(doubleMatrix A, doubleVector x,int nroIter,float tol, double
 
   x = vectorXEscalar(x, 1.0/normax);//normalizamos x
 
-  // for (int i= 0; i<x.size(); ++i) {
-  //   std::cout << x[i]  << " ";
-  // }nroIter
-  //std::cout << std::endl;
   doubleVector y(sz); // guarda el valor de la ultima iteracion
   int k=0;
 
@@ -265,22 +261,13 @@ int MetodoPotencias(doubleMatrix A, doubleVector x,int nroIter,float tol, double
   {
 
     y = matrizXVector(A, x);
-  //  std::cout << "despues de llamar matrizXvector: \n";
-    // for (int i= 0; i<y.size(); ++i) {
-    //   std::cout << y[i]  << " ";
-    // }
-    // std::cout << std::endl;
-
     normay = norma2Vectorial(y);
-    //std::cout << "normay: " << normay << "\n";
+
     if (normay < 0.0000001)  // considero que la norma es cero, no puedo dividir por ella
-    { //PENDIENTE VER QUE RETORNAR CUANDO LA NORMA TIENDE A CERO
+    {
         lambda = 0;
         break;  //no hubo convergencia
     }
-    //auxlambda=lambda;
-    //lambda=normay/normax;
-    //lambda=normay;
     y = vectorXEscalar(y, 1/normay);
 
     r = fabs(normax-normay); // variacion del autovalor en dos iteraciones sucesivas
@@ -430,64 +417,32 @@ void PCA (baseDeDatos muestra, doubleMatrix &cambioDeBaseTras, doubleVector &med
 
   //std::cout << "dentro de PCA\n";
   filas = muestra.size();
-  std::cout << "filas: " << filas << "\n";
+//  std::cout << "filas: " << filas << "\n";
 
   columnas=muestra[0].getWidth()*muestra[0].getHeight(); // cantidad de pixeles de la imagen. Asumiendo que son todas de la misma dimension uso lo de la primera
-  std::cout << "columnas: " << columnas << "\n";
-
-  //doubleVector media;
-  //media.reserve(columnas);
+//  std::cout << "columnas: " << columnas << "\n";
 
   media.assign (columnas, 0.0);
-
-  // for (int j=0; j<columnas;j++)
-  //   media[j] = 0.0;
-  // std::cout << "fin inicializacion media\n";
 
   //calcular la media de cada columnas
   for (int j=0;j<columnas;j++){
     for (int i=0;i<filas;i++){
-  //    std::cout << (double)muestra[i].getData()[j] << " ";
       media[j] += (double) muestra[i].getData()[j];
     }
-    //std::cout << "\n";
   }
 
-  //std::cout << "media:\n";
   for (int j=0;j<columnas;j++){
     media[j]=media[j]/filas;
   }
 
-  // //imprimir media
-  // for (int j=0;j<columnas;j++){
-  //     std::cout << media[j] << " ";
-  // }
-  // std::cout << "\n";
-
   doubleMatrix X(filas, doubleVector(columnas));
 //  std::cout << "antes de armar matriz\n";
   ArmarMatrizX(muestra, media, filas, columnas, X);
-// //imprimir X
-//   for (int i=0;i<filas;i++){
-//     std::cout << "va a imprimir fila X[i]: " << i << std::endl;
-//     for (int j=0;j<columnas;j++){
-//       std::cout << X[i][j] << " ";
-//     }
-//     std::cout <<  "\n";
-//   }
 
 //Calcular Xt*X = Matriz de covarianza. Por tamaños, se calcula X * Xt y despues se recalculan los valores singulares de la otra
   doubleMatrix mcov(filas, doubleVector(filas));
 
   CalcularCovarianza (X, filas, columnas, mcov);
-
-  // for (int i=0;i<filas;i++){
-  //   std::cout << "covarianza calculada fila mcov[i]: " << i << std::endl;
-  //   for (int j=0;j<filas;j++){
-  //     std::cout << mcov[i][j] << " ";
-  //   }
-  //   std::cout <<  "\n";
-  // }
 
   // LLamar al metodo de deflacion para calcular los autovalores y autovectores
   // usar el parametro alfa para ver cuantos hay que averiguar
@@ -498,24 +453,13 @@ void PCA (baseDeDatos muestra, doubleMatrix &cambioDeBaseTras, doubleVector &med
   int r= Deflacion(mcov, alfa, autovalores, autovectoresTras);
   //std::cout << "despues de deflacion: " << std::endl;
 
-  // for (int i=0;i<mcov.size();i++){
-  //   std::cout <<  "va a imprimir fila autovectores[i]: " << i << std::endl;
-  //   for (int j=0;j<filas;j++){
-  //     std::cout << mcov[i][j] << " ";
-  //   }
-  //   std::cout <<  "\n";
-  // }
-
   // Convertir los autovalores y autovectores calculados en los correspondientes de la matriz Xt * X
   //Ui=Xt*autovectores(i)/sqrt(autovalores(i))
   //Primero calcular los autovalores
-  for (int i=0;i<alfa;i++){
-    //std::cout << "va a imprimir autovalores[i]: " << i << ": ";
+  for (int i=0;i<alfa;i++)
+  {
     autovalores[i]=sqrt(autovalores[i]);
-
-    //std::cout << autovalores[i] << " ";
   }
-  //std::cout <<  "\n";
 
   //Usando los autovalores calculados recalcular los autovectores de Xt * X (que es la verdadera matriz covarianza)
   //for (int i=0;i<alfa;i++){
@@ -525,7 +469,6 @@ void PCA (baseDeDatos muestra, doubleMatrix &cambioDeBaseTras, doubleVector &med
     // filas=cantidad de imagenes, columnas= cantidad de variables originales
     // resultado: alfa * columnas. Traspuesto: columnas * alfa
 
-//TODO: inicializar media y trans caracteristica en main
     //cambioDeBase = matrizTraspuesta (matrizXMatriz (autovectores, X));
     // dimension cambioDeBase: alfa * filas (cantidad de imagenes)
     for (int i=0; i<alfa; ++i)
@@ -533,7 +476,13 @@ void PCA (baseDeDatos muestra, doubleMatrix &cambioDeBaseTras, doubleVector &med
 
     for (int i=0; i<alfa; ++i)
       cambioDeBaseTras[i].assign(columnas, 0.0);
-    cambioDeBaseTras = matrizXMatriz (autovectoresTras, X); // un autovector x fila
+//    cambioDeBaseTras = matrizXMatriz (autovectoresTras, X); // un autovector x fila
+      for (int i=0; i<alfa; ++i)
+      {
+        cambioDeBaseTras[i]=matrizXVector(matrizTraspuesta(X), autovectoresTras[i]);
+        // multiplicar la matriz Xt por el i-esimo autovector
+
+      }
 
     // TC: traspuesta (Ut * Xt) = X * U  (ycomo nuestra U ya esta traspuesta hay que trasponerla)
     for (int i=0; i<filas; ++i)
