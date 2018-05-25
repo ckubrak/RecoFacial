@@ -46,11 +46,11 @@ vector<vector<pair<int, int>>> k_fold(baseDeDatos bd, int k, int pca, int alfa, 
 		// vectorAux.push_back({5});
 		resultado[i] = (iFold(bd, vectorDeIndices[i], pca, alfa, kknn));
 
-		std::cout << "Resultado en i = " << i<< " :";
-		for (int j=0; j<resultado[i].size();j++)
-		{
-			std::cout << resultado[i][j].first <<" "<< resultado[i][j].second << std::endl;
-		}
+		// std::cout << "Resultado en i = " << i<< " :";
+		// for (int j=0; j<resultado[i].size();j++)
+		// {
+		// 	std::cout << resultado[i][j].first <<" "<< resultado[i][j].second << std::endl;
+		// }
 		i++;
 	}
 	return resultado;

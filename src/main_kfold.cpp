@@ -5,10 +5,14 @@
 
 double precision(int truePos, int falsePos)
 {
+    if(truePos+falsePos == 0)
+        return -1;
     return double(truePos/(truePos + falsePos));
 }
 double recall(int truePos, int falseNeg)
 {
+    if(truePos+falseNeg == 0)
+        return -1;
     return double(truePos/(truePos + falseNeg));
 }
 
@@ -18,14 +22,20 @@ double accuracy(int truePos, int trueNeg, int falsePos, int falseNeg)
     double top = double(truePos) + double(trueNeg);
     return top/(truePos + trueNeg + falsePos + falseNeg);
 }
-double mediaArmonica(double presicion, double recall)
+double mediaArmonica(double precision, double recall)
 {
-    return 2 * (presicion*recall/(presicion + recall));
+    if (recall == -1 || precision == -1 )
+        return -1;
+    return 2 * (precision*recall/(precision + recall));
 }
 int main_kfold(int pca, int k, int alfa, int kknn)
 {
     int method;
     std::string trainSet = "../tests/testFullRed.in";
+
+    // int pca = 0;
+    // int k = 1; // TODO variar
+    // int alfa = 20; // TODO variar
 
     baseDeDatos baseEntrenamiento = cargarBD(trainSet);
     std::cout << "Size: " << baseEntrenamiento.size() << std::endl;
@@ -87,14 +97,59 @@ int main_kfold(int pca, int k, int alfa, int kknn)
     for (int j = 0; j < truePositivesId.size(); j++)
     {
         accuracyI[j] = accuracy(truePositivesId[j], trueNegativesId[j], falsePositivesId[j],falseNegativesId[j]);
+        recallI[j] = recall(truePositivesId[j],falseNegativesId[j]);
+        precisionI[j] = precision(truePositivesId[j],falsePositivesId[j]);
+        mediaArmonicaI[j] = mediaArmonica(precisionI[j],recallI[j]);
     }
     double acc = 0;
+    double recall = 0;
+    double precision = 0;
+    double mediaArmonica = 0;
     for (int l = 0; l < accuracyI.size(); l++)
     {
+        if (accuracyI[l] == -1)
+        {
+            acc = -1;
+            break;
+        }
         acc += accuracyI[l];
     }
+    
+    for (int l = 0; l < recallI.size(); l++)
+    {
+        if (recallI[l] == -1)
+        {
+            recall = -1;
+            break;
+        }
+        recall += recallI[l];
+    }
+    for (int l = 0; l < precisionI.size(); l++)
+    {
+        if (precisionI[l] == -1)
+        {
+            precision = -1;
+            break;
+        }
+        precision += precisionI[l];
+    }
+    for (int l = 0; l < mediaArmonicaI.size(); l++)
+    {
+        if (mediaArmonicaI[l] == -1)
+        {
+            mediaArmonica = -1;
+            break;
+        }
+        mediaArmonica += mediaArmonicaI[l];
+    }
     acc = acc/accuracyI.size();
+    recall = recall/accuracyI.size();
+    precision = precision/accuracyI.size();
+    mediaArmonica = mediaArmonica/accuracyI.size();
     std::cout << "Acc "<<acc << std::endl;
+    std::cout << "Recall "<<recall << std::endl;
+    std::cout << "Pres "<<precision << std::endl;
+    std::cout << "mediaArm "<<mediaArmonica << std::endl;
 
     // std::vector<pair <int, int> > receivedAndExpected;
     // for (int i = 0; i<vectorDeVectores.size(); i++)
