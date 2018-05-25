@@ -12,7 +12,6 @@
 
 using namespace std;
 
-//typedef priority_queue<double, int> colaKcercanos;
 
 double distanciaEuclidea(const doubleVector &v1, const doubleVector &v2);
 vector<int> k_cercanos(int k, baseDeDatos &matEntrenamiento, Imagen &imagenAEvaluar);

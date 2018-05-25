@@ -5,58 +5,8 @@
 #include <string>
 #include <iostream>
 #include <sstream>
-
-
-
-
 #include<libgen.h> 
 #include<stdlib.h> 
-
-
-// std::vector<Imagen> cargarBD(std::string csv)
-// {
-//
-//
-//     std::vector<Imagen> baseDeDatos = {};
-//     std::ifstream input(csv);
-//     char delimiter(',');
-//
-//     std::string imagen;
-//     std::string line;
-//     int id;
-//     int i = 0;
-//
-//     while (std::getline(input, line,delimiter)){
-//
-//     // for( std::string line; std::getline( input, line, delimiter);){
-//         imagen = line;
-//         if (i != 0)
-//             imagen = line.substr(1, line.size());
-//
-//        std::getline( input, line, delimiter);
-//
-//         std::stringstream(line) >> id;
-//         Imagen nuevaImagen(imagen,id);
-//         baseDeDatos.push_back(nuevaImagen);
-//
-//         i++;
-//     }
-//     return baseDeDatos;
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 baseDeDatos cargarBD(std::string csv)
 {
@@ -70,46 +20,20 @@ baseDeDatos cargarBD(std::string csv)
 
     while (std::getline(input, line))
     {
-//      std::cout <<  "line " << line << "\n";
 
       std::size_t found = line.find_first_of(", ");      //primer delimitador
-      // if (found!=std::string::npos)
-      // {
         imagen = line.substr(0, found);
         line = line.substr(found, line.size()-1);
 
         std::size_t inicio = line.find_first_not_of(", "); //inicio de datos significativos
-        // if (inicio!=std::string::npos)
-        // {
           line = line.substr(inicio, line.size()-1);
           id = std::stoi (line);
-//std::cout <<  "imagen: " << imagen << "\n";
-//std::cout <<  "id: " << id << "\n";
           Imagen nuevaImagen(imagen,id);
 
           base.push_back(Imagen(imagen,id));
     }
     return base;
 }
-
-
-// std::size_t inicio = line.find_first_not_of(", "); //inicio de datos significativos
-// if (inicio!=std::string::npos)
-// {
-//   line = line.substr(inicio, line.size());
-  // std::size_t found = line.find_first_of(", ");      //primer delimitador
-  // if (found!=std::string::npos)
-  //   cid = line.substr(0, found-1);
-  //   id = std::stoi (line,&sz);
-  // else
-  //   cid = line.substr(0, line.size());
-
-
-
-
-
-
-
 
 double Imagen::restarYnorma (const Imagen& otra)
 {
@@ -135,53 +59,21 @@ Imagen::Imagen(std::string archivo, int id)
     int width = 0, height = 0;
 
     std::string nombre;
-    //test
-    // std::string archivoTest = "../ImagenesCaras/s1/1.pgm";
-    // std::cout << "Contenido de archivoTest: " <<'archivoTest' << std::endl;
-    // std::size_t s1 = archivoTest.find_last_of(".");
-    // std::size_t d1 = archivoTest.find_last_of("/");
-    // std::string nombreTest;
-    // nombreTest= archivoTest.substr(d1+1, s1-1);
-    // //std::cout << "Contenido de archivoTest: " <<'archivoTest' << std::endl;
-    // std::cout << "Contenido de archivoTest Cortado: " <<'nombreTest' << std::endl;
-    // std::string nombreCortado = archivo.substr(0, 10);
-    // std::cout << "Contenido de archivo: " <<'nombreCortado' << std::endl;
-
 
     std::size_t s = archivo.find_last_of(".");
     std::size_t d = archivo.find_last_of("/");
     nombre = archivo.substr(d+1, s);
-    //std::cout << "archivo: " << archivo << std::endl;
-    //std::cout << "Lugar del ultimo / : " << d << std::endl;
-    //std::cout << "Lugar del ultimo . : " << s << std::endl;
-    //std::cout << "Nombre: " << nombre << std::endl;
     std::size_t s2 = nombre.find_first_of(".");
-    //std::cout << "Lugar del ultimo . s2: " << s2 << std::endl;
     std::string nombre1 = nombre.substr(0, s2);
-    //std::cout << "Nombre1: " << nombre1 << std::endl;
-
-
-    //std::cout << "Basename: " << basename(archivo) << std::endl;
-    //_name = str::stoi(nombre);
     std::stringstream(nombre1) >> _name; 
-    //std::stringstream(nombre) >> _name; 
     PPM_LOADER_PIXEL_TYPE pt = PPM_LOADER_PIXEL_TYPE_INVALID;
-//    std::cout << "entrando a Imagen: " << archivo << " \n";
     bool ret = LoadPPMFile(&_data, &_width, &_height, &pt, archivo.c_str());
-//    std::cout << "ancho, alto, pt: " << _width << " " << _height << " " << pt << "\n";
     if (!ret || _width == 0|| _height == 0|| pt!=PPM_LOADER_PIXEL_TYPE_GRAY_8B )
     {
         throw std::runtime_error("test_load failed");
     }
-    //std::cout << "data: " <<
     std::vector<uchar> resultado;
- //   for (int i = 0; i < _height * _width; i++)
-  //  {
-   //     resultado.push_back(_data[i]);
-    //    std::cout << resultado[i];
-    //}
     _id = id;
-//    std::cout << "saliendo de Imagen: \n";
 }
 
 Imagen::Imagen()

@@ -18,7 +18,6 @@ double recall(int truePos, int falseNeg)
 
 double accuracy(int truePos, int trueNeg, int falsePos, int falseNeg)
 {
-    std::cout << truePos << " " << trueNeg << " " << falsePos << " " <<  falseNeg<<std::endl;
     double top = double(truePos) + double(trueNeg);
     return top/(truePos + trueNeg + falsePos + falseNeg);
 }
@@ -31,19 +30,15 @@ double mediaArmonica(double precision, double recall)
 int main_kfold(int pca, int k, int alfa, int kknn)
 {
     int method;
-    std::string trainSet = "../tests/testFullRed.in";
+    std::string trainSet = "../tests/testFullBig.in";
 
-    // int pca = 0;
-    // int k = 1; // TODO variar
-    // int alfa = 20; // TODO variar
 
     baseDeDatos baseEntrenamiento = cargarBD(trainSet);
-    std::cout << "Size: " << baseEntrenamiento.size() << std::endl;
 
     vector<vector<pair<int, int> > > vectorDeFolds = k_fold(baseEntrenamiento, k, pca, alfa, kknn);
 
-            // CAMBIAR 41 por cantSujetos
-            int cantSujetos = 41; 
+    // CAMBIAR 41 por cantSujetos
+    int cantSujetos = 41; 
     std::vector<double> accuracyI(cantSujetos-1,0.0);
     std::vector<double> recallI(cantSujetos-1,0.0);
     std::vector<double> precisionI(cantSujetos-1,0.0);
@@ -66,30 +61,15 @@ int main_kfold(int pca, int k, int alfa, int kknn)
 
             for (int id = 1; id <= cantSujetos; id++)
             {
+                if (id == vectorDeFolds[fold][i].first && id == vectorDeFolds[fold][i].second)
+                  truePositivesId[id-1] += 1;
+                else if (id == vectorDeFolds[fold][i].first && id != vectorDeFolds[fold][i].second)
+                  falseNegativesId[id-1] += 1;
+                else if (id != vectorDeFolds[fold][i].first && id == vectorDeFolds[fold][i].second)
+                  falsePositivesId[id-1] += 1;
+                else if (id != vectorDeFolds[fold][i].first && id != vectorDeFolds[fold][i].second)
+                  trueNegativesId[id-1] += 1;
 
-                if (id == vectorDeFolds[fold][i].first)
-                {
-                    if (vectorDeFolds[fold][i].first == vectorDeFolds[fold][i].second)
-                    {
-                        truePositivesId[id-1] += 1;
-                    }
-                    else
-                    {
-                        falseNegativesId[id-1] += 1;
-                    }
-                }
-                else
-                {
-
-                    if (vectorDeFolds[fold][i].first == vectorDeFolds[fold][i].second)
-                    {
-                        falsePositivesId[id-1] += 1;
-                    }
-                    else
-                    {
-                        trueNegativesId[id-1] += 1;
-                    }
-                }
             }
         }
     }
@@ -146,62 +126,10 @@ int main_kfold(int pca, int k, int alfa, int kknn)
     recall = recall/accuracyI.size();
     precision = precision/accuracyI.size();
     mediaArmonica = mediaArmonica/accuracyI.size();
-    std::cout << "Acc "<<acc << std::endl;
-    std::cout << "Recall "<<recall << std::endl;
-    std::cout << "Pres "<<precision << std::endl;
-    std::cout << "mediaArm "<<mediaArmonica << std::endl;
-
-    // std::vector<pair <int, int> > receivedAndExpected;
-    // for (int i = 0; i<vectorDeVectores.size(); i++)
-    // {
-    //     std::cout << "Size vectorDeVectores en : "<< i<< " " << vectorDeVectores[i].size() << std::endl; 
-    //     for (int j=0; j<vectorDeVectores[j].size();j++)
-    //     {
-    //         // std::cout << "j = " << j<<std::endl;
-    //         // std::cout << vectorDeVectores[i][j].first << " " << vectorDeVectores[i][j].second << std::endl;
-    //         receivedAndExpected.push_back(vectorDeVectores[i][j]);
-    //     }
-    // }
-    // std::cout << "uaeonts" <<receivedAndExpected.size() << std::endl;
-
-    // for (int id = 1; id< vectorDeVectores.size()+1; id++) 
-    // {
-    // int tPos = 0; 
-    // int tNeg = 0; 
-    // int fPos = 0; 
-    // int fNeg = 0; 
-    //     if(id == receivedAndExpected[id-1].first)
-    //     {
-    //         if (receivedAndExpected[id-1].first == receivedAndExpected[id-1].second)
-    //         {
-    //             tPos++;
-    //         }
-    //         else
-    //         {
-    //             fNeg++;
-    //         }
-
-    //     }
-    //     else
-    //     {
-    //         if (receivedAndExpected[id-1].first == receivedAndExpected[id-1].second)
-    //         {
-    //             fPos++;
-    //         }
-    //         else
-    //         {
-    //             tNeg++;
-    //         }
-    //     }
-    //     std::cout << id << std::endl;
-    //     std::cout << tPos << tNeg << fPos << fNeg << std::endl;
-    //     accuracys.push_back(accuracy(tPos,tNeg,fPos,fNeg));
-    //     // double recalli = recall(tPos,fNeg);
-    //     // double presicioni = presicion(tPos,fNeg);
-    //     // recalls.push_back(recalli);
-    //     // presicions.push_back(presicioni);
-    //     // mediaArmonicas.push_back(mediaArmonica(presicioni,recalli));
-    // }
+    std::cout <<acc<< " ";
+    std::cout <<recall << " "; 
+    std::cout <<precision << " ";
+    std::cout <<mediaArmonica<< std::endl;
 
 
     return 0;

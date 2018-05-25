@@ -9,20 +9,14 @@ int imgPorClase;
 
 using namespace std;
 
-//TODO:
-//	1) Definir el k (radio) que vamos a usar. Lo pasamos por input?
-//	2) Definir como pasar el k de k_fold
 
 vector<vector<pair<int, int>>> k_fold(baseDeDatos bd, int k, int pca, int alfa, int kknn){
-	//Tendríamos que usar 5 fold. O sea, imagenesPorClase = 2.
 
 	cantClases = cantidadClases(bd);
 	imgPorClase = cantidadImagenesPorClase(bd);
 
 	int cantImagATestear = (imgPorClase/k)*cantClases;
 	vector<vector<pair<int, int>> > resultado (k, vector<pair<int, int>>(cantImagATestear));
-	//Vector que en cada i contiene un vector con los subindices de qué elementos de cada clase vamos a usar
-	//para testear.
 	int i = 0;
 
 	while(i < k){
@@ -38,19 +32,8 @@ vector<vector<pair<int, int>>> k_fold(baseDeDatos bd, int k, int pca, int alfa, 
 			}
 			vectorDeIndices.push_back(aux);
 		}
-		// std::vector<std::vector<int>>  vectorAux;
-		// vectorAux.push_back({1});
-		// vectorAux.push_back({2});
-		// vectorAux.push_back({3});
-		// vectorAux.push_back({4});
-		// vectorAux.push_back({5});
 		resultado[i] = (iFold(bd, vectorDeIndices[i], pca, alfa, kknn));
 
-		// std::cout << "Resultado en i = " << i<< " :";
-		// for (int j=0; j<resultado[i].size();j++)
-		// {
-		// 	std::cout << resultado[i][j].first <<" "<< resultado[i][j].second << std::endl;
-		// }
 		i++;
 	}
 	return resultado;
@@ -67,7 +50,6 @@ vector<pair<int, int>> iFold(baseDeDatos bd, vector<int> indices, int pca, int a
 	//Aca van a estar las imagenes que vamos a usar para testear.
  	baseDeDatos imagenesTest{};
 
-	//int k = 1;
 	int i = 0;
 	int cantImagenesTotales = cantClases * imgPorClase;//en este caso 41*10
 	while(i < cantImagenesTotales){
@@ -76,10 +58,8 @@ vector<pair<int, int>> iFold(baseDeDatos bd, vector<int> indices, int pca, int a
 		}else{
 			imagenesTest.push_back(bd[i]);
 		}
-		//std::cout <<i << " ";
 		i++;
-	}//Listo, ahora tendríamos la matriz de entrenamiento que queremos.
-	//Acá ya estaríamos listos para llamar a knn y pca.
+	}
 
 	i = 0;
 	//Armo vector resultado vacío. En cada índice va el resultado de evaluar cada una de las imagenes a testear
@@ -112,14 +92,9 @@ vector<pair<int, int>> iFold(baseDeDatos bd, vector<int> indices, int pca, int a
 			std::pair <int,int> parResultado;
 			parResultado = std::make_pair (imagenesTest[i].getId(),moda(k,trainingBase,imagenesTest[i]));
 			resultado[i] = parResultado;
-			// resultado[i].first = bd[i].getId();//El resultado que debería dar
-			// resultado[i].second = moda(k, trainingBase, imagenesTest[i]);//El resultado que dió nuestro algoritmo
-			// std::cout << "Valor de i: " << i << std::endl;
-			// std::cout << "Size: " << imagenesTest.size() << std::endl;
 			i++;
 		}
 	}
-	//Y con esto ya estaría
 	return resultado;
 }
 
@@ -134,64 +109,6 @@ bool apareceEn(Imagen img, vector<int> indices){
 	return false;
 }
 
-
-
-
-
-
-// bool estaRepetido(vector<int> &fila, int elemento){
-// 	int n(fila.size());
-// 	int i(0);
-// 	while(i < n){
-// 		if(fila[i] == elemento){
-// 			return true;
-// 		}
-// 	i++;
-// 	}
-// 	return false;
-// }
-// void k_fold2(baseDeDatos bd, int k, float tfold){
-// 	std::vector<int> folds(cantClases, 0);
-// 	int random;
-// 	int imagenes_a_testear = tfold*imgPorClase;
-// 	//assert(imagenes_a_testear%10 == 0). Es decir que tomemos folds multiplos de 41
-// 	//para poder sacar una imagen de cada uno.
-
-// 	baseDeDatos trainingBase = {};//Creo una base de entrenamiento vacia
-
-// 	//Aca creo una matriz de 41 filas, cada una con columnas de k elementos.
-// 	//Es decir, guardo cuales k imagenes voy a agarrar de cada sujeto.
-// 	vector<vector<int>> matriz_folds(cantClases, vector<int>(imagenes_a_testear));
-
-// 	int i(0);
-// 	int j(0);
-// 	int xfold(1); //Por cual fold vamos.
-
-// 	while(i < cantClases){
-// 		while(j < imagenes_a_testear){
-// 		do{
-// 		random = rand() % imgPorClase + 1;
-// 		}
-// 		while(estaRepetido(matriz_folds[i], random));
-// 		matriz_folds[i][j] = random;
-// 		j++;
-// 		}
-// 	j = 0;
-// 	i++;
-// 	}
-// 	//Ahora tengo en matriz_folds las imagenes que vamos a testear de cada sujeto
-// 	i = 0;
-// 	while(i < cantClases){
-// 		while(j < imgPorClase){
-// 			if(!estaRepetido(matriz_folds[i], j+1)){
-// 				trainingBase.push_back(bd[i*imgPorClase+j]);
-// 			}
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-
-// }
 // Se asume que todas las clases tienen la misma cantidad de imagenes, es decir que la base esta balanceada
 int cantidadImagenesPorClase(baseDeDatos& bd)
 {

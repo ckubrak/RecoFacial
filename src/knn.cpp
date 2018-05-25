@@ -26,7 +26,6 @@ double distanciaEuclidea(Imagen &imag1, Imagen &imag2) {
 		x = imag2.getData()[i] - imag1.getData()[i];
 		distancia += x*x;
 	}
-	//Ganaríamos algo sacando la raiz?
 	return sqrt(distancia);
 }
 
@@ -113,7 +112,6 @@ int moda(int k, baseDeDatos &matEntrenamiento, Imagen &imagen){
 		vectorModa[aux] ++;
 		i++;
 	}
-	//int result = *max_element(vectorModa.begin(), vectorModa.end());
 	int result = maximoIndice(vectorModa);
     return result;
 }
@@ -141,26 +139,9 @@ double distanciaEuclideaPCA(doubleVector &imag1, doubleVector &imag2) {
 	return sqrt(distancia);
 }
 
-//Esta función me dice dada una base de datos cuantas imagenes tengo de cada sujeto. 
-/*int cantidadId(baseDeDatos &baseDeDatos){
-	//
-	int tam = baseDeDatos.size();
-	int i = 1;
-	int aux = baseDeDatos[0].getId();
-	int cantidadId = 1;
-	while(i < tam){
-		if(baseDeDatos[i].getId() == aux){
-			cantidadId++;
-		}
-		i++;
-	}
-}
-*/
 vector<int> k_cercanosPCA(int k, doubleMatrix &matEntrenamiento, doubleVector &imagenAEvaluar, baseDeDatos &baseSinTransformar){
 
 	int i = 0;
-	//int j =  cantidadId(baseSinTransformar) - 1;
-
 	double distancia = 0;
 
 	std::pair<double,int> indiceDistancia;
