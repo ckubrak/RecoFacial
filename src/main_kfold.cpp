@@ -25,12 +25,13 @@ double mediaArmonica(double precision, double recall)
 {
     if (recall == -1 || precision == -1 )
         return -1;
-    return 2 * (precision*recall/(precision + recall));
+    double top = 2*(precision*recall);
+    return top/(precision + recall);
 }
 int main_kfold(int pca, int k, int alfa, int kknn)
 {
     int method;
-    std::string trainSet = "../tests/testFullBig.in";
+    std::string trainSet = "../tests/testFullRed.in";
 
 
     baseDeDatos baseEntrenamiento = cargarBD(trainSet);
@@ -39,22 +40,19 @@ int main_kfold(int pca, int k, int alfa, int kknn)
 
     // CAMBIAR 41 por cantSujetos
     int cantSujetos = 41; 
-    std::vector<double> accuracyI(cantSujetos-1,0.0);
-    std::vector<double> recallI(cantSujetos-1,0.0);
-    std::vector<double> precisionI(cantSujetos-1,0.0);
-    std::vector<double> mediaArmonicaI(cantSujetos-1,0.0);
+    std::vector<double> accuracyI(cantSujetos,0.0);
+    std::vector<double> recallI(cantSujetos,0.0);
+    std::vector<double> precisionI(cantSujetos,0.0);
+    std::vector<double> mediaArmonicaI(cantSujetos,0.0);
 
-        std::vector<int> truePositivesId(cantSujetos-1,0);
-        std::vector<int> trueNegativesId(cantSujetos-1,0);
-        std::vector<int> falsePositivesId(cantSujetos-1,0);
-        std::vector<int> falseNegativesId(cantSujetos-1,0);
+        std::vector<int> truePositivesId(cantSujetos,0);
+        std::vector<int> trueNegativesId(cantSujetos,0);
+        std::vector<int> falsePositivesId(cantSujetos,0);
+        std::vector<int> falseNegativesId(cantSujetos,0);
+
     for (int fold = 0; fold < vectorDeFolds.size(); fold++ )
     {
 
-        std::fill(truePositivesId.begin(), truePositivesId.end(), 0);
-        std::fill(falsePositivesId.begin(), falsePositivesId.end(), 0);
-        std::fill(trueNegativesId.begin(), trueNegativesId.end(), 0);
-        std::fill(falseNegativesId.begin(), falseNegativesId.end(), 0);
 
         for (int i = 0; i < vectorDeFolds[fold].size(); i++)
         {
