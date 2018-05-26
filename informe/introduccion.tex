@@ -18,10 +18,12 @@ la base de datos con el m\'etodo \textit{PCA}.
 
 \subsubsection*{An\'alisis de componentes principales}
 \par Para este algoritmo de preprocesamiento, calculamos $\mu = (\sum_{i=1}^{n})/n$ el promedio de todas la im\'agenes. Luego definimos $X \in {\rm I\!R}^n$ 
-que en i-\'esima fila tiene al vector $(x_i -  \mu)/\sqrt{n -1}$. Para esta matriz $X$, calculamos la matriz de covarianza como $M = X^tX$.
+que en i-\'esima fila tiene al vector $(x_i -  \mu)/\sqrt{n -1}$. Para esta matriz $X$, deber\'iamos calcular la matriz de covarianza definida como $M = X^tX$.
 Sea $v_j$ el autovector de $M$ asociado al j-\'esimo autovector (teniendo los autovalores ordenados seg\'un su valor absoluto), definimos para cada
 $i = 1,..,n$ la \textit{transformaci\'on caracter\'istica} de $x_i$ como el vector $tc(x_i) = (v_1x_i,v_2x_2,..,v_\alpha x_i)^t \in {\rm I\!R}^\alpha$,
-donde $\alpha$ es un par\'ametro que fuimos variando para la experimentaci\'on.
+donde $\alpha$ es un par\'ametro que fuimos variando para la experimentaci\'on.\\
+A\'un as\'i, por motivos de optimizaci\'on, en vez de calcular la matriz de $M$, calculamos una matriz $\tilde{M} = XX^t$ para luego mediante un cambio de variable
+recuperar los autovectores de $M$.
 
 \subsubsection*{Cross validation} 
 \par Para poder evaluar qu\'e tan bien funciona nuestro algoritmo es necesario realizar una validaci\'on de los resultados. Para esta tarea ultilizamos el
