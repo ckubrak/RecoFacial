@@ -2,7 +2,13 @@
 Para experimentar analizamos la influencia en los resultados de las diferentes variables de experimentación que manejamos utilizando tanto el método KNN como el KNN + PCA. 
 Las mismas son la cantidad de vecinos considerados por KNN (k), y la cantidad de componentes principales de la imagen transformada ($\alpha$).
 Lo hicimos sobre dos bases de datos: una con im\'agenes de tamaño reducido, y otra con imágenes sin reducir (a las cuales llamaremos \textit{big tempo})
-
+Nuestras expectativas previas a la experimentación fueron las siguientes\\
+Por un lado consideramos que el tamaño de las im\'agenes influir\'a en el tiempo requerido para su procesamiento pero debido a la mayor informaci\'on disponible,
+funciar\'an mejores los algoritmos.\\
+Con respecto a la variaci\'on del $k$ en $KNN$ suponemos que con un $k$ ni muy grande ni muy chico, obtendremos buenos resulatados de reconocimiento.\\
+Frente a los diferentes algoritmos (KNN o PCA + KNN) creemos que la segunda opci\'on realizar\'a un mejor trabajo pero en un mayor tiempo, por lo que habr\'a que evaluar si se justifica su utilizanci\'on.\\
+Por \'ultimo, respecto al par\'ametro $\alhpa$ (cantidad de iteraciones del m\'etodo de las potencias) resulta obvio estimar que a mayor $\alpha$, mayor ser\'a el tiempo de ejecuc\'on aunque esperamos que esto
+mejore significativamente la tasa de reconocimiento.
 
 
 
