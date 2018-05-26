@@ -12,13 +12,13 @@ Pero a su vez tambien vimos que un $\alpha$ muy elevado  nos elevaría el tiempo
 En base a los resultados obtenidos concluimos que un valor de $\alpha$ cercano a 10 nos daría un buen balance entre relativamente la cantidad de componentes principales y la efectividad (se sacrifica algo de efectividad pero se gana en trabajar con imágenes más chicas)
 
 \begin{figure}[H]
-	\centering	\includegraphics[width=0.9\textwidth]{img/alfa_pca_accu.png}
+	\centering	\includegraphics[width=0.8\textwidth]{img/alfa_pca_accu.png}
 	\caption{Accuracy vs $\alpha$ con PCA + KNN}
 	\label{fig:Accuracy vs Alpha con KNN + PCA}
 \end{figure}
 
 \begin{figure}[H]
-	\centering	\includegraphics[width=0.9\textwidth]{img/big_alfa_pca_accu.png}
+	\centering	\includegraphics[width=0.8\textwidth]{img/big_alfa_pca_accu.png}
 	\caption{BIG Accuracy vs $\alpha$ con PCA + KNN}
 	\label{fig: BIG Accuracy vs Alpha con KNN + PCA}
 \end{figure}
@@ -29,13 +29,13 @@ Tal como esperabamos vemos que a medida que el $\alpha$ aumenta (es decir, cuant
 
 Luego, en línea con los resultados de los gráficos anteriores (Accuracy vs $\alpha$) podemos volver a afirmar que un $\alpha$ cercano a 10 sería un buen balance. En este gráfico notamos si tomaramos alfa = 30, tardaría aproximadamente el triple y no obtendríamos una mejora sustancial en el accuracy.
 \begin{figure}[H]
-	\centering	\includegraphics[width=0.9\textwidth]{img/alfa_pca_tiempo.png}
+	\centering	\includegraphics[width=0.8\textwidth]{img/alfa_pca_tiempo.png}
 	\caption{Tiempo vs $\alpha$ con PCA + KNN}
 	\label{fig:Tiempo vs Alpha con PCA + KNN}
 \end{figure}
 
 \begin{figure}[H]
-	\centering	\includegraphics[width=0.9\textwidth]{img/big_alfa_pca_tiempo.png}
+	\centering	\includegraphics[width=0.8\textwidth]{img/big_alfa_pca_tiempo.png}
 	\caption{Big Tiempo vs $\alpha$ con PCA + KNN}
 	\label{fig:Big Tiempo vs Alpha con PCA + KNN}
 \end{figure}
@@ -45,12 +45,12 @@ Luego, en línea con los resultados de los gráficos anteriores (Accuracy vs $\a
 
 
 \begin{figure}[H]
-	\centering	\includegraphics[width=0.9\textwidth]{img/k_knn_accu.png}
+	\centering	\includegraphics[width=0.8\textwidth]{img/k_knn_accu.png}
 	\caption{Accuracy va K con KNN}
 	\label{fig:Accuracy vs K con KNN}
 \end{figure}
 \begin{figure}[H]
-	\centering	\includegraphics[width=0.9\textwidth]{img/big_k_knn_accu.png}
+	\centering	\includegraphics[width=0.8\textwidth]{img/big_k_knn_accu.png}
 	\caption{Big Accuracy vs K con KNN}
 	\label{fig:Big Accuracy vs K con KNN}
 \end{figure}
@@ -61,12 +61,12 @@ Luego, en línea con los resultados de los gráficos anteriores (Accuracy vs $\a
 
 
 \begin{figure}[H]
-	\centering	\includegraphics[width=0.9\textwidth]{img/k_knn_tiempo.png}
+	\centering	\includegraphics[width=0.8\textwidth]{img/k_knn_tiempo.png}
 	\caption{Tiempo vs K con KNN}
 	\label{fig:K vs Tiempo con KNN}
 \end{figure}
 \begin{figure}[H]
-	\centering	\includegraphics[width=0.9\textwidth]{img/big_k_knn_tiempo.png}
+	\centering	\includegraphics[width=0.8\textwidth]{img/big_k_knn_tiempo.png}
 	\caption{Big Tiempo vs K con KNN}
 	\label{fig:Big K vs Tiempo con KNN}
 \end{figure}
@@ -76,12 +76,12 @@ Luego, en línea con los resultados de los gráficos anteriores (Accuracy vs $\a
 
 
 \begin{figure}[H]
-	\centering	\includegraphics[width=0.9\textwidth]{img/k_pca_tiempo.png}
+	\centering	\includegraphics[width=0.8\textwidth]{img/k_pca_tiempo.png}
 	\caption{K vs Tiempo con KNN + PCA}
 	\label{fig:K vs Tiempo con KNN + PCA}
 \end{figure}
 \begin{figure}[H]
-	\centering	\includegraphics[width=0.9\textwidth]{img/big_k_pca_tiempo.png}
+	\centering	\includegraphics[width=0.8\textwidth]{img/big_k_pca_tiempo.png}
 	\caption{Big Tiempo vs K con KNN + PCA}
 	\label{fig:Big K vs Tiempo con KNN + PCA}
 \end{figure}
@@ -100,15 +100,15 @@ Es llegamos a la conclusión de que utilizando un valor de K cercano a 10 obtene
 Por un lado evitamos el problema que ocurre cuando K es demasiado grande y por otro, tomamos una cantidad de imágenes cercanas suficiente como para minimizar el impacto de algún outsider.
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.9\textwidth]{img/k_pca_accu.png}
+	\includegraphics[width=0.8\textwidth]{img/k_pca_accu.png}
 	\caption{Accuracy vs K con KNN + PCA}
 	\label{fig:K vs Accuracy con KNN + PCA}
 \end{figure}
 
 
-Conclusión:
-Luego de observar estos gráficos llegamos a algunas conclusiones.
-En cuanto al tiempo, por un lado, la cantidad de vecinos cercanos que tomemos no afecta significativamente el tiempo, pero lo que sí lo afecta es el $\alpha$ de PCA.
-A qué se debe esto? Teniendo en cuenta el funcionamiento de nuestro algoritmo, entendemos que esto se debe a que una gran parte del tiempo de procesamiento de PCA se consume en el método de la potencia (que se realiza $\alpha$ veces) y en la transformación de los autovectores calculados en los de la verdadera matriz de covarianza de la muestra, que involucran numerosos cálculos matriciales.
+% Conclusión:
+% Luego de observar estos gráficos llegamos a algunas conclusiones.
+% En cuanto al tiempo, por un lado, la cantidad de vecinos cercanos que tomemos no afecta significativamente el tiempo, pero lo que sí lo afecta es el $\alpha$ de PCA.
+% A qué se debe esto? Teniendo en cuenta el funcionamiento de nuestro algoritmo, entendemos que esto se debe a que una gran parte del tiempo de procesamiento de PCA se consume en el método de la potencia (que se realiza $\alpha$ veces) y en la transformación de los autovectores calculados en los de la verdadera matriz de covarianza de la muestra, que involucran numerosos cálculos matriciales.
 
-Sin embargo, pensamos que en una implementación real estaríamos trabajando con una única training base, y las transformaciones que llevamos a cabo en el PCA las haríamos una única vez, con lo que este costo de tiempo se pagaría solamente una vez o cuando sea necesario agregar o quitar alguna imagen, para luego realizar únicamente el reconocimiento. Usando PCA + KNN tenemos la ventaja de trabajar con imágenes de menor tamaño con el consiguiente ahorro de espacio.
+% Sin embargo, pensamos que en una implementación real estaríamos trabajando con una única training base, y las transformaciones que llevamos a cabo en el PCA las haríamos una única vez, con lo que este costo de tiempo se pagaría solamente una vez o cuando sea necesario agregar o quitar alguna imagen, para luego realizar únicamente el reconocimiento. Usando PCA + KNN tenemos la ventaja de trabajar con imágenes de menor tamaño con el consiguiente ahorro de espacio.
