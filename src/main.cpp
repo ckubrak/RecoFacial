@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
     int result;
     baseDeDatos baseEntrenamiento = cargarBD(testSet);
 
-    int k = 2; // TODO variar
+    int k = 10; 
     int alfa = 20; // TODO variar
     std::ifstream input(testSet);
     std::string imagen;
