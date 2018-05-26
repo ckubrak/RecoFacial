@@ -17,9 +17,6 @@ Como expresamos anteriormente, debido al funcionamiento de PCA esperábamos que 
 
 
 
-Tal como esperabamos vemos que a medida que el $\alpha$ aumenta (es decir, cuantas más componentes principales tengamos), el tiempo de ejecución también lo hace.
-
-Luego, en línea con los resultados de los gráficos anteriores (Accuracy vs $\alpha$) podemos volver a afirmar que un $\alpha$ cercano a 10 sería un buen balance. En este gráfico notamos si tomaramos alfa = 30, tardaría aproximadamente el triple y no obtendríamos una mejora sustancial en el accuracy.
 \begin{figure}[H]
 	\centering	\includegraphics[width=0.8\textwidth]{img/alfa_pca_tiempo.png}
 	\caption{Tiempo vs $\alpha$ con PCA + KNN}
@@ -33,6 +30,8 @@ Luego, en línea con los resultados de los gráficos anteriores (Accuracy vs $\a
 \end{figure}
 
 
+Tal como esperabamos vemos que a medida que el $\alpha$ aumenta (es decir, cuantas más componentes principales tengamos), el tiempo de ejecución también lo hace.
+Luego, en línea con los resultados de los gráficos anteriores (Accuracy vs $\alpha$) podemos volver a afirmar que un $\alpha$ cercano a 10 sería un buen balance. En este gráfico notamos si tomaramos alfa = 30, tardaría aproximadamente el triple y no obtendríamos una mejora sustancial en el accuracy.
 
 
 
@@ -46,9 +45,6 @@ Luego, en línea con los resultados de los gráficos anteriores (Accuracy vs $\a
 	\caption{Big Accuracy vs K con KNN}
 	\label{fig:Big Accuracy vs K con KNN}
 \end{figure}
-
-
-
 
 
 
@@ -79,20 +75,17 @@ Luego, en línea con los resultados de los gráficos anteriores (Accuracy vs $\a
 \end{figure}
 
 
-
-Y por último en este caso vemos una estrecha relación entre cuantos vecinos cercanos tomamos y el accuracy.
-
-Esto se debe a que al tomar más vecinos cercanos nos exponemos a un error mayor debido a que le estaríamos dando el mismo peso a todos esos K vecinos sin importar que tan cerca estén de la imagen testeada.
-
-Llevando esto a un extremo podríamos tomar K = "Tamaño de matriz de entrenamiento" y cualquiera de las clases tendría el mismo peso con lo que perdería sentido este método.
-
-Por otro lado tampoco es conveniente tener un K demasiado chico. Por ejemplo, si tomaramos K = 1 asociaríamos la imagen a testear con la que esté a menor distancia, que debido a alguna diferencia la forma en que fue tomada la imagen puede no pertenecer a la clase de la imagen testeada.
-
-Es llegamos a la conclusión de que utilizando un valor de K cercano a 10 obtenemos la mejor relación (dentro de nuestro set de tests).
-Por un lado evitamos el problema que ocurre cuando K es demasiado grande y por otro, tomamos una cantidad de imágenes cercanas suficiente como para minimizar el impacto de algún outsider.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\textwidth]{img/k_pca_accu.png}
 	\caption{Accuracy vs K con KNN + PCA}
 	\label{fig:K vs Accuracy con KNN + PCA}
 \end{figure}
+
+Y por último en este caso vemos una estrecha relación entre cuantos vecinos cercanos tomamos y el accuracy.
+Esto se debe a que al tomar más vecinos cercanos nos exponemos a un error mayor debido a que le estaríamos dando el mismo peso a todos esos K vecinos sin importar que tan cerca estén de la imagen testeada.
+Llevando esto a un extremo podríamos tomar $K = Tamano de matriz de entrenamiento$  cualquiera de las clases tendría el mismo peso con lo que perdería sentido este método.
+Por otro lado tampoco es conveniente tener un $K$ demasiado chico. Por ejemplo, si tomaramos $K = 1$ asociaríamos la imagen a testear con la que esté a menor distancia, que debido a alguna diferencia la forma en que fue tomada la imagen puede no pertenecer a la clase de la imagen testeada.
+
+Es llegamos a la conclusión de que utilizando un valor de K cercano a 10 obtenemos la mejor relación (dentro de nuestro set de tests).
+Por un lado evitamos el problema que ocurre cuando K es demasiado grande y por otro, tomamos una cantidad de imágenes cercanas suficiente como para minimizar el impacto de algún outsider.
