@@ -7,26 +7,26 @@ double precision(int truePos, int falsePos)
 {
     if(truePos+falsePos == 0)
         return -1;
-    return double(truePos)/(truePos + falsePos);
+    return double(truePos)/(double(truePos + falsePos));
 }
 double recall(int truePos, int falseNeg)
 {
     if(truePos+falseNeg == 0)
         return -1;
-    return double(truePos)/(truePos + falseNeg);
+    return double(truePos)/(double(truePos + falseNeg));
 }
 
 double accuracy(int truePos, int trueNeg, int falsePos, int falseNeg)
 {
     double top = double(truePos) + double(trueNeg);
-    return top/(truePos + trueNeg + falsePos + falseNeg);
+    return top/double((truePos + trueNeg + falsePos + falseNeg));
 }
 double mediaArmonica(double precision, double recall)
 {
     if (recall == -1 || precision == -1 )
         return -1;
     double top = 2*(precision*recall);
-    return top/(precision + recall);
+    return top/double((precision + recall));
 }
 int main_kfold(int pca, int k, int alfa, int kknn)
 {
