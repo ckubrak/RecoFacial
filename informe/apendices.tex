@@ -1,1 +1,8 @@
 \subsubsection*{Apéndices}
+\textbf{Estructuras de Datos}
+
+Para manejar las imágenes implementamos la clase Imagen, en la cual almacenamos los parámetros de cada imagen (la altura y ancho originales de la imagen, el nombre del archivo, id de la clase y los bytes de la imagen propiamente dicha en formato vector de unsigned char).
+Para la lectura de los archivos de imágenes utilizamos las librerías provistas por la cátedra.
+Las imágenes a medida que se leen se almacenan en la estructura que denominamos baseDeDatos, la cual consiste de un vector de Imagen.
+Para la implementación de las funciones necesarias para PCA trabajamos con dos estructuras principales: doubleVector que como lo indica su nombre consiste de un vector de doubles donde almacenamos cada imagen vectorizada, y la otra estructura es dobleMatrix que usamos para almacenar todas las imágenes vectorizadas (una por fila), con el objetivo de poder operar matricialmente con ellas dentro de las funciones de una forma práctica.
+
