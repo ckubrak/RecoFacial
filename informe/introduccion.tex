@@ -1,35 +1,34 @@
 \subsubsection*{Introducción}
-\par El problema que se nos platea es el de realizar un reconocimiento facial mediante un aprendizaje supervisado. Partimos de una base de datos, a la cual llamaremos \textit{base de entrenamiento},
-que consiste en un conjunto de $N$ personas de las cuales contamos con $M$ fotos diferentes de sus caras. Al recibir una nueva imagen, buscamos identificar
-a qu\'e persona le correspone. 
-\par Para reconocer la nueva cara experimentaremos con dos m\'etodos: el primero usando los $k$ vecinos m\'as cercanos (\textit{kNN}) y 
-el segundo utilizando el an\'alisis de componentes principales (\textit{PCA}) como forma de preprocesar la \textit{base de entrenamiento} para reducir el 
-tama\~{n}o de la imagen y luego correr \textit{kNN}. 
-\par Por \'ultimo, para evaluar los m\'etodos y la correcta elecci\'on de par\'ametros utilizaremos una t\'ecnica de \textit{cross validation} llamado
-\textit{K-fold}.
+\par El problema que se nos plantea es el de realizar un reconocimiento facial mediante aprendizaje supervisado. Partimos de una base de datos, a la cual llamamos \textit{base de entrenamiento},
+que consiste en fotografías de un conjunto de $N$ personas de las cuales contamos con $M$ fotos diferentes de las caras de cada una. Al recibir una nueva imagen, buscamos identificar a qu\'e persona le corresponde. 
+\par Para reconocer la nueva cara experimentamos con dos m\'etodos: el primero usando los $k$ vecinos m\'as cercanos (\textit{kNN}) y el segundo utilizando el an\'alisis de componentes principales (\textit{PCA}) como forma de preprocesar la \textit{base de entrenamiento} para reducir el tama\~{n}o de la imagen y luego utilizar \textit{kNN} sobre la base preprocesada. 
+\par Por \'ultimo, para evaluar los m\'etodos y la correcta elecci\'on de par\'ametros utilizamos una t\'ecnica de \textit{cross validation} llamada \textit{K-fold}.
 
 \subsubsection*{K vecinos m\'as cercanos}
-\par A partir de la \textit{base de entrenamiento} buscamos identificar a qu\'e sujeto pertenece una nueva cara sin identificar.
-Para este algoritmo considera a cada imagen de la \textit{base de entrenamiento} como un vector de dimensi\'on $n$, donde $n = altura*ancho$ asumiendo que
-todas las im\'agenes tienen el mismo tama\~no, para el cual se conoce a cu\'al es el ID de la imagen (i.e.: la persona) para luego mediante el c\'alculo
-de la nomrma de la diferencia, obtener los $k$ elementos m\'as cercanos.\\
-Esta forma de encarar el problema resuta poco pr\'actica cuando la dimensi\'on de la im\'agen es grande, es por esto que en ciertos casos preprocesamos
-la base de datos con el m\'etodo \textit{PCA}.
+\par A partir de la \textit{base de entrenamiento} buscamos identificar a qu\'e sujeto pertenece una nueva cara sin identificar. Asumimos que todas las imágenes son del mismo tamaño y las representamos por medio de un vector de dimensi\'on $m$, donde $m = altura*ancho$ (medidos en pixeles). Para cada imagen además conocemos su ID (i.e.: identificador que nos permite saber a qué persona corresponde la imagen).
+\par Mediante el c\'alculo de la norma de la diferencia entre los vectores de imagen, obtenemos los $k$ elementos m\'as cercanos, donde \textit{k} es un parámetro de experimentación.\\
+Esta forma de encarar el problema resulta poco pr\'actica cuando la dimensi\'on de la im\'agen es grande, es por esto que en ciertos casos preprocesamos la base de datos con el m\'etodo \textit{PCA}.
 
 \subsubsection*{An\'alisis de componentes principales}
-\par Para este algoritmo de preprocesamiento, calculamos $\mu = (\sum_{i=1}^{n})/n$ el promedio de todas la im\'agenes. Luego definimos $X \in {\rm I\!R}^n$ 
-que en i-\'esima fila tiene al vector $(x_i -  \mu)/\sqrt{n -1}$. Para esta matriz $X$, deber\'iamos calcular la matriz de covarianza definida como $M = X^tX$.
-Sea $v_j$ el autovector de $M$ asociado al j-\'esimo autovector (teniendo los autovalores ordenados seg\'un su valor absoluto), definimos para cada
+Lo que se busca aplicando este método es disminuir la dimensión de la muestra, trabajando con menos variables que contengan información más representativa.
+\par La cantidad de componentes con los que se va a trabajar es una parámetro de la experimentación, al cual denominamos $\alpha$.
+\par Partiendo de las imágenes vectorizadas según se explicó en la sección \textbf{ K vecinos m\'as cercanos}, se arma una matriz que llamamos $I$, la cual contiene una imagen por fila, la misma tiene dimensión $n*m$ ($n$ cantidad de imágenes, $m$ cantidad de pixeles de cada imagen). En general esta matriz será rectangular con muchas más columnas que filas.
+\par Para este algoritmo de preprocesamiento, se calcula el promedio de todas la im\'agenes: $\mu = (\sum_{i=1}^{n}I_{i})/n$ .
+\par Luego se define la matriz $X \in {\rm I\!R}^{nxm}$, que en i-\'esima fila tiene al vector $(x_i -  \mu)/\sqrt{n -1}$. Si la base de entrenamiento cuenta con $n$ imágenes diferentes, y cada imagen tiene $m$ pixeles, la matriz $X$ tiene dimensión $n*m$.
+\par Para esta matriz $X$, se debe calcular la matriz de covarianza definida como $M = X^tX$, de dimensión $m*m$.
+\par Sea $v_j$ el autovector de $M$ asociado al j-\'esimo autovalor (teniendo los autovalores ordenados seg\'un su valor absoluto), se define para cada
 $i = 1,..,n$ la \textit{transformaci\'on caracter\'istica} de $x_i$ como el vector $tc(x_i) = (v_1x_i,v_2x_2,..,v_\alpha x_i)^t \in {\rm I\!R}^\alpha$,
-donde $\alpha$ es un par\'ametro que fuimos variando para la experimentaci\'on.\\
-A\'un as\'i, por motivos de optimizaci\'on, en vez de calcular la matriz de $M$, calculamos una matriz $\tilde{M} = XX^t$ para luego mediante un cambio de variable
+donde $\alpha$ es un par\'ametro de experimentaci\'on.\\
+\par Por motivos de optimización, en este trabajo en vez de calcular la matriz de $M$, calculamos una matriz $\tilde{M} = XX^t$ de dimensión $n*n$ para luego mediante un cambio de variable
 recuperar los autovectores de $M$.
+\par Esto se puede realizar gracias a que ambas matrices poseen los mismos autovalores y los autovectores de una se pueden averiguar a partir de los de la otra.
+\par Si $V$ es una base de autovectores de $\tilde{M} = XX^t$, $\sigma^2_{i}$ el autovalor asociado al autovector $v_i$, $U$ una base de autovectores de $M = X^tX$ con $u_i$ el autovector asociado al i\-ésimo autovalor (ordenados de mayor módulo a menor módulo), se pueden obtener los autovectores de $XX^t$ aplicando la siguiente fórmula: $u_i = \frac{A*v_i}{\sigma_i}$.
 
 \subsubsection*{Cross validation} 
-\par Para poder evaluar qu\'e tan bien funciona nuestro algoritmo es necesario realizar una validaci\'on de los resultados. Para esta tarea ultilizamos el
-m\'etodo de \textit{Cross validation} llamado \textit{k-fold}. Subdividimos nuestra \textit{base de entrenamiento} en $k$ subconjuntos con igual cantidad
-de elementos. Uno de estos lo utilizaremos como datos de prueba mientras que los $k-1$ restantes ser\'an la \textit{base de entrenamiento}. A partir de esto
-podemos analizar los resultados ya que contamos la informaci\'on sobre a qu\'e sujeto pertenece cada im commagen de nuestra base de pruebas. Por \'ultimo resta repetir
+\par Para evaluar qu\'e tan bien funciona nuestro algoritmo es necesario realizar una validaci\'on de los resultados. Para esta tarea ultilizamos el m\'etodo de \textit{Cross validation} llamado \textit{k-fold}. \par Se subdivide la \textit{base de entrenamiento} en $k$ subconjuntos con igual cantidad
+de elementos. Uno de estos subconjuntos lo utilizamos como datos de prueba mientras que los $k-1$ restantes constituyen la \textit{base de entrenamiento}. A partir de esto
+podemos analizar los resultados ya que contamos con la informaci\'on respecto a qu\'e sujeto pertenece cada imagen de nuestra base de pruebas.
+\par Por \'ultimo resta repetir
 el procedimiento para que cada uno de los subconjuntos sea considerado como base de pruebas.
 
 \subsubsection*{Criterios de evaluaci\'on}
@@ -37,11 +36,16 @@ Resulta de vital importancia tener en claro cu\'ales son los criterios a tener e
 Para poder evaluarla, debemos mirar los \textit{true positives} y \textit{true negatives} (los casos en los cuales el encasillado funcion\'o correctamente)
 como tambi\'en los \textit{false positives} y \textit{false negatives} (casos en los cuales la clasificaci\'on no se comport\'o como se esperaba).\\
 Siendo el caso a analizar no binario (existen m\'as de dos categor\'ias), para cada $i = 1,..,n$  definimos $tp_i$ como
-las muestras que realmente pertenec\'ian a la clase $i$ y fueron exitosamente identificadas como tales
-y $fn_i$ son aquellas muestras que fueron identificadas como pertenecientes a la clase i cuando realmente no lo eran (an\'alogamente definimos $tn_i$ y $fp_i$).
+las muestras que realmente pertenecen a la clase $i$ y fueron exitosamente identificadas como tales
+y $fn_i$ son aquellas muestras que son identificadas como pertenecientes a la clase i cuando realmente no lo son (an\'alogamente definimos $tn_i$ y $fp_i$).
 \par A partir de esto definimos cuatro m\'etricas, a saber:
 $precision_i= \frac{tp_i}{tp_i + fp_i}$ la cual indica qu\'e porcentaje de los datos recuperados cu\'ales son relevantes. 
 El $recall_i= \frac{tp_i}{tp_i + fn_i}$, que indica qu\'e porcentaje de los datos relevantes fueron recuperados.
 El $accuracy_i = \frac{tp_i+tn_i}{tp_i + tn_i + fp_i + fn_i}$ indica la cantidad de aciertos sobre el total de la base de datos.
 Por \'ultimo la media arm\'onica $F_{1_i} = 2\frac{precision_i * recall_i}{precision_i + recall_i}$ permite establecer un compromiso entre en 
 $recall_i$ y el $accuracy_i$.
+
+\subsubsection*{Método de la Potencia y algoritmo de Deflación}
+\par El método de la potencia permite averiguar el autovalor de mayor módulo de una matriz y su autovector asociado.
+\par Si la matriz en estudio posee una base ortonormal de autovectores y autovalores distintos, utilizando repetidamente el método de la potencia se pueden averiguar todos los autovalores, comenzando desde el de mayor módulo en orden decreciente y los autovectores asociados. Este mecanismo es el algoritmo de Deflación.
+\par En el caso de la matriz $XX^{t}$ que utilizamos en este trabajo, se puede garantizar que se encuentra dentro de las hipótesis requeridas por el método de Deflación porque se trata de una matriz simétrica.
