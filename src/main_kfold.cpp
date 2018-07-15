@@ -45,10 +45,10 @@ int main_kfold(int pca, int k, int alfa, int kknn)
     std::vector<double> precisionI(cantSujetos,0.0);
     std::vector<double> mediaArmonicaI(cantSujetos,0.0);
 
-        std::vector<int> truePositivesId(cantSujetos,0);
-        std::vector<int> trueNegativesId(cantSujetos,0);
-        std::vector<int> falsePositivesId(cantSujetos,0);
-        std::vector<int> falseNegativesId(cantSujetos,0);
+        std::vector<double> truePositivesId(cantSujetos,0);
+        std::vector<double> trueNegativesId(cantSujetos,0);
+        std::vector<double> falsePositivesId(cantSujetos,0);
+        std::vector<double> falseNegativesId(cantSujetos,0);
 
     for (int fold = 0; fold < vectorDeFolds.size(); fold++ )
     {
