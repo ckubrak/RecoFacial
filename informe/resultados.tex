@@ -4,7 +4,7 @@
 %Nota: Al ser los resultados de los experimentos sobre ambos tests muy similares, decidimos analizarlos en conjunto.
 
 Uno de los parámetros determinantes en la experimentación es la cantidad de vecinos cercanos, otro punto relevante es el valor de $\alpha$ que vamos a utilizar. Es por eso que vamos a plantear una serie de tests con estos parámetros para determinar los valores que nos ofrezcan un mejor \textit{trade off} entre las diferentes métricas que utilizaremos para evaluar nuestra implementación.\newline
-Estas son Accuracy, Precision, Recall y el tiempo de ejecución.
+Estas son Accuracy, Recall y el tiempo de ejecución.
 
 A su vez, vamos a testear lo mencionado anteriormente tanto con la implementación de KNN como con KNN+PCA para evaluar también el funcionamiento de PCA. 
 
@@ -29,18 +29,36 @@ En ambos casos obtenemos resultados similares, un Accuracy más grande a menor K
 %Por un lado evitamos el problema que ocurre cuando K es demasiado grande y por otro, tomamos una cantidad de imágenes cercanas suficiente como para minimizar el impacto de algún outsider. Aun que cabe destacar que en este caso particular K = 1 tuvo un mejor comportamiento de lo que esperabamos, consideramos que sería arriesgado tomarlo como valor confiable con otros sets de imágenes.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{figure}[H]
-	\centering	
-	\includegraphics[width=0.8\textwidth]{img/acu_pre.png}
-	\caption{Accuracy y Precision vs K}
-	\label{fig: Accuracy y Precision vs K con KNN}
+	\centering
+	\includegraphics[width=0.8\textwidth]{img/Acc_recall_k_knn.png}
+	\caption{Accuracy y Recall vs K (sin PCA)}
+	\label{fig: Accuracy y Recall vs K (sin PCA)}
 \end{figure}
 
-En este experimento estudiamos cómo es que la cantidad de vecinos cercanos afecta a las métricas Accuracy y Recall.
+En este gráfico encontramos algo similar al anterior, si bien se nota un descenso en Accuracy a medida que aumenta K, con el cambio de escala se puede apreciar que el mismo es muy leve.
+Por el contrario, sí encontramos que Recall disminuye considerablemente a medida que K crece. En este caso es esta métrica la que nos da más elementos para concluir que K = 1 es la mejor opción.
 
-Lo que encontramos no fue muy distinto de lo esperado. En la figura anterior vimos la forma en la que Accuracy variaba en función de la cantidad de vecinos cercanos. Pero como explicamos, por ejemplo elegir un K = 250 definitivamente no es una buena elección. Luego en este caso encontramos que Precision resulta ser una métrica un tanto engañosa.
 
-Para tener un sistema preciso -valga la redundancia- necesitamos un valor de (la métrica) Precision relativamente alto. Luego en función de lo que nos indica el gráfico nuevamente un valor cercano a K = 1 nos parece adecuado.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{figure}[H]
+%	\centering	
+%	\includegraphics[width=0.8\textwidth]{img/acu_pre.png}
+%	\caption{Accuracy y Precision vs K}
+%	\label{fig: Accuracy y Precision vs K con KNN}
+%\end{figure}
+
+%En este experimento estudiamos cómo es que la cantidad de vecinos cercanos afecta a las métricas Accuracy y Recall.
+%
+%
+
+%Lo que encontramos no fue muy distinto de lo esperado. En la figura anterior vimos la forma en la que Accuracy variaba en función de la cantidad de vecinos cercanos. Al cambiar la escala, observamos que la variación es bastante leve, pero como explicamos, por ejemplo elegir un K = 250 definitivamente no es una buena elección.
+%
+%Para tener un sistema robusto necesitamos un valor de (la métrica) recall relativamente alto. Luego en función de lo que nos indica el gráfico nuevamente un valor cercano a K = 1 nos parece adecuado.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}[H]
 \begin{subfigure}[h]{0.62\linewidth}
@@ -60,18 +78,6 @@ En este caso no logramos identificar ningún patrón evidente. Si bien en el seg
 Esto nos parece razonable, dado que por la forma de nuestra implementación calculamos la distancia con cada una de las imágenes y elegir un K mayor implica muy pocos cálculos adicionales.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.8\textwidth]{img/Acc_recall_k_knn.png}
-	\caption{Accuracy y Recall vs K (sin PCA)}
-	\label{fig: Accuracy y Recall vs K (sin PCA)}
-\end{figure}
-
-En este gráfico encontramos algo similar al anterior, si bien se nota un descenso en Accuracy a medida que aumenta K, el mismo es muy leve.
-Por el contrario, sí encontramos un que Recall disminuye considerablemente a medida que K crece. En este caso es esta métrica la que nos da más elementos para concluir que K = 1 es el la mejor opción.
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsubsection*{Conclusiones del test}
 Dados los resultados resulta evidente que cuánto más chico el K mejor se comportan nuestras métricas, luego concluímos que K = 1 es el valor óptimo.
