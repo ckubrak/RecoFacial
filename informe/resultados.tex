@@ -3,9 +3,7 @@
 
 \subsubsection*{Tests KNN}
 
-Uno de los aspectos más importantes nuestra experimentación es determinar la cantidad óptima de vecínos cercanos, por eso es que vamos a testear el tamaño de K con KNN sin PCA para evitar tener más variables que puedan interferír en nuestra experimencación.
-
-
+Uno de los aspectos más importantes nuestra experimentación es determinar la cantidad óptima de vecínos cercanos, por eso es que vamos a llevar acabo tests de K con KNN en función de nuestras métricas. Para evitar tener más variables que puedan interferír en nuestra experimencación no utilizamos PCA.
 
 
 \begin{figure}[H]
@@ -21,6 +19,7 @@ Uno de los aspectos más importantes nuestra experimentación es determinar la c
 \caption{K vs Accuracy con KNN sin PCA}
 \end{figure}
 
+En ambos casos obtenemos resultados similares, un accuracy más grande a menor K, siendo K = 1 el valor óptimo, al menos en este caso.
 %Dados los resultados, en este caso consideramos que utilizando un valor de K cercano a 10 obtenemos la mejor relación (dentro de nuestro set de tests).\newline
 %Por un lado evitamos el problema que ocurre cuando K es demasiado grande y por otro, tomamos una cantidad de imágenes cercanas suficiente como para minimizar el impacto de algún outsider. Aun que cabe destacar que en este caso particular K = 1 tuvo un mejor comportamiento de lo que esperabamos, consideramos que sería arriesgado tomarlo como valor confiable con otros sets de imágenes.
 
@@ -32,11 +31,11 @@ Uno de los aspectos más importantes nuestra experimentación es determinar la c
 	\label{fig: Accuracy y precision vs K con KNN}
 \end{figure}
 
-En este experimento estudiamos la forma en la que la cantidad de vecinos cercanos afecta a las métricas Accuracy y Precisión. Para esto utilizamos el método KNN (sin PCA) para no involucrar más variables dentro del experimento de las necesarias.
+En este experimento estudiamos cómo la que la cantidad de vecinos cercanos afecta a las métricas Accuracy y Precisión.
 
-Lo que encontramos no fue muy distinto de lo esperado. Antes ya vimos la forma en la que Accuracy variaba en función de la cantidad de vecinos cercanos (Figura 1). Pero como explicamos en cuanto al funcionamiento y elección de un K apropiado para el KNN, un K = 250 por ejemplo no es una buena elección, así que en este caso el accuracy resulta ser una métrica un tanto engañosa.
+Lo que encontramos no fue muy distinto de lo esperado. En la figura anterior vimos la forma en la que Accuracy variaba en función de la cantidad de vecinos cercanos. Pero como explicamos, por ejemplo elegir un K = 250 definitivamente no es una buena elección.Luego en este caso encontramos que Accuracy resulta ser una métrica un tanto engañosa.
 
-Para tener un sistema preciso -valga la redundancia- necesitamos un valos de precision relativamente alto. Entonces en función de lo que nos indica el gráfico nuevamente un valor aproximado de K = 1 nos parece una buena opción.
+Para tener un sistema preciso -valga la redundancia- necesitamos un Valos de (la métrica) Precision relativamente alto. Entonces en función de lo que nos indica el gráfico nuevamente un valor cercano a K = 1 nos parece adecuado.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}[H]
 \begin{subfigure}[h]{0.62\linewidth}
@@ -52,16 +51,28 @@ Para tener un sistema preciso -valga la redundancia- necesitamos un valos de pre
 \end{figure}
 
 
-En estos tests obtuvimos resultados coherentes con lo esperado.
-Lo único que podemos señalar es un tiempo mayor en PCA a lo que uno podría intuir, pero esto se debe a la aplicación de PCA en cada ejecución. En un uso real esperaríamos encontrar una reducción del tiempo de ejecución de KNN+PCA en relación al KNN.
+En este caso no logramos identificar ningún patrón evidente. Si bien en el segundo gráfico se observan algúnas diferencias, en realidad representan pequeñas variaciones en el tiempo de ejecución que no consideramos relevantes.
+Esto nos parece muy razonable, dado que por la forma de nuestra implementación calculamos la distancia con cada una de las imágenes y elegir un K mayor implica muy pocos cálculos adicionales.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{img/Acc_recall_k_knn.png}
+	\caption{Accuracy y Recall vs K (sin PCA)}
+	\label{fig: Accuracy y Recall vs K (sin PCA)}
+\end{figure}
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
+
 \subsubsection*{Conclusiones del test}
 Dados los resultados resulta evidente que cuánto más chico el K mejor se comportan nuestras métricas, luego concluímos que K = 1 es el valor óptimo.
-Esto tiene sentido, sin embargo si tuvieramos que implementar este problema en la vida real creemos que nos encontraríamos con outlayers que pueden afectar el resultado, ya que con un solo vecino cercano tenemos un sistema poco robusto.
+Esto tiene sentido, sin embargo si tuvieramos que implementar este problema en la vida real creemos que nos encontraríamos con outlayers que pueden afectar el resultado, ya que con un solo vecino cercano tenemos un sistema poco robusto, por lo que elegiríamos un K un poco más grande, alrededor de 5.
 
 
 
@@ -70,7 +81,7 @@ Esto tiene sentido, sin embargo si tuvieramos que implementar este problema en l
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection*{Test con KNN + PCA}
-Ahora vamos a evaluar como se comporta nuestra implementación con PCA, para eso vamos a repetir los tests anteriores pero esta vez utilizando KNN + PCA.
+Aquí evaluamos cómo se comporta nuestra implementación con PCA, para eso vamos a repetir los tests anteriores pero esta vez utilizando KNN + PCA.
 De acuerdo a lo concluído de los tests anteriores inferimos que utilizar K = 1 o algún valor cercano sería lo mejor. 
 
 
@@ -83,11 +94,8 @@ De acuerdo a lo concluído de los tests anteriores inferimos que utilizar K = 1 
 	\label{fig:K vs Accuracy con KNN + PCA}
 \end{figure}
 
-En este caso vemos una estrecha relación entre cuantos vecinos cercanos tomamos y el accuracy.
-Esto se debe a que al tomar más vecinos cercanos nos exponemos a un error mayor debido a que le estaríamos dando el mismo peso a todos esos K vecinos sin importar que tan cerca estén de la imagen testeada.
-Llevando esto a un extremo podríamos tomar $K$ = “Tamano de matriz de entrenamiento”  cualquiera de las clases tendría el mismo peso con lo que perdería sentido este método.
-Por otro lado tampoco es conveniente tener un $K$ demasiado chico. Por ejemplo, si tomaramos $K = 1$ asociaríamos la imagen a testear con la que esté a menor distancia, que debido a alguna diferencia la forma en que fue tomada la imagen puede no pertenecer a la clase de la imagen testeada.
-
+En este caso observamos una estrecha relación entre cuántos vecinos cercanos tomamos y el accuracy.
+Nuevamente K = 1 parece ser el valor óptimo.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -103,12 +111,10 @@ Por otro lado tampoco es conveniente tener un $K$ demasiado chico. Por ejemplo, 
 \end{subfigure}%
 \caption{K vs tiempo con KNN+PCA}
 \end{figure}
-
-
+Este caso es muy similar al visto sin PCA (Figura 3), no notamos diferencias relevantes.
+%Cuidado, tarda un poco más, pero es por el PCA.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
 
 \begin{figure}[H]
 \begin{subfigure}[h]{0.62\linewidth}
@@ -148,8 +154,22 @@ Tal como esperabamos vemos que a medida que el $\alpha$ aumenta (es decir, cuant
 
 Luego, en línea con los resultados de los gráficos anteriores (Accuracy vs $\alpha$) podemos volver a afirmar que un $\alpha$ cercano a 10 sería un buen balance. En este gráfico notamos si tomaramos $\alpha$ = 30, tardaría aproximadamente el triple y no obtendríamos una mejora sustancial en el accuracy.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{img/Acc_recall_alfa_pca.png}
+	\caption{Accuracy y Recall vs Alfa (con PCA)}
+	\label{fig: Accuracy y Recall vs Alfa (con PCA)}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{img/Acc_recall_k_pca.png}
+	\caption{Accuracy y Recall vs K (con PCA)}
+	\label{fig: Accuracy y Recall vs K (con PCA)}
+\end{figure}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Es llegamos a la conclusión de que utilizando un valor de K cercano a 10 obtenemos la mejor relación (dentro de nuestro set de tests).
 Por un lado evitamos el problema que ocurre cuando K es demasiado grande y por otro, tomamos una cantidad de imágenes cercanas suficiente como para minimizar el impacto de algún outsider.
