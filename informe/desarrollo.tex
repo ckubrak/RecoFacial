@@ -1,6 +1,10 @@
 \subsubsection*{Desarrollo}
+
 \textbf{Generalidades}
 
+Para experimentar analizamos la influencia en los resultados de las diferentes variables de experimentación que manejamos utilizando tanto el método KNN como el KNN + PCA. 
+Las mismas son la cantidad de vecinos considerados por KNN (k), y la cantidad de componentes principales de la imagen transformada ($\alpha$).
+Lo hicimos sobre dos bases de datos: una con im\'agenes de tamaño reducido, y otra con imágenes sin reducir.
 Para manejar las imágenes implementamos la clase Imagen, en la cual almacenamos la imagen y demás parámetros necesarios de cada una de ellas.
 Para la lectura de los archivos de imágenes utilizamos las librerías provistas por la cátedra.
 Cada imagen leída se vectoriza, y con el conjunto de imágenes vectorizadas se arma una estructura matricial, que resultó práctica para la implementación de los algoritmos requeridos.
@@ -36,6 +40,7 @@ La determinación del valor de $k$ la realizamos teniendo en cuenta los siguient
 \end{itemize}
 
 \textbf{Métricas}
-\par Las métricas que elegimos para evaluar los resultados fueron \textit{accuracy} y \textit{precision}, con el \textit{accuracy} tenemos una medida de clasificaciones correctas en general (o sea las veces que se acierta en clasificar en la clase correcta y en no clasificar en una clase que no corresponde), mientras que el \textit{precision} nos permite minimizar la cantidad de identificaciones desacertadas que tolera el sistema.
+
+\par Las métricas que elegimos para evaluar los resultados fueron \textit{accuracy} y \textit{recall}, con el \textit{accuracy} tenemos una medida de clasificaciones correctas en general (o sea las veces que se acierta en clasificar en la clase correcta y en no clasificar en una clase que no corresponde), mientras que el \textit{recall} nos permite maximizar la cantidad de identificaciones acertadas de cada clase en relación al total de elementos de la clase presentes en la muestra.
 Para calcularlas, por cada fold, para cada imagen a reconocer se guarda el ID de la clase a la que pertenece y la clasificación que hace el sistema.
 \par Una vez obtenida esta información para todas las imágenes a reconocer de la totalidad de los folds, se procede a calcular los verdaderos positivos, verdaderos negativos, falsos positivos y falsos negativos. Y con estos se calculan las métricas mencionadas (como se detalló en la introducción teórica).
