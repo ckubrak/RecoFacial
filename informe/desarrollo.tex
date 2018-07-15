@@ -1,4 +1,4 @@
-\subsubsection*{Desarrollo}
+%\subsubsection*{Desarrollo}
 
 \textbf{Generalidades}
 
@@ -44,3 +44,21 @@ La determinación del valor de $k$ la realizamos teniendo en cuenta los siguient
 \par Las métricas que elegimos para evaluar los resultados fueron \textit{accuracy} y \textit{recall}, con el \textit{accuracy} tenemos una medida de clasificaciones correctas en general (o sea las veces que se acierta en clasificar en la clase correcta y en no clasificar en una clase que no corresponde), mientras que el \textit{recall} nos permite maximizar la cantidad de identificaciones acertadas de cada clase en relación al total de elementos de la clase presentes en la muestra.
 Para calcularlas, por cada fold, para cada imagen a reconocer se guarda el ID de la clase a la que pertenece y la clasificación que hace el sistema.
 \par Una vez obtenida esta información para todas las imágenes a reconocer de la totalidad de los folds, se procede a calcular los verdaderos positivos, verdaderos negativos, falsos positivos y falsos negativos. Y con estos se calculan las métricas mencionadas (como se detalló en la introducción teórica).
+
+%\subsection{Experimentación}
+
+\textbf{Experimentación}
+Uno de los parámetros determinantes en la experimentación es la cantidad de vecinos cercanos, otro punto relevante es el valor de $\alpha$ que vamos a utilizar. Es por eso que vamos a plantear una serie de tests con estos parámetros para determinar los valores que nos ofrezcan un mejor \textit{trade off} entre las diferentes métricas que utilizaremos para evaluar nuestra implementación.\newline
+Estas son Accuracy, Recall y el tiempo de ejecución.
+
+A su vez, vamos a testear lo mencionado anteriormente tanto con la implementación de KNN como con KNN+PCA para evaluar también el funcionamiento de PCA. 
+
+Nota: En los tests dónde evaluamos $\alpha$ tomamos K = 1 y de la misma forma, en los que evaluamos K tomamos $\alpha$ = 10. 
+
+\par Nuestras expectativas previas a la experimentación son las siguientes\\
+Por un lado consideramos que el tamaño de las im\'agenes influiría acrecentando el tiempo requerido para su procesamiento pero debido a la mayor informaci\'on disponible, con las imágenes más grandes 
+funcionarían mejor los algoritmos.\\
+Con respecto a la variaci\'on del $k$ en $KNN$ suponemos que los mejores resultados de reconocimiento los tendríamos con un $k$ no demasiado grande.\\
+Frente a los diferentes algoritmos (KNN o PCA + KNN) creemos que la segunda opci\'on realizar\'a un mejor trabajo pero a su vez requiere de un mayor tiempo para el preprocesamiento de las imágenes, aunque el tiempo de reconocimiento suponemos que debería ser similar o menor que en knn solo.
+Por \'ultimo, respecto al par\'ametro $\alpha$ (cantidad de iteraciones del m\'etodo de las potencias) resulta obvio estimar que a mayor $\alpha$, mayor ser\'a el tiempo de ejecución aunque como contrapartida esperamos que un mayor $\alpha$ mejore significativamente la tasa de reconocimiento.
+

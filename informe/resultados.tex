@@ -1,14 +1,8 @@
 
 
-\subsubsection*{Resultados obtenidos}
+%\subsubsection*{Resultados obtenidos}
 %Nota: Al ser los resultados de los experimentos sobre ambos tests muy similares, decidimos analizarlos en conjunto.
 
-Uno de los parámetros determinantes en la experimentación es la cantidad de vecinos cercanos, otro punto relevante es el valor de $\alpha$ que vamos a utilizar. Es por eso que vamos a plantear una serie de tests con estos parámetros para determinar los valores que nos ofrezcan un mejor \textit{trade off} entre las diferentes métricas que utilizaremos para evaluar nuestra implementación.\newline
-Estas son Accuracy, Recall y el tiempo de ejecución.
-
-A su vez, vamos a testear lo mencionado anteriormente tanto con la implementación de KNN como con KNN+PCA para evaluar también el funcionamiento de PCA. 
-
-Nota: En los tests dónde evaluamos $\alpha$ tomamos K = 1 y de la misma forma, en los que evaluamos K tomamos $\alpha$ = 10. 
 \subsubsection*{Tests KNN}
 
 \begin{figure}[H]
@@ -182,7 +176,7 @@ Observamos que el resultado es realmente similar al del mismo test llevado a cab
 También podríamos agregar que el hecho de obtener resultados muy similares al test sin PCA habla bien del funcionamiento de PCA (con $\alpha$ = 10) que obtiene una buena tasa de reconocimiento con muy pocas componentes (lo que equivale a un gran ahorro de espacio).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Llegamos a la conclusión de que utilizando un valor de K cercano a 10 obtenemos la mejor relación (dentro de nuestro set de tests).
+Llegamos a la conclusión de que utilizando un valor de K mayor pero cercano a 1 obtenemos la mejor relación (dentro de nuestro set de tests).
 Por un lado evitamos el problema que ocurre cuando K es demasiado grande y por otro, tomamos una cantidad de imágenes cercanas suficiente como para minimizar el impacto de algún outsider.
 
 
