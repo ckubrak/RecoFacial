@@ -15,7 +15,7 @@
 \includegraphics[width=\linewidth]{img/big_k_knn_accu.png}
 \caption{Utilizando imágenes grandes}
 \end{subfigure}%
-\caption{K vs Accuracy con KNN sin PCA}
+\caption{Accuracy vs K con KNN sin PCA}
 \end{figure}
 
 En ambos casos obtenemos resultados similares, un Accuracy más grande a menor K, siendo K = 1 el valor óptimo, al menos en este caso.
@@ -112,7 +112,7 @@ Nuevamente K = 1 parece ser el valor óptimo.
 Este caso es muy similar al visto sin PCA (Figura 3), no notamos diferencias relevantes.
 
 Nótese que al calcular el tiempo incluimos desde el principio hasta el final del algoritmo. Para apreciar mejor la función de PCA tendríamos que haber calculado el tiempo del reconocimiento sin contar el cálculo de PCA. Este fue un hecho que notamos una vez terminada la experimentación pero sería un experimento interesante, que dejaremos para un futuro.\newline
-Sin embargo vimos que PCA funciona correctamente en cuanto a nuestras métricas y por nuestra implementación, al trabajar con una matriz más chica obtendríamos una reducción en el tiempo de ejecución (tal como observamos al probar KNN sin PCA con el set de imágenes chico y el gránde), con esto podemos deducir que el reconocimiento una vez aplicado PCA tarda menos y a la vez sigue siendo efectivo.
+Sin embargo vimos que PCA funciona correctamente en cuanto a nuestras métricas y por nuestra implementación, al trabajar con una matriz más chica obtendríamos una reducción en el tiempo de ejecución (tal como observamos al probar KNN sin PCA con el set de imágenes chico y el grande), con esto podemos deducir que el reconocimiento una vez aplicado PCA tarda menos y a la vez sigue siendo efectivo.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

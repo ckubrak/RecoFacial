@@ -1,6 +1,7 @@
 %\subsubsection*{Desarrollo}
 
-\textbf{Generalidades}
+%\textbf{Generalidades}
+\subsection*{Generalidades}
 
 Para experimentar analizamos la influencia en los resultados de las diferentes variables de experimentación que manejamos utilizando tanto el método KNN como el KNN + PCA. 
 Las mismas son la cantidad de vecinos considerados por KNN (k), y la cantidad de componentes principales de la imagen transformada ($\alpha$).
@@ -9,7 +10,8 @@ Para manejar las imágenes implementamos la clase Imagen, en la cual almacenamos
 Para la lectura de los archivos de imágenes utilizamos las librerías provistas por la cátedra.
 Cada imagen leída se vectoriza, y con el conjunto de imágenes vectorizadas se arma una estructura matricial, que resultó práctica para la implementación de los algoritmos requeridos.
 
-\textbf{KNN}
+%\textbf{KNN}
+\subsection*{KNN}
 
 El KNN es de algúna forma el centro del desarrollo, ya que es donde se toma la decisión de cuál es el sujeto de la base de entrenamiento que se corresponde con la imagen que elegimos para testear.
 
@@ -18,19 +20,20 @@ Esto lo hicimos calculando la distancia euclídea entre el elemento a testear y 
 \par Una de las dificultades con que nos encontramos fue el decidir los tipos de datos a utilizar. Las imágenes vienen codificadas con números enteros entre 0 y 255 y para trabajar con KNN (sin PCA) utilizamos enteros que ocupan menos espacio de memoria. Sin embargo por la naturaleza de los cálculos necesarios para PCA tuvimos que utilizar doubles. Esto nos llevó a tener que duplicar parte del código para adaptarse al nuevo tipo de dato.
 
 
-\textbf{PCA}
-
+%\textbf{PCA}
+\subsection*{PCA}
 La implementación del método PCA consta de varios pasos:
 En un primer paso se arma la matriz X (de tipo matriz de doubles) que contiene los bytes de datos de las imágenes vectorizadas. Esta matriz se debería usar para calcular la matriz de covarianza de la muestra, que luego debería ser diagonalizada para obtener los autovectores que permiten hacer una cambio de base de la muestra dejando las variables (valores de las columnas) lo más independientes posible.
 La matriz de covarianza se calcula haciendo el producto matricial $X^{t} * X$. Considerando que la cantidad de columnas de la matriz $X$ es igual a la cantidad de pixeles de una imagen, el resultado del producto es una matriz que fácilmente puede volverse gigantesca como para poder operar con ella, de manera que resulta muy costoso en términos de uso de la memoria del equipo. Con el objeto de atenuar este problema, en lugar de calcular los autovectores de la matriz $X^{t} * X$, lo hacemos con $X * X^{t}$.
 \par Estas matrices comparten los mismos autovalores y sus autovectores puede ser calculados unos en función de los otros, tal como se detalla en la Introducción teórica. Si bien la implementación se complicó porque tuvimos que programar la conversión de los autovectores, la ventaja que obtuvimos es que operamos con matrices de menor dimensión, puesto que la cantidad de imágenes (filas de X) es en nuestro caso notablemente menor que la cantidad de pixeles de cada imagen (columnas de X).
 La matriz $X * X^{t}$ es una matriz simétrica, en un principio nos planteamos la posibilidad de usar alguna estrategia de almacenamiento que aprovechara esta condición para ahorrar memoria, pero en este caso decidimos no hacerlo y tratarla como una matriz común para simplificar la implementación, sin embargo en caso de una implementación donde sea crítico el uso del espacio debería considerarse seriamente esta opción.
 
-\textbf{Método de la potencia:} El método de la Potencia necesita para la iteración de un vector $x$ que inicialmente contiene un valor arbitrario, el cual decidimos generar de forma aleatoria. Durante el testeo de las funciones observamos que corridas sucesivas efectuadas con las mismas imágenes de entrada producían diferentes resultados en los autovectores generados. Las diferencias se observan en los decimales menos significativos. La hipótesis es que estas diferencias se producen por utilizar el vector inicial generado de manera aleatoria. Si bien esta forma de generarlo sirvió muy bien a la hora de calcular los autovalores y autovectores de la matriz de covarianza, no resulta bueno a la hora de reproducir los experimentos, algo de lo que nos dimos cuenta luego de la experimentación.
+\subsection*{Método de la potencia}
+El método de la Potencia necesita para la iteración de un vector $x$ que inicialmente contiene un valor arbitrario, el cual decidimos generar de forma aleatoria. Durante el testeo de las funciones observamos que corridas sucesivas efectuadas con las mismas imágenes de entrada producían diferentes resultados en los autovectores generados. Las diferencias se observan en los decimales menos significativos. La hipótesis es que estas diferencias se producen por utilizar el vector inicial generado de manera aleatoria. Si bien esta forma de generarlo sirvió muy bien a la hora de calcular los autovalores y autovectores de la matriz de covarianza, no resulta bueno a la hora de reproducir los experimentos, algo de lo que nos dimos cuenta luego de la experimentación.
 \par En el método de Deflación pudimos observar que al buscar autovalores y autovectores, las componentes principales tienen una convergencia más veloz, arribándose a un resultado preciso en pocas iteraciones del método de Potencia. A medida que se calculan mayor cantidad de componentes, la convergencia del método de Potencia se hace notoriamente más lenta y por momentos parecía que no había convergencia cuando en realidad sí la había. Esto nos llevó a utilizar dos criterios de parada para el cálculo de cada autovalor: en una primera instancia usamos una cantidad de iteraciones tope de 10.000, pidiendo una variación entre los resultados de dos iteraciones sucesivas menor a $10^{-5}$; si al cabo de 10.000 iteraciones no llegamos a una convergencia, continuamos iterando hasta un tope de 100.000 iteraciones más y aceptando una tolerancia menos precisa de $10^{-3}$.
 
 
-\textbf{Kfold (Cross-validation)}
+\subsection*{Kfold (Cross-validation)}
 Decidimos utilizar 5-fold.
 La determinación del valor de $k$ la realizamos teniendo en cuenta los siguientes factores:
 \begin{itemize}
@@ -39,26 +42,26 @@ La determinación del valor de $k$ la realizamos teniendo en cuenta los siguient
 \item Teniendo en cuenta el punto anterior los posibles $k$ elegibles se reducen a los divisores de la cantidad de imágenes de cada clase. Siendo en el nuestro caso de 10 imágenes por clase los posibles valores son: 1, 2, 5 y 10. El 1 no tiene sentido en la práctica ya que equivale a no tener datos de entrenamiento. El 10 supone que queda solo un representante de cada clase para testear, entonces si la imagen que usamos para testear posee algúna anormalidad respecto de las otras de su clase afectaría negativamente nuestros resultados, es decir, nuestro resultado sería muy sensible a outsiders y poco robusto. En el caso de 2, estaríamos usando la mitad de los datos para entrenar y la mitad de los datos para testear y tratándose de una base de datos relativamente chica (con pocos representantes de cada clase) consideramos que tendríamos poca variedad de datos de entrenamiento. En el caso de $k$=5, estaríamos considerando dos imágenes de cada clase para testear y ocho para entrenar. De todas las posibilidades, nos pareció la más adecuada porque nos da una cantidad relativamente grande de datos de entrenamiento y más de una imagen para testear. 
 \end{itemize}
 
-\textbf{Métricas}
+\subsection*{Métricas}
 
 \par Las métricas que elegimos para evaluar los resultados fueron \textit{accuracy} y \textit{recall}, con el \textit{accuracy} tenemos una medida de clasificaciones correctas en general (o sea las veces que se acierta en clasificar en la clase correcta y en no clasificar en una clase que no corresponde), mientras que el \textit{recall} nos permite maximizar la cantidad de identificaciones acertadas de cada clase en relación al total de elementos de la clase presentes en la muestra.
 Para calcularlas, por cada fold, para cada imagen a reconocer se guarda el ID de la clase a la que pertenece y la clasificación que hace el sistema.
 \par Una vez obtenida esta información para todas las imágenes a reconocer de la totalidad de los folds, se procede a calcular los verdaderos positivos, verdaderos negativos, falsos positivos y falsos negativos. Y con estos se calculan las métricas mencionadas (como se detalló en la introducción teórica).
 
-%\subsection{Experimentación}
+\subsection*{Experimentación}
 
-\textbf{Experimentación}
-Uno de los parámetros determinantes en la experimentación es la cantidad de vecinos cercanos, otro punto relevante es el valor de $\alpha$ que vamos a utilizar. Es por eso que vamos a plantear una serie de tests con estos parámetros para determinar los valores que nos ofrezcan un mejor \textit{trade off} entre las diferentes métricas que utilizaremos para evaluar nuestra implementación.\newline
+%\textbf{Experimentación}
+\par Uno de los parámetros determinantes en la experimentación es la cantidad de vecinos cercanos, otro punto relevante es el valor de $\alpha$ que vamos a utilizar. Es por eso que vamos a plantear una serie de tests con estos parámetros para determinar los valores que nos ofrezcan un mejor \textit{trade off} entre las diferentes métricas que utilizaremos para evaluar nuestra implementación.\newline
 Estas son Accuracy, Recall y el tiempo de ejecución.
 
 A su vez, vamos a testear lo mencionado anteriormente tanto con la implementación de KNN como con KNN+PCA para evaluar también el funcionamiento de PCA. 
 
 Nota: En los tests dónde evaluamos $\alpha$ tomamos K = 1 y de la misma forma, en los que evaluamos K tomamos $\alpha$ = 10. 
 
-\par Nuestras expectativas previas a la experimentación son las siguientes\\
-Por un lado consideramos que el tamaño de las im\'agenes influiría acrecentando el tiempo requerido para su procesamiento pero debido a la mayor informaci\'on disponible, con las imágenes más grandes 
-funcionarían mejor los algoritmos.\\
-Con respecto a la variaci\'on del $k$ en $KNN$ suponemos que los mejores resultados de reconocimiento los tendríamos con un $k$ no demasiado grande.\\
+\par Nuestras expectativas previas a la experimentación son las siguientes:\\
+Por un lado consideramos que el tamaño de las im\'agenes influirá acrecentando el tiempo requerido para su procesamiento pero debido a la mayor informaci\'on disponible, con las imágenes más grandes 
+funcionarán mejor los algoritmos.\\
+Con respecto a la variaci\'on del $k$ en $KNN$ suponemos que los mejores resultados de reconocimiento los tendremos con un $k$ no demasiado grande.\\
 Frente a los diferentes algoritmos (KNN o PCA + KNN) creemos que la segunda opci\'on realizar\'a un mejor trabajo pero a su vez requiere de un mayor tiempo para el preprocesamiento de las imágenes, aunque el tiempo de reconocimiento suponemos que debería ser similar o menor que en knn solo.
 Por \'ultimo, respecto al par\'ametro $\alpha$ (cantidad de iteraciones del m\'etodo de las potencias) resulta obvio estimar que a mayor $\alpha$, mayor ser\'a el tiempo de ejecución aunque como contrapartida esperamos que un mayor $\alpha$ mejore significativamente la tasa de reconocimiento.
 
