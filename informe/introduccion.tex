@@ -38,12 +38,12 @@ como tambi\'en los \textit{false positives} y \textit{false negatives} (casos en
 Siendo el caso a analizar no binario (existen m\'as de dos categor\'ias), para cada $i = 1,..,n$  definimos $tp_i$ como
 las muestras que realmente pertenecen a la clase $i$ y fueron exitosamente identificadas como tales
 y $fn_i$ son aquellas muestras que son identificadas como pertenecientes a la clase i cuando realmente no lo son (an\'alogamente definimos $tn_i$ y $fp_i$).
-\par A partir de esto definimos cuatro m\'etricas, a saber:
-$precision_i= \frac{tp_i}{tp_i + fp_i}$ la cual indica qu\'e porcentaje de los datos recuperados cu\'ales son relevantes. 
-El $recall_i= \frac{tp_i}{tp_i + fn_i}$, que indica qu\'e porcentaje de los datos relevantes fueron recuperados.
+\par A partir de esto utilizamos dos m\'etricas, a saber:
 El $accuracy_i = \frac{tp_i+tn_i}{tp_i + tn_i + fp_i + fn_i}$ indica la cantidad de aciertos sobre el total de la base de datos.
-Por \'ultimo la media arm\'onica $F_{1_i} = 2\frac{precision_i * recall_i}{precision_i + recall_i}$ permite establecer un compromiso entre en 
-$recall_i$ y el $accuracy_i$.
+El $recall_i= \frac{tp_i}{tp_i + fn_i}$, que indica qu\'e porcentaje de los datos relevantes fueron recuperados.
+\par Además consideramos de gran importancia analizar el tiempo de ejecución a la hora de decidir qu\'e tan bueno es un m\'etodo y qu\'e tan viable es 
+aplicarlo en la pr\'actica.
+
 
 \subsubsection*{Método de la Potencia y algoritmo de Deflación}
 \par El método de la potencia permite averiguar el autovalor de mayor módulo de una matriz y su autovector asociado.
