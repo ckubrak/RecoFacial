@@ -81,7 +81,7 @@ Esto nos parece razonable, dado que por la forma de nuestra implementación calc
 
 \subsubsection*{Conclusiones del test}
 Dados los resultados resulta evidente que cuánto más chico el K mejor se comportan nuestras métricas, luego concluímos que K = 1 es el valor óptimo.
-Esto tiene sentido, sin embargo en caso de tener que implementar este problema en la vida real creemos que nos encontraríamos con outliers que pueden afectar el resultado, ya que con un solo vecino cercano tenemos un sistema poco robusto, por lo que elegiríamos un K un poco más grande, alrededor de 5.
+Esto tiene sentido, sin embargo en caso de tener que implementar este problema en la vida real creemos que nos encontraríamos con outliers que pueden afectar el resultado, ya que con un solo vecino cercano tenemos un sistema poco robusto, por lo que elegiríamos un K un poco más grande pero cercano a 1.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection*{Test con KNN + PCA}
@@ -117,7 +117,7 @@ Nuevamente K = 1 parece ser el valor óptimo.
 \end{figure}
 Este caso es muy similar al visto sin PCA (Figura 3), no notamos diferencias relevantes.
 
-Notese que al calcular el tiempo incluimos desde el principio hasta el final del algoritmo, para apreciar mejor la función de PCA tendríamos que haber calculado el tiempo del reconocimiento sin contar el calculo de PCA. Este sería un experimento interesante, que dejaremos para un futuro.\newline
+Nótese que al calcular el tiempo incluimos desde el principio hasta el final del algoritmo. Para apreciar mejor la función de PCA tendríamos que haber calculado el tiempo del reconocimiento sin contar el cálculo de PCA. Este fue un hecho que notamos una vez terminada la experimentación pero sería un experimento interesante, que dejaremos para un futuro.\newline
 Sin embargo vimos que PCA funciona correctamente en cuanto a nuestras métricas y por nuestra implementación, al trabajar con una matriz más chica obtendríamos una reducción en el tiempo de ejecución (tal como observamos al probar KNN sin PCA con el set de imágenes chico y el gránde), con esto podemos deducir que el reconocimiento una vez aplicado PCA tarda menos y a la vez sigue siendo efectivo.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -140,9 +140,9 @@ Como expresamos anteriormente, debido al funcionamiento de PCA esperábamos que 
 
 Pero a su vez vimos que un $\alpha$ muy elevado resultaría en un aumento del tiempo de ejecución, no obstante en este gráfico vemos como las diferencias entre accuracy son cada vez menores, es decir como disminuye la pendiente (por ejemplo entre $\alpha$ = 10 y $\alpha$ = 50).
 
-En base a los resultados obtenidos concluimos que un valor de $\alpha$ cercano a 10 nos daría un buen balance entre la cantidad de componentes principales y la efectividad (la cuál disminuye un poco, pero a cambio trabajamos con imágenes mucho más chicas reduciendo el tiempo de ejecución).
+En base a los resultados obtenidos concluimos que un valor de $\alpha$ cercano a 10 nos daría un buen balance entre la cantidad de componentes principales y la efectividad (la cuál disminuye un poco, pero a cambio trabajamos con imágenes mucho más chicas).
 
-Se puede ver en el gráfico a) que el valor máximo probado es $\alpha$ = 50 mientras que en el gráfico b) es $\alpha$ = 10. Esto se debe a que al trabajar en b) con imágenes más grandes requería mucho tiempo de ejecución, por esto es que probamos solo hasta ese valor, donde igualmente podemos notar la forma del gráfico. 
+Se puede ver en el gráfico a) que el valor máximo probado es $\alpha$ = 50 mientras que en el gráfico b) es $\alpha$ = 10. Esto se debe a que al trabajar en b) con imágenes más grandes requería mucho tiempo de ejecución ya que en los tests se realiza el preprocesamiento de las imágenes en cada corrida, por esto es que probamos solo hasta ese valor, donde igualmente podemos notar la forma del gráfico.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}[H]
@@ -158,9 +158,9 @@ Se puede ver en el gráfico a) que el valor máximo probado es $\alpha$ = 50 mie
 \caption{Tiempo vs $\alpha$ con KNN+PCA}
 \end{figure}
 
-Tal como esperabamos vemos que a medida que el $\alpha$ aumenta (es decir, cuantas más componentes principales tengamos), el tiempo de ejecución también lo hace.
+Tal como esperábamos vemos que a medida que el $\alpha$ aumenta (es decir, cuantas más componentes principales tengamos), el tiempo de ejecución también lo hace.
 
-Luego, en línea con los resultados de los gráficos anteriores (Accuracy vs $\alpha$) podemos volver a afirmar que un $\alpha$ cercano a 10 sería un buen balance. En a) notamos si tomaramos $\alpha$ = 30, tardaría aproximadamente el triple y no obtendríamos una mejora en el accuracy que valga la pena.
+Luego, en línea con los resultados de los gráficos anteriores (Accuracy vs $\alpha$) podemos volver a afirmar que un $\alpha$ cercano a 10 sería un buen balance. En a) notamos que si tomáramos $\alpha$ = 30, tardaría aproximadamente el triple y no obtendríamos una mejora en el accuracy que valga la pena.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}[H]
 	\centering
@@ -179,10 +179,10 @@ En este caso al evaluar también recall observamos algo similar, a partir de 10 
 	\label{fig: Accuracy y Recall vs K (con PCA)}
 \end{figure}
 Observamos que el resultado es realmente similar al del mismo test llevado a cabo sin PCA, luego por los mismos argumentos utilizados en el caso mencionado decimos que K = 1 es el mejor valor.
-También podríamos agregar que el hecho de obtener resultados muy similares al test sin PCA habla bien del funcionamiento de PCA (con $\alpha$ = 10).
+También podríamos agregar que el hecho de obtener resultados muy similares al test sin PCA habla bien del funcionamiento de PCA (con $\alpha$ = 10) que obtiene una buena tasa de reconocimiento con muy pocas componentes (lo que equivale a un gran ahorro de espacio).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Es llegamos a la conclusión de que utilizando un valor de K cercano a 10 obtenemos la mejor relación (dentro de nuestro set de tests).
+Llegamos a la conclusión de que utilizando un valor de K cercano a 10 obtenemos la mejor relación (dentro de nuestro set de tests).
 Por un lado evitamos el problema que ocurre cuando K es demasiado grande y por otro, tomamos una cantidad de imágenes cercanas suficiente como para minimizar el impacto de algún outsider.
 
 
